@@ -1,15 +1,14 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
-%{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           ipython
-Version:        0.6.11
-Release:        2
+Version:        0.6.12
+Release:        1
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
 License:        BSD
 URL:            http://ipython.scipy.org/
-Source0:        http://ipython.scipy.org/dist/ipython-0.6.11.tar.gz
+Source0:        http://ipython.scipy.org/dist/ipython-0.6.12.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
@@ -82,6 +81,10 @@ rm -rf $RPM_BUILD_ROOT
 %ghost %{python_sitelib}/IPython/Extensions/*.pyo
 
 %changelog
+* Fri Mar 25 2005 Shahms E. King <shahms@shahms.com> 0.6.12-1
+- Update to 0.6.12
+- Removed unused python_sitearch define
+
 * Tue Mar 01 2005 Shahms E. King <shahms@shahms.com> 0.6.11-2
 - Fix up %doc file specifications
 - Use offical .tar.gz, not upstream .src.rpm .tar.gz
