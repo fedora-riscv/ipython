@@ -2,7 +2,7 @@
 
 Name:           ipython
 Version:        0.6.12
-Release:        1
+Release:        2
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -73,14 +73,19 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/pycolor
 %dir %{python_sitelib}/IPython
 %{python_sitelib}/IPython/*.py
+%dir %{python_sitelib}/IPython/Extensions/
 %{python_sitelib}/IPython/Extensions/*.py
 %{python_sitelib}/IPython/*.pyc
 %{python_sitelib}/IPython/Extensions/*.pyc
+%dir %{python_sitelib}/IPython/UserConfig/
 %{python_sitelib}/IPython/UserConfig/*
 %ghost %{python_sitelib}/IPython/*.pyo
 %ghost %{python_sitelib}/IPython/Extensions/*.pyo
 
 %changelog
+* Fri Apr  1 2005 Michael Schwendt <mschwendt[AT]users.sf.net> 0.6.12-2
+- Include IPython Extensions and UserConfig directories.
+
 * Fri Mar 25 2005 Shahms E. King <shahms@shahms.com> 0.6.12-1
 - Update to 0.6.12
 - Removed unused python_sitearch define
