@@ -2,7 +2,7 @@
 
 Name:           ipython
 Version:        0.6.13
-Release:        1
+Release:        2
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -83,6 +83,9 @@ rm -rf $RPM_BUILD_ROOT
 %ghost %{python_sitelib}/IPython/Extensions/*.pyo
 
 %changelog
+* Wed Apr 20 2005 Shahms E. King <shahms@shahms.com> 0.6.13-2
+- Fix devel release number
+
 * Mon Apr 18 2005 Shahms E. King <shahms@shahms.com> 0.6.13-1
 - Update to new upstream version
 
