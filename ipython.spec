@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           ipython
-Version:        0.6.15
+Version:        0.7.0
 Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
@@ -83,6 +83,9 @@ rm -rf $RPM_BUILD_ROOT
 %ghost %{python_sitelib}/IPython/Extensions/*.pyo
 
 %changelog
+* Thu Jan 12 2006 Shahms E. King <shahms@shahms.com> 0.7-1
+- Update to new upstream 0.7.0
+
 * Mon Jun 13 2005 Shahms E. King <shahms@shahms.com> 0.6.15-1
 - Add dist tag
 - Update to new upstream (0.6.15)
