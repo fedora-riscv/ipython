@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           ipython
-Version:        0.7.1
+Version:        0.7.1.fix1
 Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
@@ -83,6 +83,9 @@ rm -rf $RPM_BUILD_ROOT
 %ghost %{python_sitelib}/IPython/Extensions/*.pyo
 
 %changelog
+* Mon Jan 30 2006 Shahms E. King <shahms@shahms.com> 0.7.1.fix1-1
+- New upstream 0.7.1.fix1 which fixes KeyboardInterrupt handling
+
 * Tue Jan 24 2006 Shahms E. King <shahms@shahms.com> 0.7.1-1
 - Update to new upstream 0.7.1
 
