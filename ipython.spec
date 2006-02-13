@@ -2,7 +2,7 @@
 
 Name:           ipython
 Version:        0.7.1.fix1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -83,6 +83,9 @@ rm -rf $RPM_BUILD_ROOT
 %ghost %{python_sitelib}/IPython/Extensions/*.pyo
 
 %changelog
+* Mon Feb 13 2006 Shahms E. King <shahms@shahms.com> 0.7.1.fix1-2
+- Rebuild for FC-5
+
 * Mon Jan 30 2006 Shahms E. King <shahms@shahms.com> 0.7.1.fix1-1
 - New upstream 0.7.1.fix1 which fixes KeyboardInterrupt handling
 
