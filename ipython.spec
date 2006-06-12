@@ -1,8 +1,8 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           ipython
-Version:        0.7.1.fix1
-Release:        2%{?dist}
+Version:        0.7.2
+Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -21,31 +21,20 @@ IPython provides a replacement for the interactive Python interpreter with
 extra functionality.
 
 Main features:
-
  * Comprehensive object introspection.
-
  * Input history, persistent across sessions.
-
  * Caching of output results during a session with automatically generated
    references.
-
  * Readline based name completion.
-
  * Extensible system of 'magic' commands for controlling the environment and
    performing many tasks related either to IPython or the operating system.
-
  * Configuration system with easy switching between different setups (simpler
    than changing $PYTHONSTARTUP environment variables every time).
-
  * Session logging and reloading.
-
  * Extensible syntax processing for special purpose situations.
-
  * Access to the system shell with user-extensible alias system.
-
  * Easily embeddable in other Python programs.
-
- * Integrated access to the pdb debugger and the Python profiler. 
+ * Integrated access to the pdb debugger and the Python profiler.
 
 %prep
 %setup -q
@@ -70,6 +59,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/%{name}-%{version}/
 %{_mandir}/man*/*
 %{_bindir}/ipython
+%{_bindir}/irunner
 %{_bindir}/pycolor
 %dir %{python_sitelib}/IPython
 %{python_sitelib}/IPython/*.py
@@ -83,6 +73,9 @@ rm -rf $RPM_BUILD_ROOT
 %ghost %{python_sitelib}/IPython/Extensions/*.pyo
 
 %changelog
+* Mon Jun 12 2006 Shahms E. King <shahms@shahms.com> 0.7.2
+- Update to new upstream version
+
 * Mon Feb 13 2006 Shahms E. King <shahms@shahms.com> 0.7.1.fix1-2
 - Rebuild for FC-5
 
