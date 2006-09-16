@@ -2,7 +2,7 @@
 
 Name:           ipython
 Version:        0.7.2
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -73,6 +73,9 @@ rm -rf $RPM_BUILD_ROOT
 %{python_sitelib}/IPython/Extensions/*.pyo
 
 %changelog
+* Sat Sep 16 2006 Shahms E. King <shahms@shahms.com> 0.7.2-3
+- Rebuild for FC6
+
 * Fri Aug 11 2006 Shahms E. King <shahms@shahms.com> 0.7.2-2
 - Include, don't ghost .pyo files per new guidelines
 
