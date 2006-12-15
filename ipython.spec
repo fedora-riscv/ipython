@@ -2,7 +2,7 @@
 
 Name:           ipython
 Version:        0.7.2
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -73,6 +73,9 @@ rm -rf $RPM_BUILD_ROOT
 %{python_sitelib}/IPython/Extensions/*.pyo
 
 %changelog
+* Thu Dec 14 2006 Jason L Tibbitts III <tibbs@math.uh.edu> - 0.7.2-4
+- Rebuild for new Python
+
 * Sat Sep 16 2006 Shahms E. King <shahms@shahms.com> 0.7.2-3
 - Rebuild for FC6
 
@@ -112,7 +115,7 @@ rm -rf $RPM_BUILD_ROOT
 - Removed unused python_sitearch define
 
 * Tue Mar 01 2005 Shahms E. King <shahms@shahms.com> 0.6.11-2
-- Fix up %doc file specifications
+- Fix up %%doc file specifications
 - Use offical .tar.gz, not upstream .src.rpm .tar.gz
 
 * Tue Mar 01 2005 Shahms E. King <shahms@shahms.com> 0.6.11-1
