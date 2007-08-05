@@ -2,7 +2,7 @@
 
 Name:           ipython
 Version:        0.8.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -13,7 +13,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
 BuildRequires:  python-devel
-Requires:       python-abi = %(%{__python} -c "import sys ; print sys.version[:3]")
+
 
 %description
 
@@ -77,6 +77,9 @@ rm -rf $RPM_BUILD_ROOT
 %{python_sitelib}/IPython/external/*.pyo
 
 %changelog
+* Sun Aug 05 2007 James Bowes <jbowes@redhat.com> - 0.8.1-2
+- Remove explicit requires on python-abi.
+
 * Sun Aug 05 2007 James Bowes <jbowes@redhat.com> - 0.8.1-1
 - Update to 0.8.1
 
