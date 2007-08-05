@@ -1,8 +1,8 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           ipython
-Version:        0.7.2
-Release:        4%{?dist}
+Version:        0.8.1
+Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -71,8 +71,15 @@ rm -rf $RPM_BUILD_ROOT
 %{python_sitelib}/IPython/UserConfig/*
 %{python_sitelib}/IPython/*.pyo
 %{python_sitelib}/IPython/Extensions/*.pyo
+%dir %{python_sitelib}/IPython/external
+%{python_sitelib}/IPython/external/*.py
+%{python_sitelib}/IPython/external/*.pyc
+%{python_sitelib}/IPython/external/*.pyo
 
 %changelog
+* Sun Aug 05 2007 James Bowes <jbowes@redhat.com> - 0.8.1-1
+- Update to 0.8.1
+
 * Thu Dec 14 2006 Jason L Tibbitts III <tibbs@math.uh.edu> - 0.7.2-4
 - Rebuild for new Python
 
