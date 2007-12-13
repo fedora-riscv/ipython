@@ -2,7 +2,7 @@
 
 Name:           ipython
 Version:        0.8.2
-Release:        2%{?dist}
+Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
