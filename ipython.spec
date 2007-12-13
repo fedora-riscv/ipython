@@ -1,8 +1,8 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           ipython
-Version:        0.8.1
-Release:        2%{?dist}
+Version:        0.8.2
+Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -77,6 +77,9 @@ rm -rf $RPM_BUILD_ROOT
 %{python_sitelib}/IPython/external/*.pyo
 
 %changelog
+* Wed Dec 12 2007 James Bowes <jbowes@redhat.com> - 0.8.2-1
+- Update to 0.8.2
+
 * Sun Aug 05 2007 James Bowes <jbowes@redhat.com> - 0.8.1-2
 - Remove explicit requires on python-abi.
 
