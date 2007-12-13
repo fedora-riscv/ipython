@@ -2,7 +2,7 @@
 
 Name:           ipython
 Version:        0.8.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -60,7 +60,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/ipython
 %{_bindir}/irunner
 %{_bindir}/pycolor
-%{python_sitelib}/IPython/*
+%{python_sitelib}/*
 
 
 %changelog
