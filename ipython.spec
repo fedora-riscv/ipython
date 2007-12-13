@@ -1,8 +1,8 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           ipython
-Version:        0.8.1
-Release:        2%{?dist}
+Version:        0.8.2
+Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -48,7 +48,6 @@ CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
 rm -rf $RPM_BUILD_ROOT
 %{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
 
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -61,22 +60,13 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/ipython
 %{_bindir}/irunner
 %{_bindir}/pycolor
-%dir %{python_sitelib}/IPython
-%{python_sitelib}/IPython/*.py
-%dir %{python_sitelib}/IPython/Extensions/
-%{python_sitelib}/IPython/Extensions/*.py
-%{python_sitelib}/IPython/*.pyc
-%{python_sitelib}/IPython/Extensions/*.pyc
-%dir %{python_sitelib}/IPython/UserConfig/
-%{python_sitelib}/IPython/UserConfig/*
-%{python_sitelib}/IPython/*.pyo
-%{python_sitelib}/IPython/Extensions/*.pyo
-%dir %{python_sitelib}/IPython/external
-%{python_sitelib}/IPython/external/*.py
-%{python_sitelib}/IPython/external/*.pyc
-%{python_sitelib}/IPython/external/*.pyo
+%{python_sitelib}/*
+
 
 %changelog
+* Wed Dec 12 2007 James Bowes <jbowes@redhat.com> - 0.8.2-1
+- Update to 0.8.2
+
 * Sun Aug 05 2007 James Bowes <jbowes@redhat.com> - 0.8.1-2
 - Remove explicit requires on python-abi.
 
