@@ -55,7 +55,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root,-)
 # ipython installs its own documentation, but we need to own the directory
-%{_datadir}/doc/%{name}-%{version}/
+%{_datadir}/doc/%{name}
 %{_mandir}/man*/*
 %{_bindir}/ipython
 %{_bindir}/irunner
