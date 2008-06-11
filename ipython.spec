@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           ipython
-Version:        0.8.3
+Version:        0.8.4
 Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
@@ -64,6 +64,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Jun 11 2008 James Bowes <jbowes@redhat.com> 0.8.4-1
+- Update to 0.8.4
+
 * Fri May 30 2008 James Bowes <jbowes@redhat.com> 0.8.3-1
 - Update to 0.8.3
 
