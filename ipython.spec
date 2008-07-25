@@ -1,8 +1,8 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           ipython
-Version:        0.7.2
-Release:        3%{?dist}
+Version:        0.8.4
+Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -13,7 +13,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
 BuildRequires:  python-devel
-Requires:       python-abi = %(%{__python} -c "import sys ; print sys.version[:3]")
+
 
 %description
 
@@ -48,7 +48,6 @@ CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
 rm -rf $RPM_BUILD_ROOT
 %{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
 
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -56,23 +55,33 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root,-)
 # ipython installs its own documentation, but we need to own the directory
-%{_datadir}/doc/%{name}-%{version}/
+%{_datadir}/doc/%{name}
 %{_mandir}/man*/*
 %{_bindir}/ipython
 %{_bindir}/irunner
 %{_bindir}/pycolor
-%dir %{python_sitelib}/IPython
-%{python_sitelib}/IPython/*.py
-%dir %{python_sitelib}/IPython/Extensions/
-%{python_sitelib}/IPython/Extensions/*.py
-%{python_sitelib}/IPython/*.pyc
-%{python_sitelib}/IPython/Extensions/*.pyc
-%dir %{python_sitelib}/IPython/UserConfig/
-%{python_sitelib}/IPython/UserConfig/*
-%{python_sitelib}/IPython/*.pyo
-%{python_sitelib}/IPython/Extensions/*.pyo
+%{python_sitelib}/*
+
 
 %changelog
+* Wed Jun 11 2008 James Bowes <jbowes@redhat.com> 0.8.4-1
+- Update to 0.8.4
+
+* Fri May 30 2008 James Bowes <jbowes@redhat.com> 0.8.3-1
+- Update to 0.8.3
+
+* Wed Dec 12 2007 James Bowes <jbowes@redhat.com> - 0.8.2-1
+- Update to 0.8.2
+
+* Sun Aug 05 2007 James Bowes <jbowes@redhat.com> - 0.8.1-2
+- Remove explicit requires on python-abi.
+
+* Sun Aug 05 2007 James Bowes <jbowes@redhat.com> - 0.8.1-1
+- Update to 0.8.1
+
+* Thu Dec 14 2006 Jason L Tibbitts III <tibbs@math.uh.edu> - 0.7.2-4
+- Rebuild for new Python
+
 * Sat Sep 16 2006 Shahms E. King <shahms@shahms.com> 0.7.2-3
 - Rebuild for FC6
 
@@ -112,7 +121,7 @@ rm -rf $RPM_BUILD_ROOT
 - Removed unused python_sitearch define
 
 * Tue Mar 01 2005 Shahms E. King <shahms@shahms.com> 0.6.11-2
-- Fix up %doc file specifications
+- Fix up %%doc file specifications
 - Use offical .tar.gz, not upstream .src.rpm .tar.gz
 
 * Tue Mar 01 2005 Shahms E. King <shahms@shahms.com> 0.6.11-1
