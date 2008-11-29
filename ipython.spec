@@ -2,7 +2,7 @@
 
 Name:           ipython
 Version:        0.8.4
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -64,6 +64,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Nov 29 2008 Ignacio Vazquez-Abrams <ivazqueznet+rpm@gmail.com> - 0.8.4-2
+- Rebuild for Python 2.6
+
 * Wed Jun 11 2008 James Bowes <jbowes@redhat.com> 0.8.4-1
 - Update to 0.8.4
 
