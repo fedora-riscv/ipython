@@ -1,8 +1,8 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           ipython
-Version:        0.8.4
-Release:        2%{?dist}
+Version:        0.9.1
+Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -60,10 +60,19 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/ipython
 %{_bindir}/irunner
 %{_bindir}/pycolor
+%{_bindir}/ipython-wx
+%{_bindir}/ipythonx
+%{_bindir}/ipcluster
+%{_bindir}/ipcontroller
+%{_bindir}/ipengine
+%{_bindir}/iptest
 %{python_sitelib}/*
 
 
 %changelog
+* Tue Dec 02 2008 James Bowes <jbowes@redhat.com> 0.9.1-1
+- Update to 0.9.1, specfile changes courtesy Greg Swift
+
 * Sat Nov 29 2008 Ignacio Vazquez-Abrams <ivazqueznet+rpm@gmail.com> - 0.8.4-2
 - Rebuild for Python 2.6
 
