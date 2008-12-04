@@ -2,7 +2,7 @@
 
 Name:           ipython
 Version:        0.9.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -70,6 +70,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Dec 04 2008 Ignacio Vazquez-Abrams <ivazqueznet+rpm@gmail.com> - 0.9.1-2
+- Rebuild for Python 2.6
+
 * Tue Dec 02 2008 James Bowes <jbowes@redhat.com> 0.9.1-1
 - Update to 0.9.1, specfile changes courtesy Greg Swift
 
