@@ -2,7 +2,7 @@
 
 Name:           ipython
 Version:        0.9.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -70,6 +70,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Feb 25 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.9.1-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_11_Mass_Rebuild
+
 * Thu Dec 04 2008 Ignacio Vazquez-Abrams <ivazqueznet+rpm@gmail.com> - 0.9.1-2
 - Rebuild for Python 2.6
 
