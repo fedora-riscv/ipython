@@ -3,7 +3,7 @@
 %endif
 
 Name:           ipython
-Version:        0.9
+Version:        0.9.1
 Release:        4%{?dist}
 Summary:        An enhanced interactive Python shell
 
