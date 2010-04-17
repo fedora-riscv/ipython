@@ -96,10 +96,7 @@ rm -rf %{buildroot}
 %{_bindir}/ipcontroller
 %{_bindir}/ipengine
 %{_mandir}/man*/ipython.*
-%{_mandir}/man*/ipengine*
-%{_mandir}/man*/irunner*
 %{_mandir}/man*/pycolor*
-%{_mandir}/man*/ipc*
 %dir %{python_sitelib}/IPython
 %{python_sitelib}/IPython/UserConfig
 %dir %{python_sitelib}/IPython/config
@@ -108,7 +105,7 @@ rm -rf %{buildroot}
 %{python_sitelib}/IPython/external
 %{python_sitelib}/IPython/*.py*
 %dir %{python_sitelib}/IPython/frontend
-%{python_sitelib}/IPython/frontend/process
+%{python_sitelib}/IPython/frontend/_process
 %{python_sitelib}/IPython/frontend/*.py*
 %dir %{python_sitelib}/IPython/frontend/cocoa
 %{python_sitelib}/IPython/frontend/cocoa/*.py*
@@ -123,6 +120,7 @@ rm -rf %{buildroot}
 %{python_sitelib}/IPython/kernel/core/*.py*
 %dir %{python_sitelib}/IPython/testing
 %{python_sitelib}/IPython/testing/*.py*
+%{python_sitelib}/IPython/testing/notes.txt
 %{python_sitelib}/IPython/testing/plugin
 %{python_sitelib}/ipython-%{version}-py?.?.egg-info
 %exclude %{python_sitelib}/IPython/gui
@@ -145,8 +143,6 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{_bindir}/ipython-wx
 %{_bindir}/ipythonx
-%{_mandir}/man*/ipython-wx*
-%{_mandir}/man*/ipythonx*
 %{python_sitelib}/IPython/gui
 %{python_sitelib}/IPython/frontend/wx
 
