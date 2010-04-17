@@ -3,8 +3,8 @@
 %endif
 
 Name:           ipython
-Version:        0.10
-Release:        2%{?dist}
+Version:        0.9
+Release:        4%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -153,7 +153,7 @@ rm -rf %{buildroot}
 
 
 %changelog
-* Tue Apr 13 2010 Thomas Spura <tomspur@fedoraproject.org> - 0.10-2
+* Tue Apr 13 2010 Thomas Spura <tomspur@fedoraproject.org> - 0.9.1-4
 - move docs into a subpackage
 - subpackage wxPython
 - subpackage tests
@@ -161,10 +161,6 @@ rm -rf %{buildroot}
 - make %%{files} more explicit
 - add some missing R (fixes #529185, #515570)
 
-* Tue Sep 22 2009 James Bowes <jbowes@redhat.com> - 0.10-1
-- Update to 0.10
-
-* Fri Jul 24 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.9.1-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
 
 * Wed Feb 25 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.9.1-3
