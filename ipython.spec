@@ -4,20 +4,32 @@
 
 Name:           ipython
 Version:        0.10
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
-License:        BSD
+# See bug #603178 for a quick overview for the choice of licenses
+# most files are under BSD and just a few under Python or MIT
+# There are some extensions released under GPLv2+
+License:        (BSD and MIT and Python) and GPLv2+
 URL:            http://ipython.scipy.org/
 Source0:        http://ipython.scipy.org/dist/%{name}-%{version}.tar.gz
+# move itpl.py to external - already done in upstream git
+Patch0:         %{name}-itpl-external.patch
+# unbundle all current libraries, a similar patch submitted upstream
+Patch1:         %{name}-unbundle-external-module.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
 BuildRequires:  python-devel
+BuildRequires:  python-simplegeneric
 Requires:       python-foolscap
 Requires:       python-twisted-core
 Requires:       python-zope-interface
+
+#bundled libs
+Requires:       python-configobj
+Requires:       python-simplegeneric
 
 
 %description
@@ -60,6 +72,7 @@ This package contains the documentation of %{name}.
 Summary:        Gui applications from %{name}
 Group:          Applications/Editors
 Requires:       %{name} = %{version}-%{release}
+Requires:       wxPython
 %description gui
 This package contains the gui of %{name}, which requires wxPython.
 
@@ -67,6 +80,32 @@ This package contains the gui of %{name}, which requires wxPython.
 
 %prep
 %setup -q
+%patch0 -p1
+%patch1 -p1
+
+# delete bundling libs
+pushd IPython/external
+# python's own modules
+rm argparse/_argparse.py
+rm configobj/_configobj.py
+
+# other packages exist in fedora
+rm simplegeneric/_simplegeneric.py
+rm validate/_validate.py
+
+# probably from here http://code.activestate.com/recipes/163604-guid/
+# python has a own uuid module
+#rm guid/_guid.py
+
+# rejected in a PEP, probably no upstream
+#rm Itpl/_Itpl.py
+
+# available at pypi
+#rm mglob/_mglob.py
+#rm path/_path.py
+#rm pretty/_pretty.py
+
+popd
 
 
 %build
@@ -84,6 +123,11 @@ mv %{buildroot}%{_datadir}/doc/%{name} \
 
 %clean
 rm -rf %{buildroot}
+
+
+#check
+# testing seems to be broken on upstreams side
+#PYTHONPATH=%{buildroot}%{python_sitelib} %{buildroot}%{_bindir}/iptest
 
 
 %files
@@ -153,6 +197,11 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Fri Jun 11 2010 Thomas Spura <tomspur@fedoraproject.org> - 0.10-3
+- fix license tag (#603178)
+- add requires on wxpython to gui subpackage (#515570)
+- start unbundling the libraries - more to come (#603937)
+
 * Tue Apr 13 2010 Thomas Spura <tomspur@fedoraproject.org> - 0.10-2
 - move docs into a subpackage
 - subpackage wxPython
