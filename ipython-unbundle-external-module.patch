@@ -2223,7 +2223,7 @@ Index: ipython-0.10/IPython/external/argparse/__init__.py
 ===================================================================
 --- /dev/null
 +++ ipython-0.10/IPython/external/argparse/__init__.py
-@@ -0,0 +1,10 @@
+@@ -0,0 +1,11 @@
 +try:
 +    import argparse
 +    # Workaround an argparse bug
@@ -2232,6 +2232,7 @@ Index: ipython-0.10/IPython/external/argparse/__init__.py
 +        argparse.__all__ = list(itertools.chain( [i for i in argparse.__all__
 +            if i != 'RawTextHelpFormatterArgumentDefaultsHelpFormatter'],
 +            ['RawTextHelpFormatter', 'ArgumentDefaultsHelpFormatter']))
++    from argparse import *
 +except ImportError:
 +    from _argparse import *
 Index: ipython-0.10/IPython/external/argparse.py
@@ -4581,7 +4582,7 @@ Index: ipython-0.10/IPython/external/configobj/_configobj.py
 +
 +__version__ = '4.5.2'
 +
-+__revision__ = '$Id: ipython-unbundle-external-module.patch,v 1.1 2010/06/19 20:04:40 tomspur Exp $'
++__revision__ = '$Id: ipython-unbundle-external-module.patch,v 1.2 2010/06/21 18:42:57 toshio Exp $'
 +
 +__docformat__ = "restructuredtext en"
 +
@@ -7096,7 +7097,7 @@ Index: ipython-0.10/IPython/external/configobj.py
 -
 -__version__ = '4.5.2'
 -
--__revision__ = '$Id: ipython-unbundle-external-module.patch,v 1.1 2010/06/19 20:04:40 tomspur Exp $'
+-__revision__ = '$Id: ipython-unbundle-external-module.patch,v 1.2 2010/06/21 18:42:57 toshio Exp $'
 -
 -__docformat__ = "restructuredtext en"
 -
@@ -14726,7 +14727,7 @@ Index: ipython-0.10/IPython/external/validate.py
 -
 -__version__ = '0.3.2'
 -
--__revision__ = '$Id: ipython-unbundle-external-module.patch,v 1.1 2010/06/19 20:04:40 tomspur Exp $'
+-__revision__ = '$Id: ipython-unbundle-external-module.patch,v 1.2 2010/06/21 18:42:57 toshio Exp $'
 -
 -__all__ = (
 -    '__version__',
@@ -16145,7 +16146,7 @@ Index: ipython-0.10/IPython/external/validate/_validate.py
 +
 +__version__ = '0.3.2'
 +
-+__revision__ = '$Id: ipython-unbundle-external-module.patch,v 1.1 2010/06/19 20:04:40 tomspur Exp $'
++__revision__ = '$Id: ipython-unbundle-external-module.patch,v 1.2 2010/06/21 18:42:57 toshio Exp $'
 +
 +__all__ = (
 +    '__version__',
