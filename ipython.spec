@@ -4,7 +4,7 @@
 
 Name:           ipython
 Version:        0.10
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -197,6 +197,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Mon Jun 21 2010 Toshio Kuratomi <toshio@fedoraproject.org> - 0.10-4
+- Update patch for import in argparse
+
 * Fri Jun 11 2010 Thomas Spura <tomspur@fedoraproject.org> - 0.10-3
 - fix license tag (#603178)
 - add requires on wxpython to gui subpackage (#515570)

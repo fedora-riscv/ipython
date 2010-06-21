@@ -2223,7 +2223,7 @@ Index: ipython-0.10/IPython/external/argparse/__init__.py
 ===================================================================
 --- /dev/null
 +++ ipython-0.10/IPython/external/argparse/__init__.py
-@@ -0,0 +1,10 @@
+@@ -0,0 +1,11 @@
 +try:
 +    import argparse
 +    # Workaround an argparse bug
@@ -2232,6 +2232,7 @@ Index: ipython-0.10/IPython/external/argparse/__init__.py
 +        argparse.__all__ = list(itertools.chain( [i for i in argparse.__all__
 +            if i != 'RawTextHelpFormatterArgumentDefaultsHelpFormatter'],
 +            ['RawTextHelpFormatter', 'ArgumentDefaultsHelpFormatter']))
++    from argparse import *
 +except ImportError:
 +    from _argparse import *
 Index: ipython-0.10/IPython/external/argparse.py
