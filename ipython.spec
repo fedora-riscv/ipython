@@ -4,7 +4,7 @@
 
 Name:           ipython
 Version:        0.10
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -29,6 +29,8 @@ Requires:       python-zope-interface
 
 #bundled libs
 Requires:       python-configobj
+Requires:       python-mglob
+Requires:       python-pretty
 Requires:       python-simplegeneric
 
 
@@ -87,9 +89,11 @@ This package contains the gui of %{name}, which requires wxPython.
 pushd IPython/external
 # python's own modules
 rm argparse/_argparse.py
-rm configobj/_configobj.py
 
 # other packages exist in fedora
+rm configobj/_configobj.py
+rm mglob/_mglob.py
+rm pretty/_pretty.py
 rm simplegeneric/_simplegeneric.py
 rm validate/_validate.py
 
@@ -101,9 +105,7 @@ rm validate/_validate.py
 #rm Itpl/_Itpl.py
 
 # available at pypi
-#rm mglob/_mglob.py
 #rm path/_path.py
-#rm pretty/_pretty.py
 
 popd
 
@@ -197,6 +199,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Tue Jun 22 2010 Thomas Spura <tomspur@fedoraproject.org> - 0.10-5
+- two more unbundled libraries in fedora
+
 * Mon Jun 21 2010 Toshio Kuratomi <toshio@fedoraproject.org> - 0.10-4
 - Update patch for import in argparse
 
