@@ -4,7 +4,7 @@
 
 Name:           ipython
 Version:        0.10
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -28,10 +28,15 @@ Requires:       python-twisted-core
 Requires:       python-zope-interface
 
 #bundled libs
+Requires:       pexpect
 Requires:       python-configobj
 Requires:       python-mglob
 Requires:       python-pretty
 Requires:       python-simplegeneric
+
+# will be in python 3.2
+Requires:       python-argparse
+
 
 
 %description
@@ -199,6 +204,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Mon Jul 19 2010 Thomas Spura <tomspur@fedoraproject.org> - 0.10-6
+- add missing dependencies: pexpect and python-argparse
+
 * Tue Jun 22 2010 Thomas Spura <tomspur@fedoraproject.org> - 0.10-5
 - two more unbundled libraries in fedora
 
