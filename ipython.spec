@@ -4,7 +4,7 @@
 
 Name:           ipython
 Version:        0.10
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -204,6 +204,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Wed Jul 21 2010 David Malcolm <dmalcolm@redhat.com> - 0.10-7
+- Rebuilt for https://fedoraproject.org/wiki/Features/Python_2.7/MassRebuild
+
 * Mon Jul 19 2010 Thomas Spura <tomspur@fedoraproject.org> - 0.10-6
 - add missing dependencies: pexpect and python-argparse
 
