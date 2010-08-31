@@ -1,0 +1,32 @@
+Modified patch from upstream (PyColorize.py was moved):
+commit 3323d576db9f982be1ef6d66f7b9e0d0d6fef7db
+Author: Thomas Spura <tomspur@fedoraproject.org>
+Date:   Tue Aug 31 14:12:37 2010 +0200
+
+    pycolor: Wrong filename given -> print error
+    
+    When a user wanted to colorize a file, which doesn't exist, IPython
+    would crash. This commit changes this, so the user gets a usefull
+    message about the wrong filename.
+    
+    This fixes RH bug #628742.
+    
+    Signed-off-by: Thomas Spura <tomspur@fedoraproject.org>
+
+diff --git a/IPython/utils/PyColorize.py b/IPython/utils/PyColorize.py
+index 613ae19..1bd9919 100644
+--- a/IPython/PyColorize.py
++++ b/IPython/PyColorize.py
+@@ -277,7 +277,11 @@ If no filename is given, or if filename is -, read standard input."""
+     if fname == '-':
+         stream = sys.stdin
+     else:
+-        stream = file(fname)
++        try:
++            stream = file(fname)
++        except IOError,msg:
++            print msg
++            return
+ 
+     parser = Parser()
+ 
