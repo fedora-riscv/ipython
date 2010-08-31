@@ -4,7 +4,7 @@
 
 Name:           ipython
 Version:        0.10
-Release:        6%{?dist}
+Release:        8%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -18,6 +18,8 @@ Source0:        http://ipython.scipy.org/dist/%{name}-%{version}.tar.gz
 Patch0:         %{name}-itpl-external.patch
 # unbundle all current libraries, a similar patch submitted upstream
 Patch1:         %{name}-unbundle-external-module.patch
+# fix for #628742, published on github for inclusion into upstream
+Patch2:         ipython-0.10-pycolor-wrong-filename.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
@@ -89,6 +91,7 @@ This package contains the gui of %{name}, which requires wxPython.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 # delete bundling libs
 pushd IPython/external
@@ -204,6 +207,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Tue Aug 31 2010 Thomas Spura <tomspur@fedoraproject.org> - 0.10-8
+- pycolor: wrong filename -> no crash (#628742)
+
 * Mon Jul 19 2010 Thomas Spura <tomspur@fedoraproject.org> - 0.10-6
 - add missing dependencies: pexpect and python-argparse
 
