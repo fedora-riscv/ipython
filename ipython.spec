@@ -3,8 +3,8 @@
 %endif
 
 Name:           ipython
-Version:        0.10
-Release:        8%{?dist}
+Version:        0.10.1
+Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -89,7 +89,29 @@ This package contains the gui of %{name}, which requires wxPython.
 
 %prep
 %setup -q
+
 %patch0 -p1
+# help with unbundling (don't use diffs to move files around)
+pushd IPython/external
+mkdir argparse
+mv argparse.py argparse/_argparse.py
+mkdir configobj
+mv configobj.py configobj/_configobj.py
+mkdir guid
+mv guid.py guid/_guid.py
+mkdir Itpl
+mv Itpl.py Itpl/_Itpl.py
+mkdir mglob
+mv mglob.py mglob/_mglob.py
+mkdir path
+mv path.py path/_path.py
+mkdir pretty
+mv pretty.py pretty/_pretty.py
+mkdir simplegeneric
+mv simplegeneric.py simplegeneric/_simplegeneric.py
+mkdir validate
+mv validate.py validate/_validate.py
+popd
 %patch1 -p1
 %patch2 -p1
 
@@ -207,6 +229,10 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Wed Oct 13 2010 Thomas Spura <tomspur@fedoraproject.org> - 0.10.1-1
+- unbundle a bit differently
+- update to new version
+
 * Tue Aug 31 2010 Thomas Spura <tomspur@fedoraproject.org> - 0.10-8
 - pycolor: wrong filename -> no crash (#628742)
 
