@@ -4,7 +4,7 @@
 
 Name:           ipython
 Version:        0.10.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -36,8 +36,10 @@ Requires:       python-mglob
 Requires:       python-pretty
 Requires:       python-simplegeneric
 
-# will be in python 3.2
+%if ! (0%{?fedora} > 13)
+# argparse is in python 2.7 and 3.2
 Requires:       python-argparse
+%endif
 
 
 
@@ -229,6 +231,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Mon Oct 18 2010 Thomas Spura <tomspur@fedoraproject.org> - 0.10.1-2
+- argparse is in python 2.7 and 3.2
+
 * Wed Oct 13 2010 Thomas Spura <tomspur@fedoraproject.org> - 0.10.1-1
 - unbundle a bit differently
 - update to new version
