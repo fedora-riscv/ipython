@@ -4,7 +4,7 @@
 
 Name:           ipython
 Version:        0.10.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -18,8 +18,12 @@ Source0:        http://ipython.scipy.org/dist/%{name}-%{version}.tar.gz
 Patch0:         %{name}-itpl-external.patch
 # unbundle all current libraries, a similar patch submitted upstream
 Patch1:         %{name}-unbundle-external-module.patch
-# fix for #628742, published on github for inclusion into upstream
+# fix for #628742, will be in 0.11
 Patch2:         ipython-0.10-pycolor-wrong-filename.patch
+
+# fix for #646079, will be in 0.11
+Patch3:         ipython-0.10-no-gtk.patch
+
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
@@ -116,6 +120,7 @@ mv validate.py validate/_validate.py
 popd
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 # delete bundling libs
 pushd IPython/external
@@ -231,6 +236,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Mon Nov 15 2010 Thomas Spura <tomspur@fedoraproject.org> - 0.10.1-3
+- add fix for #646079 and use upstream fix for #628742
+
 * Mon Oct 18 2010 Thomas Spura <tomspur@fedoraproject.org> - 0.10.1-2
 - argparse is in python 2.7 and 3.2
 

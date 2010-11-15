@@ -1,0 +1,37 @@
+commit 8161523536289eaed01ca42707f6785f59343cd7
+Author: Fernando Perez <Fernando.Perez@berkeley.edu>
+Date:   Tue Oct 26 14:32:10 2010 -0700
+
+    Do not require GTK to be either present or usable to start.
+    
+    Before, we only checked that we could import GTK, but in a linux
+    console, it's possible to import it while not being able to start it
+    (no X11 present).
+    
+    This should resolve https://bugzilla.redhat.com/show_bug.cgi?id=646079
+    Thanks to Tom Spura for reporting it.
+
+diff --git a/IPython/Shell.py b/IPython/Shell.py
+index 9481099..38006d7 100644
+--- a/IPython/Shell.py
++++ b/IPython/Shell.py
+@@ -1152,7 +1152,8 @@ class IPShellMatplotlibQt4(IPShellQt4):
+ def check_gtk(mode):
+     try:
+         import gtk
+-    except ImportError:
++    except (ImportError, RuntimeError):
++        # GTK not present, or can't be started (no X11, happens in console)
+         return mode
+     if hasattr(gtk,'set_interactive'):
+         gtk.set_interactive(False)
+@@ -1243,7 +1244,8 @@ def _select_shell(argv):
+             th_mode = 'tkthread'
+ 
+         # New versions of pygtk don't need the brittle threaded support.
+-        th_mode = check_gtk(th_mode)
++        if th_mode == 'gthread':
++            th_mode = check_gtk(th_mode)
+         return th_shell[th_mode]
+ 
+ 

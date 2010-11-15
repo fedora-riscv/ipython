@@ -1,7 +1,7 @@
 Modified patch from upstream (PyColorize.py was moved):
-commit 3323d576db9f982be1ef6d66f7b9e0d0d6fef7db
+commit e5effe0eb43d57e3a34a9dd07a0c03e3a178b2f2
 Author: Thomas Spura <tomspur@fedoraproject.org>
-Date:   Tue Aug 31 14:12:37 2010 +0200
+Date:   Tue Nov 2 10:19:58 2010 +0100
 
     pycolor: Wrong filename given -> print error
     
@@ -14,7 +14,7 @@ Date:   Tue Aug 31 14:12:37 2010 +0200
     Signed-off-by: Thomas Spura <tomspur@fedoraproject.org>
 
 diff --git a/IPython/utils/PyColorize.py b/IPython/utils/PyColorize.py
-index 613ae19..1bd9919 100644
+index 613ae19..ddf3f7a 100644
 --- a/IPython/PyColorize.py
 +++ b/IPython/PyColorize.py
 @@ -277,7 +277,11 @@ If no filename is given, or if filename is -, read standard input."""
@@ -25,8 +25,8 @@ index 613ae19..1bd9919 100644
 +        try:
 +            stream = file(fname)
 +        except IOError,msg:
-+            print msg
-+            return
++            print >> sys.stderr, msg
++            sys.exit(1)
  
      parser = Parser()
  
