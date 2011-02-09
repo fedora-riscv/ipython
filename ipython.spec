@@ -4,7 +4,7 @@
 
 Name:           ipython
 Version:        0.10.1
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -236,6 +236,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Wed Feb 09 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.10.1-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
+
 * Mon Nov 15 2010 Thomas Spura <tomspur@fedoraproject.org> - 0.10.1-3
 - add fix for #646079 and use upstream fix for #628742
 
