@@ -25,6 +25,7 @@ BuildRequires:  python-simplegeneric
 
 %if %{run_testsuite}
 # for checking/testing
+BuildRequires:  python-nose
 BuildRequires:  python-zmq
 BuildRequires:  python-zmq-tests
 BuildRequires:  pexpect
