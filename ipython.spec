@@ -2,8 +2,10 @@
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
 %endif
 
+%global run_testsuite 1
+
 Name:           ipython
-Version:        0.10.2
+Version:        0.11
 Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
@@ -12,36 +14,37 @@ Group:          Development/Libraries
 # most files are under BSD and just a few under Python or MIT
 # There are some extensions released under GPLv2+
 License:        (BSD and MIT and Python) and GPLv2+
-URL:            http://ipython.scipy.org/
-Source0:        http://ipython.scipy.org/dist/%{name}-%{version}.tar.gz
-# move itpl.py to external - already done in upstream git
-Patch0:         %{name}-itpl-external.patch
-# unbundle all current libraries, a similar patch submitted upstream
-Patch1:         %{name}-unbundle-external-module.patch
-# fix for #628742, will be in 0.11
-Patch2:         ipython-0.10-pycolor-wrong-filename.patch
+URL:            http://ipython.org/
+Source0:        http://archive.ipython.org/release/%{version}/%{name}-%{version}.tar.gz
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
 BuildRequires:  python-devel
 BuildRequires:  python-simplegeneric
-Requires:       python-foolscap
-Requires:       python-twisted-core
-Requires:       python-zope-interface
+
+%if %{run_testsuite}
+# for checking/testing
+BuildRequires:  python-zmq
+BuildRequires:  python-zmq-tests
+BuildRequires:  pexpect
+BuildRequires:  python-mglob
+BuildRequires:  python-simplegeneric
+BuildRequires:  pyparsing
+%endif
+
+Requires:       python-zmq
 
 #bundled libs
 Requires:       pexpect
-Requires:       python-configobj
 Requires:       python-mglob
-Requires:       python-pretty
 Requires:       python-simplegeneric
+Requires:       pyparsing
 
 %if ! (0%{?fedora} > 13)
 # argparse is in python 2.7 and 3.2
 Requires:       python-argparse
 %endif
-
 
 
 %description
@@ -69,6 +72,7 @@ Main features:
 Summary:        Tests for %{name}
 Group:          Documentation
 Requires:       python-nose
+Requires:       python-zmq-tests
 Requires:       %{name} = %{version}-%{release}
 %description tests
 This package contains the tests of %{name}.
@@ -80,43 +84,19 @@ Group:          Documentation
 %description doc
 This package contains the documentation of %{name}.
 
+
 %package gui
 Summary:        Gui applications from %{name}
 Group:          Applications/Editors
 Requires:       %{name} = %{version}-%{release}
-Requires:       wxPython
+Requires:       PyQt
 %description gui
-This package contains the gui of %{name}, which requires wxPython.
+This package contains the gui of %{name}, which requires PyQt.
 
 
 
 %prep
 %setup -q
-
-%patch0 -p1
-# help with unbundling (don't use diffs to move files around)
-pushd IPython/external
-mkdir argparse
-mv argparse.py argparse/_argparse.py
-mkdir configobj
-mv configobj.py configobj/_configobj.py
-mkdir guid
-mv guid.py guid/_guid.py
-mkdir Itpl
-mv Itpl.py Itpl/_Itpl.py
-mkdir mglob
-mv mglob.py mglob/_mglob.py
-mkdir path
-mv path.py path/_path.py
-mkdir pretty
-mv pretty.py pretty/_pretty.py
-mkdir simplegeneric
-mv simplegeneric.py simplegeneric/_simplegeneric.py
-mkdir validate
-mv validate.py validate/_validate.py
-popd
-%patch1 -p1
-%patch2 -p1
 
 # delete bundling libs
 pushd IPython/external
@@ -124,11 +104,10 @@ pushd IPython/external
 rm argparse/_argparse.py
 
 # other packages exist in fedora
-rm configobj/_configobj.py
 rm mglob/_mglob.py
-rm pretty/_pretty.py
 rm simplegeneric/_simplegeneric.py
-rm validate/_validate.py
+rm pyparsing/_pyparsing.py
+rm pexpect/_pexpect.py
 
 # probably from here http://code.activestate.com/recipes/163604-guid/
 # python has a own uuid module
@@ -139,6 +118,8 @@ rm validate/_validate.py
 
 # available at pypi
 #rm path/_path.py
+
+# ssh modules from paramiko
 
 popd
 
@@ -160,9 +141,10 @@ mv %{buildroot}%{_datadir}/doc/%{name} \
 rm -rf %{buildroot}
 
 
-#check
-# testing seems to be broken on upstreams side
-#PYTHONPATH=%{buildroot}%{python_sitelib} %{buildroot}%{_bindir}/iptest
+%if %{run_testsuite}
+%check
+PYTHONPATH=%{buildroot}%{python_sitelib} %{buildroot}%{_bindir}/iptest || echo "some tests failed, continue..."
+%endif
 
 
 %files
@@ -174,43 +156,48 @@ rm -rf %{buildroot}
 %{_bindir}/ipcluster
 %{_bindir}/ipcontroller
 %{_bindir}/ipengine
+%{_bindir}/iplogger
 %{_mandir}/man*/ipython.*
 %{_mandir}/man*/ipengine*
 %{_mandir}/man*/irunner*
 %{_mandir}/man*/pycolor*
 %{_mandir}/man*/ipc*
+%{_mandir}/man*/iplogger*
+
 %dir %{python_sitelib}/IPython
-%{python_sitelib}/IPython/UserConfig
-%dir %{python_sitelib}/IPython/config
-%{python_sitelib}/IPython/config/*.py*
-%{python_sitelib}/IPython/Extensions
 %{python_sitelib}/IPython/external
 %{python_sitelib}/IPython/*.py*
-%dir %{python_sitelib}/IPython/frontend
-%{python_sitelib}/IPython/frontend/process
-%{python_sitelib}/IPython/frontend/*.py*
-%dir %{python_sitelib}/IPython/frontend/cocoa
-%{python_sitelib}/IPython/frontend/cocoa/*.py*
-%dir %{python_sitelib}/IPython/tools
-%{python_sitelib}/IPython/tools/*.py*
 %dir %{python_sitelib}/IPython/kernel
 %{python_sitelib}/IPython/kernel/*.py*
-%{python_sitelib}/IPython/kernel/config
-%{python_sitelib}/IPython/kernel/scripts
-%dir %{python_sitelib}/IPython/kernel/core
-%{python_sitelib}/IPython/kernel/core/config
-%{python_sitelib}/IPython/kernel/core/*.py*
 %dir %{python_sitelib}/IPython/testing
 %{python_sitelib}/IPython/testing/*.py*
 %{python_sitelib}/IPython/testing/plugin
 %{python_sitelib}/ipython-%{version}-py?.?.egg-info
-%exclude %{python_sitelib}/IPython/gui
+
+%{python_sitelib}/IPython/config/
+%{python_sitelib}/IPython/core/
+%{python_sitelib}/IPython/extensions/
+%dir %{python_sitelib}/IPython/frontend/
+%{python_sitelib}/IPython/frontend/terminal/
+%{python_sitelib}/IPython/frontend/__init__.py*
+%{python_sitelib}/IPython/lib/
+%{python_sitelib}/IPython/parallel/
+%{python_sitelib}/IPython/quarantine/
+%{python_sitelib}/IPython/scripts/
+%{python_sitelib}/IPython/utils/
+%{python_sitelib}/IPython/zmq/
+%exclude %{python_sitelib}/IPython/zmq/gui/
+
+# tests go into subpackage
+%exclude %{python_sitelib}/IPython/*/tests/
+%exclude %{python_sitelib}/IPython/*/*/tests
+
+%{python_sitelib}/IPython/.git_commit_info.ini
 
 
 %files tests
 %defattr(-,root,root,-)
 %{_bindir}/iptest
-%{python_sitelib}/IPython/tests
 %{python_sitelib}/IPython/*/tests
 %{python_sitelib}/IPython/*/*/tests
 
@@ -220,18 +207,21 @@ rm -rf %{buildroot}
 # ipython installs its own documentation, but we need to own the directory
 %{_datadir}/doc/%{name}-%{version}
 
+
 %files gui
 %defattr(-,root,root,-)
-%{_bindir}/ipython-wx
-%{_bindir}/ipythonx
-%{_mandir}/man*/ipython-wx*
-%{_mandir}/man*/ipythonx*
-%{python_sitelib}/IPython/gui
-%{python_sitelib}/IPython/frontend/wx
-
+%{python_sitelib}/IPython/zmq/gui
+%{python_sitelib}/IPython/frontend/qt/
 
 
 %changelog
+* Mon Jul  4 2011 Thomas Spura <tomspur@fedoraproject.org> - 0.11-1
+- update to 0.11
+- patches included upstream
+- ipython changed bundled pretty, so redistributes it in lib now
+- run testsuite
+- new upstream url
+
 * Sat Apr  9 2011 Thomas Spura <tomspur@fedoraproject.org> - 0.10.2-1
 - update to new version
 - patch3 is included upstream
