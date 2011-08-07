@@ -26,12 +26,18 @@ BuildRequires:  python-simplegeneric
 %if %{run_testsuite}
 # for checking/testing
 BuildRequires:  python-nose
-BuildRequires:  python-zmq
-BuildRequires:  python-zmq-tests
-BuildRequires:  pexpect
 BuildRequires:  python-mglob
 BuildRequires:  python-simplegeneric
 BuildRequires:  pyparsing
+# "Tools and libraries available at test time:"
+BuildRequires:  python-zmq
+BuildRequires:  python-zmq-tests
+BuildRequires:  pexpect
+BuildRequires:  python-matplotlib
+BuildRequires:  pymongo
+BuildRequires:  PyQt4
+# for frontend
+BuildRequires:  python-pygments
 %endif
 
 Requires:       python-zmq
@@ -139,6 +145,7 @@ rm -rf %{buildroot}
 
 %if %{run_testsuite}
 %check
+# TODO no ipython in path in koji
 PYTHONPATH=%{buildroot}%{python_sitelib} %{buildroot}%{_bindir}/iptest || echo "some tests failed, continue..."
 %endif
 
