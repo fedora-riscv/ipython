@@ -6,7 +6,7 @@
 
 Name:           ipython
 Version:        0.11
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -85,7 +85,7 @@ This package contains the documentation of %{name}.
 Summary:        Gui applications from %{name}
 Group:          Applications/Editors
 Requires:       %{name} = %{version}-%{release}
-Requires:       PyQt
+Requires:       PyQt4
 %description gui
 This package contains the gui of %{name}, which requires PyQt.
 
@@ -211,6 +211,9 @@ PYTHONPATH=%{buildroot}%{python_sitelib} %{buildroot}%{_bindir}/iptest || echo "
 
 
 %changelog
+* Tue Sep 20 2011 Michel Salim <salimma@fedoraproject.org> - 0.11-2
+- make -gui subpackage depend on PyQt4, not PyQt
+
 * Mon Jul  4 2011 Thomas Spura <tomspur@fedoraproject.org> - 0.11-1
 - update to 0.11
 - patches included upstream
