@@ -6,7 +6,7 @@
 
 Name:           ipython
 Version:        0.11
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -41,6 +41,9 @@ BuildRequires:  python-pygments
 %endif
 
 Requires:       python-zmq
+
+#IPython/lib/latextools.py and others in /lib/
+Requires:       python-matplotlib
 
 #bundled libs
 Requires:       pexpect
@@ -92,6 +95,7 @@ Summary:        Gui applications from %{name}
 Group:          Applications/Editors
 Requires:       %{name} = %{version}-%{release}
 Requires:       PyQt4
+Requires:       python-pygments
 %description gui
 This package contains the gui of %{name}, which requires PyQt.
 
@@ -218,6 +222,9 @@ PYTHONPATH=%{buildroot}%{python_sitelib} %{buildroot}%{_bindir}/iptest || echo "
 
 
 %changelog
+* Sun Oct 23 2011 Thomas Spura <tomspur@fedoraproject.org> - 0.11-3
+- add more missing R (matplotlib and pygments) (#748141)
+
 * Tue Sep 20 2011 Michel Salim <salimma@fedoraproject.org> - 0.11-2
 - make -gui subpackage depend on PyQt4, not PyQt
 
