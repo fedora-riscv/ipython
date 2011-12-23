@@ -2,11 +2,21 @@
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
 %endif
 
-%global run_testsuite 1
+%bcond_without run_testsuite
+
+# where are all the python3 dependencies
+%if 0%{?fedora} > 15
+%global with_python3 0
+%endif
+
+# where are all the pypy dependencies
+%if 0%{?fedora} > 15
+%global with_pypy 0
+%endif
 
 Name:           ipython
-Version:        0.11
-Release:        3%{?dist}
+Version:        0.12
+Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -23,7 +33,7 @@ BuildArch:      noarch
 BuildRequires:  python-devel
 BuildRequires:  python-simplegeneric
 
-%if %{run_testsuite}
+%if %{with run_testsuite}
 # for checking/testing
 BuildRequires:  python-nose
 BuildRequires:  python-mglob
@@ -50,6 +60,26 @@ Requires:       pexpect
 Requires:       python-mglob
 Requires:       python-simplegeneric
 Requires:       pyparsing
+
+# add python3 packages
+%if 0%{?with_python3}
+# for checking/testing
+BuildRequires:  python3-nose
+BuildRequires:  python3-mglob
+BuildRequires:  python3-simplegeneric
+BuildRequires:  pyparsing
+# "Tools and libraries available at test time:"
+BuildRequires:  python3-zmq
+BuildRequires:  python3-zmq-tests
+BuildRequires:  pexpect
+BuildRequires:  python3-matplotlib
+BuildRequires:  pymongo
+BuildRequires:  PyQt4
+# for frontend
+BuildRequires:  python3-pygments
+
+Requires:       python3-zmq
+%endif
 
 
 %description
@@ -109,6 +139,9 @@ pushd IPython/external
 # python's own modules
 rm argparse/_argparse.py
 
+# use decorators of numpy
+rm decorators/_decorators.py
+
 # other packages exist in fedora
 rm mglob/_mglob.py
 rm simplegeneric/_simplegeneric.py
@@ -117,7 +150,8 @@ rm pexpect/_pexpect.py
 
 # probably from here http://code.activestate.com/recipes/163604-guid/
 # python has a own uuid module
-#rm guid/_guid.py
+# this is only used in deathrow, delete without replacement!!
+rm guid/_guid.py
 
 # rejected in a PEP, probably no upstream
 #rm Itpl/_Itpl.py
@@ -147,7 +181,7 @@ mv %{buildroot}%{_datadir}/doc/%{name} \
 rm -rf %{buildroot}
 
 
-%if %{run_testsuite}
+%if %{with run_testsuite}
 %check
 # TODO no ipython in path in koji
 PYTHONPATH=%{buildroot}%{python_sitelib} %{buildroot}%{_bindir}/iptest || echo "some tests failed, continue..."
@@ -185,9 +219,12 @@ PYTHONPATH=%{buildroot}%{python_sitelib} %{buildroot}%{_bindir}/iptest || echo "
 %{python_sitelib}/IPython/core/
 %{python_sitelib}/IPython/extensions/
 %dir %{python_sitelib}/IPython/frontend/
+%{python_sitelib}/IPython/frontend/html/
 %{python_sitelib}/IPython/frontend/terminal/
 %{python_sitelib}/IPython/frontend/__init__.py*
+%{python_sitelib}/IPython/frontend/consoleapp.py*
 %{python_sitelib}/IPython/lib/
+%{python_sitelib}/IPython/nbformat/
 %{python_sitelib}/IPython/parallel/
 %{python_sitelib}/IPython/quarantine/
 %{python_sitelib}/IPython/scripts/
@@ -222,6 +259,10 @@ PYTHONPATH=%{buildroot}%{python_sitelib} %{buildroot}%{_bindir}/iptest || echo "
 
 
 %changelog
+* Mon Dec 19 2011 Thomas Spura <tomspur@fedoraproject.org> - 0.12-1
+- update to new version
+- bcond_without run_testsuite
+
 * Sun Oct 23 2011 Thomas Spura <tomspur@fedoraproject.org> - 0.11-3
 - add more missing R (matplotlib and pygments) (#748141)
 
