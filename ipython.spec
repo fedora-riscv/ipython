@@ -16,7 +16,7 @@
 
 Name:           ipython
 Version:        0.12
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -51,6 +51,8 @@ BuildRequires:  python-pygments
 %endif
 
 Requires:       python-zmq
+# for notebook
+Requires:       python-tornado
 
 #IPython/lib/latextools.py and others in /lib/
 Requires:       python-matplotlib
@@ -71,6 +73,7 @@ BuildRequires:  pyparsing
 # "Tools and libraries available at test time:"
 BuildRequires:  python3-zmq
 BuildRequires:  python3-zmq-tests
+BuildRequires:  python3-tornado
 BuildRequires:  pexpect
 BuildRequires:  python3-matplotlib
 BuildRequires:  pymongo
@@ -184,7 +187,9 @@ rm -rf %{buildroot}
 %if %{with run_testsuite}
 %check
 # TODO no ipython in path in koji
-PYTHONPATH=%{buildroot}%{python_sitelib} %{buildroot}%{_bindir}/iptest || echo "some tests failed, continue..."
+PYTHONPATH=%{buildroot}%{python_sitelib} \
+    PATH="%{buildroot}%{_bindir}:$PATH" \
+    %{buildroot}%{_bindir}/iptest || echo "some tests failed, continue..."
 %endif
 
 
@@ -259,6 +264,10 @@ PYTHONPATH=%{buildroot}%{python_sitelib} %{buildroot}%{_bindir}/iptest || echo "
 
 
 %changelog
+* Sun Jan  8 2012 Thomas Spura <tomspur@fedoraproject.org> - 0.12-2
+- add missing R tornado
+- add _bindir to PATH to more tests pass in koji
+
 * Mon Dec 19 2011 Thomas Spura <tomspur@fedoraproject.org> - 0.12-1
 - update to new version
 - bcond_without run_testsuite
