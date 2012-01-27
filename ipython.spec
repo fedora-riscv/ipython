@@ -16,7 +16,7 @@
 
 Name:           ipython
 Version:        0.12
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -26,6 +26,8 @@ Group:          Development/Libraries
 License:        (BSD and MIT and Python) and GPLv2+
 URL:            http://ipython.org/
 Source0:        http://archive.ipython.org/release/%{version}/%{name}-%{version}.tar.gz
+# applied upstream https://github.com/ipython/ipython/pull/1246
+Patch0:         ipython-skip-noX-tests.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -69,15 +71,15 @@ Requires:       pyparsing
 BuildRequires:  python3-nose
 BuildRequires:  python3-mglob
 BuildRequires:  python3-simplegeneric
-BuildRequires:  pyparsing
+BuildRequires:  python3-pyparsing
 # "Tools and libraries available at test time:"
 BuildRequires:  python3-zmq
 BuildRequires:  python3-zmq-tests
 BuildRequires:  python3-tornado
-BuildRequires:  pexpect
+BuildRequires:  python3-pexpect
 BuildRequires:  python3-matplotlib
-BuildRequires:  pymongo
-BuildRequires:  PyQt4
+BuildRequires:  python3-pymongo
+BuildRequires:  python3-PyQt4
 # for frontend
 BuildRequires:  python3-pygments
 
@@ -134,8 +136,63 @@ This package contains the gui of %{name}, which requires PyQt.
 
 
 
+%if 0%{?with_python3}
+%package -n python3-ipython
+Summary:        An enhanced interactive Python shell
+%description -n python3-ipython
+
+IPython provides a replacement for the interactive Python interpreter with
+extra functionality.
+
+Main features:
+ * Comprehensive object introspection.
+ * Input history, persistent across sessions.
+ * Caching of output results during a session with automatically generated
+   references.
+ * Readline based name completion.
+ * Extensible system of 'magic' commands for controlling the environment and
+   performing many tasks related either to IPython or the operating system.
+ * Configuration system with easy switching between different setups (simpler
+   than changing $PYTHONSTARTUP environment variables every time).
+ * Session logging and reloading.
+ * Extensible syntax processing for special purpose situations.
+ * Access to the system shell with user-extensible alias system.
+ * Easily embeddable in other Python programs.
+ * Integrated access to the pdb debugger and the Python profiler.
+
+%package -n python3-ipython-tests
+Summary:        Tests for %{name}
+Group:          Documentation
+Requires:       python3-nose
+Requires:       python3-zmq-tests
+Requires:       python3-ipython-%{name} = %{version}-%{release}
+%description -n python3-ipython-tests
+This package contains the tests of %{name}.
+You can check this way, you can test, if ipython works on your platform.
+
+%package python3-ipython-doc
+Summary:        Documentation for %{name}
+Group:          Documentation
+%description python3-ipython-doc
+This package contains the documentation of %{name}.
+
+
+%package -n python3-ipython-gui
+Summary:        Gui applications from %{name}
+Group:          Applications/Editors
+Requires:       python3-%{name} = %{version}-%{release}
+Requires:       python3-PyQt4
+Requires:       python3-pygments
+%description -n python3-ipython-gui
+This package contains the gui of %{name}, which requires PyQt.
+
+%endif # with_python3
+
+
+
 %prep
 %setup -q
+%patch0 -p1
 
 # delete bundling libs
 pushd IPython/external
@@ -168,11 +225,28 @@ popd
 
 
 %build
+%if 0%{?with_python3}
+pushd %{py3dir}
+    %{__python3} setup.py build
+popd
+%endif # with_python3
+
 %{__python} setup.py build
 
 
 %install
 rm -rf %{buildroot}
+%if 0%{?with_python3}
+pushd %{py3dir}
+    %{__python3} setup.py install -O1 --skip-build --root %{buildroot} 
+    # ipython installs docs automatically, but in the wrong place
+    #TODO verify this
+    mv %{buildroot}%{_datadir}/doc/python3-%{name} \
+        %{buildroot}%{_datadir}/doc/python3-%{name}-%{version}
+
+popd
+%endif # with_python3
+
 %{__python} setup.py install -O1 --skip-build --root %{buildroot}
 
 # ipython installs docs automatically, but in the wrong place
@@ -186,6 +260,15 @@ rm -rf %{buildroot}
 
 %if %{with run_testsuite}
 %check
+%if 0%{?with_python3}
+pushd %{py3dir}
+# TODO no ipython in path in koji
+PYTHONPATH=%{buildroot}%{python3_sitelib} \
+    PATH="%{buildroot}%{_bindir}:$PATH" \
+    %{buildroot}%{_bindir}/python3-iptest || echo "some tests failed, continue..."
+popd
+%endif
+
 # TODO no ipython in path in koji
 PYTHONPATH=%{buildroot}%{python_sitelib} \
     PATH="%{buildroot}%{_bindir}:$PATH" \
@@ -262,8 +345,82 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %{python_sitelib}/IPython/zmq/gui
 %{python_sitelib}/IPython/frontend/qt/
 
+%if 0%{?with_python3}
+%files
+# -f notests.files
+%defattr(-,root,root,-)
+%{_bindir}/python3-ipython
+%{_bindir}/python3-irunner
+%{_bindir}/python3-pycolor
+%{_bindir}/python3-ipcluster
+%{_bindir}/python3-ipcontroller
+%{_bindir}/python3-ipengine
+%{_bindir}/python3-iplogger
+%{_mandir}/man*/python3-ipython.*
+%{_mandir}/man*/python3-ipengine*
+%{_mandir}/man*/python3-irunner*
+%{_mandir}/man*/python3-pycolor*
+%{_mandir}/man*/python3-ipc*
+%{_mandir}/man*/python3-iplogger*
+
+%dir %{python3_sitelib}/IPython
+%{python3_sitelib}/IPython/external
+%{python3_sitelib}/IPython/*.py*
+%dir %{python3_sitelib}/IPython/kernel
+%{python3_sitelib}/IPython/kernel/*.py*
+%dir %{python3_sitelib}/IPython/testing
+%{python3_sitelib}/IPython/testing/*.py*
+%{python3_sitelib}/IPython/testing/plugin
+%{python3_sitelib}/ipython-%{version}-py?.?.egg-info
+
+%{python3_sitelib}/IPython/config/
+%{python3_sitelib}/IPython/core/
+%{python3_sitelib}/IPython/extensions/
+%dir %{python3_sitelib}/IPython/frontend/
+%{python3_sitelib}/IPython/frontend/html/
+%{python3_sitelib}/IPython/frontend/terminal/
+%{python3_sitelib}/IPython/frontend/__init__.py*
+%{python3_sitelib}/IPython/frontend/consoleapp.py*
+%{python3_sitelib}/IPython/lib/
+%{python3_sitelib}/IPython/nbformat/
+%{python3_sitelib}/IPython/parallel/
+%{python3_sitelib}/IPython/quarantine/
+%{python3_sitelib}/IPython/scripts/
+%{python3_sitelib}/IPython/utils/
+%{python3_sitelib}/IPython/zmq/
+%exclude %{python3_sitelib}/IPython/zmq/gui/
+
+# tests go into subpackage
+%exclude %{python3_sitelib}/IPython/*/tests/
+%exclude %{python3_sitelib}/IPython/*/*/tests
+
+%{python3_sitelib}/IPython/.git_commit_info.ini
+
+
+%files -n python3-ipython-tests
+%defattr(-,root,root,-)
+%{_bindir}/ipython3-ptest
+%{python3_sitelib}/IPython/*/tests
+%{python3_sitelib}/IPython/*/*/tests
+
+
+%files -n python3-ipython-doc
+%defattr(-,root,root,-)
+# ipython installs its own documentation, but we need to own the directory
+%{_datadir}/doc/python3-%{name}-%{version}
+
+
+%files -n python3-ipython-gui
+%defattr(-,root,root,-)
+%{python3_sitelib}/IPython/zmq/gui
+%{python3_sitelib}/IPython/frontend/qt/
+%endif # with_python3
 
 %changelog
+* Fri Jan 27 2012 Thomas Spura <tomspur@fedoraproject.org> - 0.12-3
+- skip no X tests
+- continue with python3 support
+
 * Sun Jan  8 2012 Thomas Spura <tomspur@fedoraproject.org> - 0.12-2
 - add missing R tornado
 - add _bindir to PATH to more tests pass in koji
