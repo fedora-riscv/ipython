@@ -71,17 +71,17 @@ Requires:       pyparsing
 BuildRequires:  python3-nose
 BuildRequires:  python3-mglob
 BuildRequires:  python3-simplegeneric
-BuildRequires:  python3-pyparsing
+#BuildRequires:  python3-pyparsing
 # "Tools and libraries available at test time:"
 BuildRequires:  python3-zmq
 BuildRequires:  python3-zmq-tests
-BuildRequires:  python3-tornado
-BuildRequires:  python3-pexpect
-BuildRequires:  python3-matplotlib
-BuildRequires:  python3-pymongo
+#BuildRequires:  python3-tornado
+#BuildRequires:  python3-pexpect
+#BuildRequires:  python3-matplotlib
+#BuildRequires:  python3-pymongo
 BuildRequires:  python3-PyQt4
 # for frontend
-BuildRequires:  python3-pygments
+#BuildRequires:  python3-pygments
 
 Requires:       python3-zmq
 %endif
@@ -170,10 +170,10 @@ Requires:       python3-ipython-%{name} = %{version}-%{release}
 This package contains the tests of %{name}.
 You can check this way, you can test, if ipython works on your platform.
 
-%package python3-ipython-doc
+%package -n python3-ipython-doc
 Summary:        Documentation for %{name}
 Group:          Documentation
-%description python3-ipython-doc
+%description -n python3-ipython-doc
 This package contains the documentation of %{name}.
 
 
@@ -206,7 +206,10 @@ rm decorators/_decorators.py
 rm mglob/_mglob.py
 rm simplegeneric/_simplegeneric.py
 rm pyparsing/_pyparsing.py
+%if ! 0%{?with_python3}
+# bundle this on python3 in experimental version for now
 rm pexpect/_pexpect.py
+%endif
 
 # probably from here http://code.activestate.com/recipes/163604-guid/
 # python has a own uuid module
@@ -222,6 +225,12 @@ rm guid/_guid.py
 # ssh modules from paramiko
 
 popd
+
+%if 0%{?with_python3}
+rm -rf %{py3dir}
+cp -a . %{py3dir}
+find %{py3dir} -name '*.py' | xargs sed -i '1s|^#!python|#!%{__python3}|'
+%endif # with_python3
 
 
 %build
@@ -241,8 +250,8 @@ pushd %{py3dir}
     %{__python3} setup.py install -O1 --skip-build --root %{buildroot} 
     # ipython installs docs automatically, but in the wrong place
     #TODO verify this
-    mv %{buildroot}%{_datadir}/doc/python3-%{name} \
-        %{buildroot}%{_datadir}/doc/python3-%{name}-%{version}
+    #mv %{buildroot}%{_datadir}/doc/python3-%{name} \
+    #    %{buildroot}%{_datadir}/doc/python3-%{name}-%{version}
 
 popd
 %endif # with_python3
@@ -262,10 +271,9 @@ rm -rf %{buildroot}
 %check
 %if 0%{?with_python3}
 pushd %{py3dir}
-# TODO no ipython in path in koji
 PYTHONPATH=%{buildroot}%{python3_sitelib} \
     PATH="%{buildroot}%{_bindir}:$PATH" \
-    %{buildroot}%{_bindir}/python3-iptest || echo "some tests failed, continue..."
+    %{buildroot}%{_bindir}/iptest3 || echo "some tests3 failed, continue..."
 popd
 %endif
 
@@ -346,29 +354,32 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %{python_sitelib}/IPython/frontend/qt/
 
 %if 0%{?with_python3}
-%files
-# -f notests.files
+%files -n python3-ipython
 %defattr(-,root,root,-)
-%{_bindir}/python3-ipython
-%{_bindir}/python3-irunner
-%{_bindir}/python3-pycolor
-%{_bindir}/python3-ipcluster
-%{_bindir}/python3-ipcontroller
-%{_bindir}/python3-ipengine
-%{_bindir}/python3-iplogger
-%{_mandir}/man*/python3-ipython.*
-%{_mandir}/man*/python3-ipengine*
-%{_mandir}/man*/python3-irunner*
-%{_mandir}/man*/python3-pycolor*
-%{_mandir}/man*/python3-ipc*
-%{_mandir}/man*/python3-iplogger*
+%{_bindir}/ipython3
+%{_bindir}/irunner3
+%{_bindir}/pycolor3
+%{_bindir}/ipcluster3
+%{_bindir}/ipcontroller3
+%{_bindir}/ipengine3
+%{_bindir}/iplogger3
+# no man pages (yet?)
+#%{_mandir}/man*/ipython3.*
+#%{_mandir}/man*/ipengine3*
+#%{_mandir}/man*/irunner3*
+#%{_mandir}/man*/pycolor3*
+#%{_mandir}/man*/ipc*3*
+#%{_mandir}/man*/iplogger3*
 
 %dir %{python3_sitelib}/IPython
 %{python3_sitelib}/IPython/external
+%{python3_sitelib}/IPython/__pycache__/
 %{python3_sitelib}/IPython/*.py*
 %dir %{python3_sitelib}/IPython/kernel
+%{python3_sitelib}/IPython/kernel/__pycache__/
 %{python3_sitelib}/IPython/kernel/*.py*
 %dir %{python3_sitelib}/IPython/testing
+%{python3_sitelib}/IPython/testing/__pycache__/
 %{python3_sitelib}/IPython/testing/*.py*
 %{python3_sitelib}/IPython/testing/plugin
 %{python3_sitelib}/ipython-%{version}-py?.?.egg-info
@@ -379,6 +390,7 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %dir %{python3_sitelib}/IPython/frontend/
 %{python3_sitelib}/IPython/frontend/html/
 %{python3_sitelib}/IPython/frontend/terminal/
+%{python3_sitelib}/IPython/frontend/__pycache__/
 %{python3_sitelib}/IPython/frontend/__init__.py*
 %{python3_sitelib}/IPython/frontend/consoleapp.py*
 %{python3_sitelib}/IPython/lib/
@@ -399,19 +411,20 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 
 %files -n python3-ipython-tests
 %defattr(-,root,root,-)
-%{_bindir}/ipython3-ptest
+%{_bindir}/iptest3
 %{python3_sitelib}/IPython/*/tests
 %{python3_sitelib}/IPython/*/*/tests
 
 
-%files -n python3-ipython-doc
-%defattr(-,root,root,-)
+##%files -n python3-ipython-doc
+##%defattr(-,root,root,-)
 # ipython installs its own documentation, but we need to own the directory
-%{_datadir}/doc/python3-%{name}-%{version}
+##%{_datadir}/doc/python3-%{name}-%{version}
 
 
 %files -n python3-ipython-gui
 %defattr(-,root,root,-)
+%{_bindir}/ipython3-qtconsole
 %{python3_sitelib}/IPython/zmq/gui
 %{python3_sitelib}/IPython/frontend/qt/
 %endif # with_python3
