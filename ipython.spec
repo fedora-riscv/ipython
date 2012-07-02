@@ -15,8 +15,8 @@
 %endif
 
 Name:           ipython
-Version:        0.12
-Release:        3%{?dist}
+Version:        0.13
+Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -26,8 +26,6 @@ Group:          Development/Libraries
 License:        (BSD and MIT and Python) and GPLv2+
 URL:            http://ipython.org/
 Source0:        http://archive.ipython.org/release/%{version}/%{name}-%{version}.tar.gz
-# applied upstream https://github.com/ipython/ipython/pull/1246
-Patch0:         ipython-skip-noX-tests.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -38,9 +36,7 @@ BuildRequires:  python-simplegeneric
 %if %{with run_testsuite}
 # for checking/testing
 BuildRequires:  python-nose
-BuildRequires:  python-mglob
 BuildRequires:  python-simplegeneric
-BuildRequires:  pyparsing
 # "Tools and libraries available at test time:"
 BuildRequires:  python-zmq
 BuildRequires:  python-zmq-tests
@@ -63,19 +59,18 @@ Requires:       python-matplotlib
 Requires:       pexpect
 Requires:       python-mglob
 Requires:       python-simplegeneric
-Requires:       pyparsing
 
 # add python3 packages
 %if 0%{?with_python3}
+BuildRequires:  python3-devel
 # for checking/testing
 BuildRequires:  python3-nose
 BuildRequires:  python3-mglob
 BuildRequires:  python3-simplegeneric
-#BuildRequires:  python3-pyparsing
 # "Tools and libraries available at test time:"
 BuildRequires:  python3-zmq
 BuildRequires:  python3-zmq-tests
-#BuildRequires:  python3-tornado
+BuildRequires:  python3-tornado
 #BuildRequires:  python3-pexpect
 #BuildRequires:  python3-matplotlib
 #BuildRequires:  python3-pymongo
@@ -192,7 +187,6 @@ This package contains the gui of %{name}, which requires PyQt.
 
 %prep
 %setup -q
-%patch0 -p1
 
 # delete bundling libs
 pushd IPython/external
@@ -203,18 +197,11 @@ rm argparse/_argparse.py
 rm decorators/_decorators.py
 
 # other packages exist in fedora
-rm mglob/_mglob.py
 rm simplegeneric/_simplegeneric.py
-rm pyparsing/_pyparsing.py
 %if ! 0%{?with_python3}
 # bundle this on python3 in experimental version for now
 rm pexpect/_pexpect.py
 %endif
-
-# probably from here http://code.activestate.com/recipes/163604-guid/
-# python has a own uuid module
-# this is only used in deathrow, delete without replacement!!
-rm guid/_guid.py
 
 # rejected in a PEP, probably no upstream
 #rm Itpl/_Itpl.py
@@ -322,7 +309,6 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %{python_sitelib}/IPython/lib/
 %{python_sitelib}/IPython/nbformat/
 %{python_sitelib}/IPython/parallel/
-%{python_sitelib}/IPython/quarantine/
 %{python_sitelib}/IPython/scripts/
 %{python_sitelib}/IPython/utils/
 %{python_sitelib}/IPython/zmq/
@@ -331,8 +317,6 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 # tests go into subpackage
 %exclude %{python_sitelib}/IPython/*/tests/
 %exclude %{python_sitelib}/IPython/*/*/tests
-
-%{python_sitelib}/IPython/.git_commit_info.ini
 
 
 %files tests
@@ -396,7 +380,6 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %{python3_sitelib}/IPython/lib/
 %{python3_sitelib}/IPython/nbformat/
 %{python3_sitelib}/IPython/parallel/
-%{python3_sitelib}/IPython/quarantine/
 %{python3_sitelib}/IPython/scripts/
 %{python3_sitelib}/IPython/utils/
 %{python3_sitelib}/IPython/zmq/
@@ -430,6 +413,11 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %endif # with_python3
 
 %changelog
+* Sat Jun 30 2012 Thomas Spura <tomspur@fedoraproject.org> - 0.13-1
+- update to new version
+- R on mglob/pyparsing is obsolete
+- remove patch, as it's upstream
+
 * Fri Jan 27 2012 Thomas Spura <tomspur@fedoraproject.org> - 0.12-3
 - skip no X tests
 - continue with python3 support
