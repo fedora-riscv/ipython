@@ -48,17 +48,8 @@ BuildRequires:  PyQt4
 BuildRequires:  python-pygments
 %endif
 
-Requires:       python-zmq
-# for notebook
-Requires:       python-tornado
-
-#IPython/lib/latextools.py and others in /lib/
-Requires:       python-matplotlib
-
-#bundled libs
-Requires:       pexpect
-Requires:       python-mglob
-Requires:       python-simplegeneric
+# Require $current_python_interpreter-ipython
+Requires:       python2-ipython
 
 # add python3 packages
 %if 0%{?with_python3}
@@ -81,79 +72,98 @@ BuildRequires:  python3-PyQt4
 Requires:       python3-zmq
 %endif
 
-
-%description
-
-IPython provides a replacement for the interactive Python interpreter with
-extra functionality.
-
-Main features:
- * Comprehensive object introspection.
- * Input history, persistent across sessions.
- * Caching of output results during a session with automatically generated
-   references.
- * Readline based name completion.
- * Extensible system of 'magic' commands for controlling the environment and
-   performing many tasks related either to IPython or the operating system.
- * Configuration system with easy switching between different setups (simpler
-   than changing $PYTHONSTARTUP environment variables every time).
- * Session logging and reloading.
- * Extensible syntax processing for special purpose situations.
- * Access to the system shell with user-extensible alias system.
- * Easily embeddable in other Python programs.
+%global ipython_desc_base \
+IPython provides a replacement for the interactive Python interpreter with\
+extra functionality.\
+\
+Main features:\
+ * Comprehensive object introspection.\
+ * Input history, persistent across sessions.\
+ * Caching of output results during a session with automatically generated\
+   references.\
+ * Readline based name completion.\
+ * Extensible system of 'magic' commands for controlling the environment and\
+   performing many tasks related either to IPython or the operating system.\
+ * Configuration system with easy switching between different setups (simpler\
+   than changing $PYTHONSTARTUP environment variables every time).\
+ * Session logging and reloading.\
+ * Extensible syntax processing for special purpose situations.\
+ * Access to the system shell with user-extensible alias system.\
+ * Easily embeddable in other Python programs.\
  * Integrated access to the pdb debugger and the Python profiler.
 
-%package tests
+%description
+%{ipython_desc_base}
+
+%package -n python2-ipython
+Summary:        An enhanced interactive Python shell
+Requires:       python2-ipython-console
+Requires:       python2-ipython-gui
+Requires:       python2-ipython-notebook
+%description -n python2-ipython
+%{ipython_desc_base}
+
+%package -n python2-ipython-console
+Summary:        An enhanced interactive Python shell
+Requires:       python-zmq
+
+#IPython/lib/latextools.py and others in /lib/
+Requires:       python-matplotlib
+
+#bundled libs
+Requires:       pexpect
+Requires:       python-mglob
+Requires:       python-simplegeneric
+
+%description -n python2-ipython-console
+%{ipython_desc_base}
+
+
+%package -n python2-ipython-notebook
+Summary:        An enhanced interactive Python shell
+Requires:       python-ipython-console
+Requires:       python-tornado
+
+%description -n python2-ipython-notebook
+%{ipython_desc_base}
+
+This package contains the ipython notebook.
+
+
+%package -n python2-ipython-tests
 Summary:        Tests for %{name}
 Group:          Documentation
 Requires:       python-nose
 Requires:       python-zmq-tests
 Requires:       %{name} = %{version}-%{release}
-%description tests
+%description -n python2-ipython-tests
 This package contains the tests of %{name}.
 You can check this way, you can test, if ipython works on your platform.
 
-%package doc
+%package -n python2-ipython-doc
 Summary:        Documentation for %{name}
 Group:          Documentation
-%description doc
+%description -n python2-ipython-doc
 This package contains the documentation of %{name}.
 
 
-%package gui
+%package -n python2-ipython-gui
 Summary:        Gui applications from %{name}
 Group:          Applications/Editors
 Requires:       %{name} = %{version}-%{release}
 Requires:       PyQt4
 Requires:       python-pygments
-%description gui
+%description -n python2-ipython-gui
 This package contains the gui of %{name}, which requires PyQt.
 
 
 
 %if 0%{?with_python3}
+# TODO revisit python3 packages again, once python2 restructuring is done
 %package -n python3-ipython
 Summary:        An enhanced interactive Python shell
 %description -n python3-ipython
-
-IPython provides a replacement for the interactive Python interpreter with
-extra functionality.
-
-Main features:
- * Comprehensive object introspection.
- * Input history, persistent across sessions.
- * Caching of output results during a session with automatically generated
-   references.
- * Readline based name completion.
- * Extensible system of 'magic' commands for controlling the environment and
-   performing many tasks related either to IPython or the operating system.
- * Configuration system with easy switching between different setups (simpler
-   than changing $PYTHONSTARTUP environment variables every time).
- * Session logging and reloading.
- * Extensible syntax processing for special purpose situations.
- * Access to the system shell with user-extensible alias system.
- * Easily embeddable in other Python programs.
- * Integrated access to the pdb debugger and the Python profiler.
+%{ipython_desc_base}
 
 %package -n python3-ipython-tests
 Summary:        Tests for %{name}
@@ -271,8 +281,7 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %endif
 
 
-%files
-# -f notests.files
+%files -n python2-ipython-console
 %defattr(-,root,root,-)
 %{_bindir}/ipython
 %{_bindir}/irunner
@@ -302,7 +311,6 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %{python_sitelib}/IPython/core/
 %{python_sitelib}/IPython/extensions/
 %dir %{python_sitelib}/IPython/frontend/
-%{python_sitelib}/IPython/frontend/html/
 %{python_sitelib}/IPython/frontend/terminal/
 %{python_sitelib}/IPython/frontend/__init__.py*
 %{python_sitelib}/IPython/frontend/consoleapp.py*
@@ -319,20 +327,25 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %exclude %{python_sitelib}/IPython/*/*/tests
 
 
-%files tests
+%files -n python2-ipython-tests
 %defattr(-,root,root,-)
 %{_bindir}/iptest
 %{python_sitelib}/IPython/*/tests
 %{python_sitelib}/IPython/*/*/tests
 
 
-%files doc
+%files -n python2-ipython-doc
 %defattr(-,root,root,-)
 # ipython installs its own documentation, but we need to own the directory
 %{_datadir}/doc/%{name}-%{version}
 
 
-%files gui
+%files -n python2-ipython-notebook
+%defattr(-,root,root,-)
+%{python_sitelib}/IPython/frontend/html/
+
+
+%files -n python2-ipython-gui
 %defattr(-,root,root,-)
 %{python_sitelib}/IPython/zmq/gui
 %{python_sitelib}/IPython/frontend/qt/
