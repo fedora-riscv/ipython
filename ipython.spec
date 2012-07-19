@@ -16,7 +16,7 @@
 
 Name:           ipython
 Version:        0.13
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -426,6 +426,9 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %endif # with_python3
 
 %changelog
+* Thu Jul 19 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.13-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
+
 * Sat Jun 30 2012 Thomas Spura <tomspur@fedoraproject.org> - 0.13-1
 - update to new version
 - R on mglob/pyparsing is obsolete
