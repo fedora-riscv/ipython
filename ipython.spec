@@ -49,7 +49,7 @@ BuildRequires:  python-pygments
 %endif
 
 # Require $current_python_interpreter-ipython
-Requires:       python2-ipython
+Requires:       python-ipython
 
 # add python3 packages
 %if 0%{?with_python3}
@@ -95,15 +95,16 @@ Main features:\
 %description
 %{ipython_desc_base}
 
-%package -n python2-ipython
+%package -n python-ipython
 Summary:        An enhanced interactive Python shell
-Requires:       python2-ipython-console
-Requires:       python2-ipython-gui
-Requires:       python2-ipython-notebook
-%description -n python2-ipython
+Requires:       python-ipython-console
+Requires:       python-ipython-gui
+Requires:       python-ipython-notebook
+Provides:       ipython
+%description -n python-ipython
 %{ipython_desc_base}
 
-%package -n python2-ipython-console
+%package -n python-ipython-console
 Summary:        An enhanced interactive Python shell
 Requires:       python-zmq
 
@@ -115,45 +116,47 @@ Requires:       pexpect
 Requires:       python-mglob
 Requires:       python-simplegeneric
 
-%description -n python2-ipython-console
+%description -n python-ipython-console
 %{ipython_desc_base}
 
 
-%package -n python2-ipython-notebook
+%package -n python-ipython-notebook
 Summary:        An enhanced interactive Python shell
-Requires:       python-ipython-console
+Requires:       python-ipython-console = %{version}-%{release}
 Requires:       python-tornado
+Provides:       ipython-notebook
 
-%description -n python2-ipython-notebook
+%description -n python-ipython-notebook
 %{ipython_desc_base}
 
 This package contains the ipython notebook.
 
 
-%package -n python2-ipython-tests
+%package -n python-ipython-tests
 Summary:        Tests for %{name}
 Group:          Documentation
 Requires:       python-nose
 Requires:       python-zmq-tests
-Requires:       %{name} = %{version}-%{release}
-%description -n python2-ipython-tests
+Requires:       python-ipython-console = %{version}-%{release}
+%description -n python-ipython-tests
 This package contains the tests of %{name}.
 You can check this way, you can test, if ipython works on your platform.
 
-%package -n python2-ipython-doc
+%package -n python-ipython-doc
 Summary:        Documentation for %{name}
 Group:          Documentation
-%description -n python2-ipython-doc
+%description -n python-ipython-doc
 This package contains the documentation of %{name}.
 
 
-%package -n python2-ipython-gui
+%package -n python-ipython-gui
 Summary:        Gui applications from %{name}
 Group:          Applications/Editors
-Requires:       %{name} = %{version}-%{release}
+Requires:       python-ipython-console = %{version}-%{release}
 Requires:       PyQt4
 Requires:       python-pygments
-%description -n python2-ipython-gui
+Provides:       ipython-gui
+%description -n python-ipython-gui
 This package contains the gui of %{name}, which requires PyQt.
 
 
@@ -281,7 +284,7 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %endif
 
 
-%files -n python2-ipython-console
+%files -n python-ipython-console
 %defattr(-,root,root,-)
 %{_bindir}/ipython
 %{_bindir}/irunner
@@ -327,25 +330,25 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %exclude %{python_sitelib}/IPython/*/*/tests
 
 
-%files -n python2-ipython-tests
+%files -n python-ipython-tests
 %defattr(-,root,root,-)
 %{_bindir}/iptest
 %{python_sitelib}/IPython/*/tests
 %{python_sitelib}/IPython/*/*/tests
 
 
-%files -n python2-ipython-doc
+%files -n python-ipython-doc
 %defattr(-,root,root,-)
 # ipython installs its own documentation, but we need to own the directory
 %{_datadir}/doc/%{name}-%{version}
 
 
-%files -n python2-ipython-notebook
+%files -n python-ipython-notebook
 %defattr(-,root,root,-)
 %{python_sitelib}/IPython/frontend/html/
 
 
-%files -n python2-ipython-gui
+%files -n python-ipython-gui
 %defattr(-,root,root,-)
 %{python_sitelib}/IPython/zmq/gui
 %{python_sitelib}/IPython/frontend/qt/
@@ -426,6 +429,9 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %endif # with_python3
 
 %changelog
+* Sat Aug  4 2012 Thomas Spura <tomspur@fedoraproject.org> - 0.13-3
+- use python-foo for python2-foo and provide ipython-foo
+
 * Thu Jul 19 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.13-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
 
