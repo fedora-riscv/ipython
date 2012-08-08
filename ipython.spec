@@ -16,7 +16,7 @@
 
 Name:           ipython
 Version:        0.13
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -97,9 +97,9 @@ Main features:\
 
 %package -n python-ipython
 Summary:        An enhanced interactive Python shell
-Requires:       python-ipython-console
-Requires:       python-ipython-gui
-Requires:       python-ipython-notebook
+Requires:       python-ipython-console = %{version}-%{release}
+Requires:       python-ipython-gui = %{version}-%{release}
+Requires:       python-ipython-notebook = %{version}-%{release}
 Provides:       ipython
 %description -n python-ipython
 %{ipython_desc_base}
@@ -429,6 +429,9 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %endif # with_python3
 
 %changelog
+* Wed Aug  8 2012 Thomas Spura <tomspur@fedoraproject.org> - 0.13-4
+- use versioned requires on ipython
+
 * Sat Aug  4 2012 Thomas Spura <tomspur@fedoraproject.org> - 0.13-3
 - use python-foo for python2-foo and provide ipython-foo
 
