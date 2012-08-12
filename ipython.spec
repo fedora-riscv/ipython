@@ -100,7 +100,7 @@ Summary:        An enhanced interactive Python shell
 Requires:       python-ipython-console = %{version}-%{release}
 Requires:       python-ipython-gui = %{version}-%{release}
 Requires:       python-ipython-notebook = %{version}-%{release}
-Provides:       ipython
+Provides:       ipython = %{version}-%{release}
 %description -n python-ipython
 %{ipython_desc_base}
 
@@ -430,7 +430,7 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 
 %changelog
 * Wed Aug  8 2012 Thomas Spura <tomspur@fedoraproject.org> - 0.13-4
-- use versioned requires on ipython
+- use versioned requires/provides on ipython
 
 * Sat Aug  4 2012 Thomas Spura <tomspur@fedoraproject.org> - 0.13-3
 - use python-foo for python2-foo and provide ipython-foo
