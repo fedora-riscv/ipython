@@ -16,7 +16,7 @@
 
 Name:           ipython
 Version:        0.13
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -101,6 +101,7 @@ Requires:       python-ipython-console = %{version}-%{release}
 Requires:       python-ipython-gui = %{version}-%{release}
 Requires:       python-ipython-notebook = %{version}-%{release}
 Provides:       ipython = %{version}-%{release}
+Obsoletes:      ipython < 0.13-1
 %description -n python-ipython
 %{ipython_desc_base}
 
@@ -283,6 +284,8 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
     %{buildroot}%{_bindir}/iptest || echo "some tests failed, continue..."
 %endif
 
+%files -n python-ipython
+%defattr(-,root,root,-)
 
 %files -n python-ipython-console
 %defattr(-,root,root,-)
@@ -429,6 +432,10 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %endif # with_python3
 
 %changelog
+* Thu Aug 30 2012 Thomas Spura <tomspur@fedoraproject.org> - 0.13-5
+- add empty python-ipython files section
+- obsolete ipython
+
 * Wed Aug  8 2012 Thomas Spura <tomspur@fedoraproject.org> - 0.13-4
 - use versioned requires/provides on ipython
 
