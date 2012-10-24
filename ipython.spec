@@ -15,8 +15,8 @@
 %endif
 
 Name:           ipython
-Version:        0.13
-Release:        5%{?dist}
+Version:        0.13.1
+Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -274,6 +274,7 @@ rm -rf %{buildroot}
 pushd %{py3dir}
 PYTHONPATH=%{buildroot}%{python3_sitelib} \
     PATH="%{buildroot}%{_bindir}:$PATH" \
+    LC_ALL=en_US.UTF-8 \
     %{buildroot}%{_bindir}/iptest3 || echo "some tests3 failed, continue..."
 popd
 %endif
@@ -281,6 +282,7 @@ popd
 # TODO no ipython in path in koji
 PYTHONPATH=%{buildroot}%{python_sitelib} \
     PATH="%{buildroot}%{_bindir}:$PATH" \
+    LC_ALL=en_US.UTF-8 \
     %{buildroot}%{_bindir}/iptest || echo "some tests failed, continue..."
 %endif
 
@@ -432,6 +434,10 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %endif # with_python3
 
 %changelog
+* Wed Oct 24 2012 Thomas Spura <tomspur@fedoraproject.org> - 0.13.1-1
+- update to 0.13.1
+- run tests with en_US.UTF-8
+
 * Thu Aug 30 2012 Thomas Spura <tomspur@fedoraproject.org> - 0.13-5
 - add empty python-ipython files section
 - obsolete ipython
