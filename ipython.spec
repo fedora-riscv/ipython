@@ -435,7 +435,7 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 
 %changelog
 * Wed Oct 24 2012 Thomas Spura <tomspur@fedoraproject.org> - 0.13.1-1
-- update to 0.13.1
+- update to 0.13.1 (#838031)
 - run tests with en_US.UTF-8
 
 * Thu Aug 30 2012 Thomas Spura <tomspur@fedoraproject.org> - 0.13-5
