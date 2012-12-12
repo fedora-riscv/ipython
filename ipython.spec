@@ -101,7 +101,9 @@ Requires:       python-ipython-console = %{version}-%{release}
 Requires:       python-ipython-gui = %{version}-%{release}
 Requires:       python-ipython-notebook = %{version}-%{release}
 Provides:       ipython = %{version}-%{release}
+# obsoltetes can be deleted after f21
 Obsoletes:      ipython < 0.13-1
+#
 %description -n python-ipython
 %{ipython_desc_base}
 
@@ -139,6 +141,8 @@ Group:          Documentation
 Requires:       python-nose
 Requires:       python-zmq-tests
 Requires:       python-ipython-console = %{version}-%{release}
+Provides:       ipython-tests = %{version}-%{release}
+Obsoletes:      ipython-tests < 0.13-1
 %description -n python-ipython-tests
 This package contains the tests of %{name}.
 You can check this way, you can test, if ipython works on your platform.
@@ -146,6 +150,8 @@ You can check this way, you can test, if ipython works on your platform.
 %package -n python-ipython-doc
 Summary:        Documentation for %{name}
 Group:          Documentation
+Provides:       ipython-doc = %{version}-%{release}
+Obsoletes:      ipython-doc < 0.13-1
 %description -n python-ipython-doc
 This package contains the documentation of %{name}.
 
@@ -156,7 +162,8 @@ Group:          Applications/Editors
 Requires:       python-ipython-console = %{version}-%{release}
 Requires:       PyQt4
 Requires:       python-pygments
-Provides:       ipython-gui
+Provides:       ipython-gui = %{version}-%{release}
+Obsoletes:      ipython-gui < 0.13-1
 %description -n python-ipython-gui
 This package contains the gui of %{name}, which requires PyQt.
 
@@ -434,6 +441,9 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %endif # with_python3
 
 %changelog
+* Wed Dec 12 2012 Thomas Spura <tomspur@fedoraproject.org> - 0.13.1-2
+- obsolete old ipython packages (José Matos, #882724)
+
 * Wed Oct 24 2012 Thomas Spura <tomspur@fedoraproject.org> - 0.13.1-1
 - update to 0.13.1 (#838031)
 - run tests with en_US.UTF-8
