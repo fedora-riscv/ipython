@@ -127,7 +127,7 @@ Requires:       python-simplegeneric
 Summary:        An enhanced interactive Python shell
 Requires:       python-ipython-console = %{version}-%{release}
 Requires:       python-tornado
-Provides:       ipython-notebook
+Provides:       ipython-notebook = %{version}-%{release}
 
 %description -n python-ipython-notebook
 %{ipython_desc_base}
