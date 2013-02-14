@@ -16,7 +16,7 @@
 
 Name:           ipython
 Version:        0.13.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -441,6 +441,9 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %endif # with_python3
 
 %changelog
+* Thu Feb 14 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.13.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
+
 * Wed Dec 12 2012 Thomas Spura <tomspur@fedoraproject.org> - 0.13.1-2
 - obsolete old ipython packages (José Matos, #882724)
 
