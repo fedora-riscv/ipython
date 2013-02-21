@@ -16,7 +16,7 @@
 
 Name:           ipython
 Version:        0.13.1
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -45,6 +45,7 @@ BuildRequires:  python-zmq
 BuildRequires:  python-zmq-tests
 BuildRequires:  pexpect
 BuildRequires:  python-matplotlib
+#BuildRequires:  python-matplotlib-tk
 BuildRequires:  pymongo
 BuildRequires:  PyQt4
 # for frontend
@@ -65,12 +66,13 @@ BuildRequires:  python3-simplegeneric
 BuildRequires:  python3-zmq
 BuildRequires:  python3-zmq-tests
 BuildRequires:  python3-tornado
-#BuildRequires:  python3-pexpect
-#BuildRequires:  python3-matplotlib
-#BuildRequires:  python3-pymongo
+BuildRequires:  python3-pexpect
+BuildRequires:  python3-matplotlib
+#BuildRequires:  python3-matplotlib-tk
+BuildRequires:  python3-pymongo
 BuildRequires:  python3-PyQt4
 # for frontend
-#BuildRequires:  python3-pygments
+BuildRequires:  python3-pygments
 
 Requires:       python3-zmq
 %endif
@@ -104,9 +106,7 @@ Requires:       python-ipython-console = %{version}-%{release}
 Requires:       python-ipython-gui = %{version}-%{release}
 Requires:       python-ipython-notebook = %{version}-%{release}
 Provides:       ipython = %{version}-%{release}
-# obsoltetes can be deleted after f21
 Obsoletes:      ipython < 0.13-1
-#
 %description -n python-ipython
 %{ipython_desc_base}
 
@@ -184,7 +184,7 @@ Summary:        Tests for %{name}
 Group:          Documentation
 Requires:       python3-nose
 Requires:       python3-zmq-tests
-Requires:       python3-ipython-%{name} = %{version}-%{release}
+Requires:       python3-ipython = %{version}-%{release}
 %description -n python3-ipython-tests
 This package contains the tests of %{name}.
 You can check this way, you can test, if ipython works on your platform.
@@ -212,8 +212,6 @@ This package contains the gui of %{name}, which requires PyQt.
 %prep
 %setup -q
 
-%patch0 -p 1
-
 # delete bundling libs
 pushd IPython/external
 # python's own modules
@@ -238,6 +236,16 @@ rm pexpect/_pexpect.py
 # ssh modules from paramiko
 
 popd
+
+#exclude="exclusions.extend(["
+## Exclude tests that depend on a running X server.
+#exclude+="ipjoin('lib', 'tests', 'test_irunner_pylab_magic'),"
+#exclude+="ipjoin('frontend', 'qt', 'console', 'tests', 'test_console_widget'),"
+#exclude+="ipjoin('frontend', 'qt', 'console', 'tests', 'test_kill_ring'),"
+## Exclude a hanging test: https://github.com/ipython/ipython/issues/2650
+#exclude+="ipjoin('zmq', 'tests', 'test_embed_kernel'),"
+#exclude+="])"
+#sed -ie "/return exclusions/i \ \ \ \ $exclude" IPython/testing/iptest.py
 
 %if 0%{?with_python3}
 rm -rf %{py3dir}
@@ -282,6 +290,9 @@ rm -rf %{buildroot}
 
 %if %{with run_testsuite}
 %check
+# Ensure that the user's .pythonrc.py is not invoked during any tests.
+export PYTHONSTARTUP=""
+
 %if 0%{?with_python3}
 pushd %{py3dir}
 PYTHONPATH=%{buildroot}%{python3_sitelib} \
@@ -422,8 +433,6 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %exclude %{python3_sitelib}/IPython/*/tests/
 %exclude %{python3_sitelib}/IPython/*/*/tests
 
-%{python3_sitelib}/IPython/.git_commit_info.ini
-
 
 %files -n python3-ipython-tests
 %defattr(-,root,root,-)
@@ -440,14 +449,16 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 
 %files -n python3-ipython-gui
 %defattr(-,root,root,-)
-%{_bindir}/ipython3-qtconsole
 %{python3_sitelib}/IPython/zmq/gui
 %{python3_sitelib}/IPython/frontend/qt/
 %endif # with_python3
 
 %changelog
+* Thu Feb 21 2013 Thomas Spura <tomspur@fedoraproject.org> - 0.13.1-4
+- More changes to build for Python 3 (mostly by Andrew McNabb, #784947)
+
 * Thu Feb 21 2013 Thomas Spura <tomspur@fedoraproject.org> - 0.13.1-3
-- obsolete old ipython packages (José Matos, #882724)
+- obsolete old Thu Feb 21 2013 python packages (José Matos, #882724)
 - notebook and gui subpackage require matplotlib not the console anymore (#872176)
 
 * Thu Feb 14 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.13.1-2
