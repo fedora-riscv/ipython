@@ -16,7 +16,7 @@
 
 Name:           ipython
 Version:        0.13.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -26,6 +26,9 @@ Group:          Development/Libraries
 License:        (BSD and MIT and Python) and GPLv2+
 URL:            http://ipython.org/
 Source0:        http://archive.ipython.org/release/%{version}/%{name}-%{version}.tar.gz
+# will be in ipython-0.14
+# https://github.com/ipython/ipython/pull/2681
+Patch0:         ipython-0.13.1-dont-require-matplotlib.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -111,8 +114,6 @@ Obsoletes:      ipython < 0.13-1
 Summary:        An enhanced interactive Python shell
 Requires:       python-zmq
 
-#IPython/lib/latextools.py and others in /lib/
-Requires:       python-matplotlib
 
 #bundled libs
 Requires:       pexpect
@@ -127,6 +128,7 @@ Requires:       python-simplegeneric
 Summary:        An enhanced interactive Python shell
 Requires:       python-ipython-console = %{version}-%{release}
 Requires:       python-tornado
+Requires:       python-matplotlib
 Provides:       ipython-notebook = %{version}-%{release}
 
 %description -n python-ipython-notebook
@@ -161,6 +163,7 @@ Summary:        Gui applications from %{name}
 Group:          Applications/Editors
 Requires:       python-ipython-console = %{version}-%{release}
 Requires:       PyQt4
+Requires:       python-matplotlib
 Requires:       python-pygments
 Provides:       ipython-gui = %{version}-%{release}
 Obsoletes:      ipython-gui < 0.13-1
@@ -208,6 +211,8 @@ This package contains the gui of %{name}, which requires PyQt.
 
 %prep
 %setup -q
+
+%patch0 -p 1
 
 # delete bundling libs
 pushd IPython/external
@@ -441,11 +446,12 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %endif # with_python3
 
 %changelog
+* Thu Feb 21 2013 Thomas Spura <tomspur@fedoraproject.org> - 0.13.1-3
+- obsolete old ipython packages (José Matos, #882724)
+- notebook and gui subpackage require matplotlib not the console anymore (#872176)
+
 * Thu Feb 14 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.13.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
-
-* Wed Dec 12 2012 Thomas Spura <tomspur@fedoraproject.org> - 0.13.1-2
-- obsolete old ipython packages (José Matos, #882724)
 
 * Wed Oct 24 2012 Thomas Spura <tomspur@fedoraproject.org> - 0.13.1-1
 - update to 0.13.1 (#838031)
