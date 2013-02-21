@@ -176,15 +176,44 @@ This package contains the gui of %{name}, which requires PyQt.
 # TODO revisit python3 packages again, once python2 restructuring is done
 %package -n python3-ipython
 Summary:        An enhanced interactive Python shell
+Requires:       python3-ipython-console = %{version}-%{release}
+Requires:       python3-ipython-gui = %{version}-%{release}
+Requires:       python3-ipython-notebook = %{version}-%{release}
 %description -n python3-ipython
 %{ipython_desc_base}
+
+%package -n python3-ipython-console
+Summary:        An enhanced interactive Python shell
+Requires:       python3-zmq
+
+
+#bundled libs
+Requires:       python3-pexpect
+Requires:       python3-mglob
+Requires:       python3-simplegeneric
+
+%description -n python3-ipython-console
+%{ipython_desc_base}
+
+
+%package -n python3-ipython-notebook
+Summary:        An enhanced interactive Python shell
+Requires:       python3-ipython-console = %{version}-%{release}
+Requires:       python3-tornado
+Requires:       python3-matplotlib
+
+%description -n python3-ipython-notebook
+%{ipython_desc_base}
+
+This package contains the ipython notebook.
+
 
 %package -n python3-ipython-tests
 Summary:        Tests for %{name}
 Group:          Documentation
 Requires:       python3-nose
 Requires:       python3-zmq-tests
-Requires:       python3-ipython = %{version}-%{release}
+Requires:       python3-ipython-console = %{version}-%{release}
 %description -n python3-ipython-tests
 This package contains the tests of %{name}.
 You can check this way, you can test, if ipython works on your platform.
@@ -195,12 +224,12 @@ Group:          Documentation
 %description -n python3-ipython-doc
 This package contains the documentation of %{name}.
 
-
 %package -n python3-ipython-gui
 Summary:        Gui applications from %{name}
 Group:          Applications/Editors
-Requires:       python3-%{name} = %{version}-%{release}
+Requires:       python3-ipython-console = %{version}-%{release}
 Requires:       python3-PyQt4
+Requires:       python3-matplotlib
 Requires:       python3-pygments
 %description -n python3-ipython-gui
 This package contains the gui of %{name}, which requires PyQt.
@@ -236,16 +265,6 @@ rm pexpect/_pexpect.py
 # ssh modules from paramiko
 
 popd
-
-#exclude="exclusions.extend(["
-## Exclude tests that depend on a running X server.
-#exclude+="ipjoin('lib', 'tests', 'test_irunner_pylab_magic'),"
-#exclude+="ipjoin('frontend', 'qt', 'console', 'tests', 'test_console_widget'),"
-#exclude+="ipjoin('frontend', 'qt', 'console', 'tests', 'test_kill_ring'),"
-## Exclude a hanging test: https://github.com/ipython/ipython/issues/2650
-#exclude+="ipjoin('zmq', 'tests', 'test_embed_kernel'),"
-#exclude+="])"
-#sed -ie "/return exclusions/i \ \ \ \ $exclude" IPython/testing/iptest.py
 
 %if 0%{?with_python3}
 rm -rf %{py3dir}
@@ -292,13 +311,14 @@ rm -rf %{buildroot}
 %check
 # Ensure that the user's .pythonrc.py is not invoked during any tests.
 export PYTHONSTARTUP=""
+%global EXCLUDE_TESTS "test_irunner_pylab_magic|test_console_widget|test_kill_ring"
 
 %if 0%{?with_python3}
 pushd %{py3dir}
 PYTHONPATH=%{buildroot}%{python3_sitelib} \
     PATH="%{buildroot}%{_bindir}:$PATH" \
     LC_ALL=en_US.UTF-8 \
-    %{buildroot}%{_bindir}/iptest3 || echo "some tests3 failed, continue..."
+    %{buildroot}%{_bindir}/iptest3 -e %{EXCLUDE_TESTS}
 popd
 %endif
 
@@ -306,7 +326,7 @@ popd
 PYTHONPATH=%{buildroot}%{python_sitelib} \
     PATH="%{buildroot}%{_bindir}:$PATH" \
     LC_ALL=en_US.UTF-8 \
-    %{buildroot}%{_bindir}/iptest || echo "some tests failed, continue..."
+    %{buildroot}%{_bindir}/iptest -e %{EXCLUDE_TESTS}
 %endif
 
 %files -n python-ipython
@@ -384,6 +404,9 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %if 0%{?with_python3}
 %files -n python3-ipython
 %defattr(-,root,root,-)
+
+%files -n python3-ipython-console
+%defattr(-,root,root,-)
 %{_bindir}/ipython3
 %{_bindir}/irunner3
 %{_bindir}/pycolor3
@@ -416,7 +439,6 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %{python3_sitelib}/IPython/core/
 %{python3_sitelib}/IPython/extensions/
 %dir %{python3_sitelib}/IPython/frontend/
-%{python3_sitelib}/IPython/frontend/html/
 %{python3_sitelib}/IPython/frontend/terminal/
 %{python3_sitelib}/IPython/frontend/__pycache__/
 %{python3_sitelib}/IPython/frontend/__init__.py*
@@ -447,6 +469,11 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 ##%{_datadir}/doc/python3-%{name}-%{version}
 
 
+%files -n python3-ipython-notebook
+%defattr(-,root,root,-)
+%{python3_sitelib}/IPython/frontend/html/
+
+
 %files -n python3-ipython-gui
 %defattr(-,root,root,-)
 %{python3_sitelib}/IPython/zmq/gui
@@ -456,6 +483,7 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %changelog
 * Thu Feb 21 2013 Thomas Spura <tomspur@fedoraproject.org> - 0.13.1-4
 - More changes to build for Python 3 (mostly by Andrew McNabb, #784947)
+- Update package structure of python3-ipython subpackage to match python2-ipython one's
 
 * Thu Feb 21 2013 Thomas Spura <tomspur@fedoraproject.org> - 0.13.1-3
 - obsolete old Thu Feb 21 2013 python packages (José Matos, #882724)
