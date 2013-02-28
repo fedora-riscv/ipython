@@ -6,7 +6,7 @@
 
 # where are all the python3 dependencies
 %if 0%{?fedora} > 15
-%global with_python3 0
+%global with_python3 1
 %endif
 
 # where are all the pypy dependencies
@@ -484,6 +484,7 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 * Thu Feb 21 2013 Thomas Spura <tomspur@fedoraproject.org> - 0.13.1-4
 - More changes to build for Python 3 (mostly by Andrew McNabb, #784947)
 - Update package structure of python3-ipython subpackage to match python2-ipython one's
+- enable python3 build of ipython
 
 * Thu Feb 21 2013 Thomas Spura <tomspur@fedoraproject.org> - 0.13.1-3
 - obsolete old Thu Feb 21 2013 python packages (José Matos, #882724)
