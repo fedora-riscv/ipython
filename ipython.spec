@@ -241,6 +241,8 @@ This package contains the gui of %{name}, which requires PyQt.
 %prep
 %setup -q
 
+%patch0 -p 1
+
 # delete bundling libs
 pushd IPython/external
 # python's own modules
