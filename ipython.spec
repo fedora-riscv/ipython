@@ -4,7 +4,7 @@
 
 Name:           ipython
 Version:        0.10
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -18,6 +18,7 @@ BuildRequires:  python-devel
 Requires:       python-foolscap
 Requires:       python-twisted-core
 Requires:       python-zope-interface
+Requires:       python-argparse
 
 
 %description
@@ -153,6 +154,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Mon Apr 01 2013 David Cantrell <dcantrell@redhat.com> - 0.10-3
+- ipython requires the 'argparse' module (#874133)
+
 * Tue Apr 13 2010 Thomas Spura <tomspur@fedoraproject.org> - 0.10-2
 - move docs into a subpackage
 - subpackage wxPython
