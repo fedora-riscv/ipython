@@ -545,7 +545,7 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 - exclude pylab tests for now, as it is broken on python3
 
 * Thu Feb 21 2013 Thomas Spura <tomspur@fedoraproject.org> - 0.13.1-3
-- obsolete old Thu Feb 21 2013 python packages (José Matos, #882724)
+- obsolete old python packages (José Matos, #882724)
 - notebook and gui subpackage require matplotlib not the console anymore (#872176)
 
 * Thu Feb 14 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.13.1-2
