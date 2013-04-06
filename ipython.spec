@@ -317,12 +317,48 @@ rm -rf %{buildroot}
 export PYTHONSTARTUP=""
 #####################################################################
 # Reasons for ignoring tests below:
-# * Currently there aren't any.
+# * FAIL: Verify that plot is available when pylab_import_all = True
+#----------------------------------------------------------------------
+#Traceback (most recent call last):
+#    File "/builddir/build/BUILDROOT/ipython-0.13.2-1.fc20.noarch/usr/lib/python2.7/site-packages/IPython/testing/decorators.py", line 228, in skipper_func
+#        return f(*args, **kwargs)
+#    File "/builddir/build/BUILDROOT/ipython-0.13.2-1.fc20.noarch/usr/lib/python2.7/site-packages/IPython/testing/decorators.py", line 228, in skipper_func
+#        return f(*args, **kwargs)
+#    File "/builddir/build/BUILDROOT/ipython-0.13.2-1.fc20.noarch/usr/lib/python2.7/site-packages/IPython/lib/tests/test_irunner_pylab_magic.py", line 92, in test_pylab_import_all_enabled
+#        self._test_runner(runner,source,output)
+#    File "/builddir/build/BUILDROOT/ipython-0.13.2-1.fc20.noarch/usr/lib/python2.7/site-packages/IPython/lib/tests/test_irunner_pylab_magic.py", line 53, in _test_runner
+#        self.fail(message)
+#    AssertionError: Mismatch in number of lines
+#    Expected:
+#    ~~~~~~~~~
+#    In \[1\]: from IPython\.config\.application import Application
+#    In \[2\]: app = Application\.instance\(\)
+#    In \[3\]: app\.pylab_import_all = True
+#    In \[4\]: pylab
+#    ^Welcome to pylab, a matplotlib-based Python environment
+#    For more information, type 'help\(pylab\)'\.
+#    In \[5\]: ip=get_ipython\(\)
+#    In \[6\]: 'plot' in ip\.user_ns
+#    Out\[6\]: True
+#    Got:
+#    ~~~~~~~~~
+#    In [1]: from IPython.config.application import Application
+#    In [2]: app = Application.instance()
+#    In [3]: app.pylab_import_all = True
+#    In [4]: pylab
+#    Xlib:  extension "RANDR" missing on display ":99".
+#    Welcome to pylab, a matplotlib-based Python environment [backend: GTKAgg].
+#    For more information, type 'help(pylab)'.
+#    In [5]: ip=get_ipython()
+#    In [6]: 'plot' in ip.user_ns
+#    Out[6]: True
+#        """Fail immediately, with the given message."""
+#### -> ignoring test_pylab_import_all_disabled|test_pylab_import_all_enabled
 #####################################################################
 # No *EXCLUDE_TESTS may be empty. Write NONE in such a case.
 %global COMMON_EXCLUDE_TESTS NONE
 %global PYTHON3EXCLUDE_TESTS NONE
-%global PYTHON2EXCLUDE_TESTS NONE
+%global PYTHON2EXCLUDE_TESTS test_pylab_import_all_disabled|test_pylab_import_all_enabled
 
 %global EXCLUDE_TESTS_3 "%{COMMON_EXCLUDE_TESTS}|%{PYTHON3EXCLUDE_TESTS}"
 %global EXCLUDE_TESTS_2 "%{COMMON_EXCLUDE_TESTS}|%{PYTHON2EXCLUDE_TESTS}"
