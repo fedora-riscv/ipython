@@ -15,8 +15,8 @@
 %endif
 
 Name:           ipython
-Version:        0.13.1
-Release:        4%{?dist}
+Version:        0.13.2
+Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -50,6 +50,8 @@ BuildRequires:  pymongo
 BuildRequires:  PyQt4
 # for frontend
 BuildRequires:  python-pygments
+# for running qt/matplotlib tests
+BuildRequires:  xorg-x11-server-Xvfb
 %endif
 
 # Require $current_python_interpreter-ipython
@@ -147,7 +149,7 @@ Provides:       ipython-tests = %{version}-%{release}
 Obsoletes:      ipython-tests < 0.13-1
 %description -n python-ipython-tests
 This package contains the tests of %{name}.
-You can check this way, you can test, if ipython works on your platform.
+You can check this way, if ipython works on your platform.
 
 %package -n python-ipython-doc
 Summary:        Documentation for %{name}
@@ -216,7 +218,7 @@ Requires:       python3-zmq-tests
 Requires:       python3-ipython-console = %{version}-%{release}
 %description -n python3-ipython-tests
 This package contains the tests of %{name}.
-You can check this way, you can test, if ipython works on your platform.
+You can check this way, if ipython works on your platform.
 
 %package -n python3-ipython-doc
 Summary:        Documentation for %{name}
@@ -313,14 +315,25 @@ rm -rf %{buildroot}
 %check
 # Ensure that the user's .pythonrc.py is not invoked during any tests.
 export PYTHONSTARTUP=""
-%global EXCLUDE_TESTS "test_irunner_pylab_magic|test_console_widget|test_kill_ring|test_px_pylab|test_magic_pylab"
+#####################################################################
+# Reasons for ignoring tests below:
+# * Currently there aren't any.
+#####################################################################
+# No *EXCLUDE_TESTS may be empty. Write NONE in such a case.
+%global COMMON_EXCLUDE_TESTS NONE
+%global PYTHON3EXCLUDE_TESTS NONE
+%global PYTHON2EXCLUDE_TESTS NONE
+
+%global EXCLUDE_TESTS_3 "%{COMMON_EXCLUDE_TESTS}|%{PYTHON3EXCLUDE_TESTS}"
+%global EXCLUDE_TESTS_2 "%{COMMON_EXCLUDE_TESTS}|%{PYTHON2EXCLUDE_TESTS}"
 
 %if 0%{?with_python3}
 pushd %{py3dir}
 PYTHONPATH=%{buildroot}%{python3_sitelib} \
     PATH="%{buildroot}%{_bindir}:$PATH" \
     LC_ALL=en_US.UTF-8 \
-    %{buildroot}%{_bindir}/iptest3 -e %{EXCLUDE_TESTS}
+    xvfb-run \
+    %{buildroot}%{_bindir}/iptest3 -v -e %{EXCLUDE_TESTS_3}
 popd
 %endif
 
@@ -328,7 +341,8 @@ popd
 PYTHONPATH=%{buildroot}%{python_sitelib} \
     PATH="%{buildroot}%{_bindir}:$PATH" \
     LC_ALL=en_US.UTF-8 \
-    %{buildroot}%{_bindir}/iptest -e %{EXCLUDE_TESTS}
+    xvfb-run \
+    %{buildroot}%{_bindir}/iptest -v -e %{EXCLUDE_TESTS_2}
 %endif
 
 %files -n python-ipython
@@ -483,6 +497,11 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %endif # with_python3
 
 %changelog
+* Sat Apr  6 2013 Thomas Spura <tomspur@fedoraproject.org> - 0.13.2-1
+- update to 0.13.2 fixes #927169, #947633
+- run tests in xvfb
+- reword description of ipython-tests a bit
+
 * Thu Feb 21 2013 Thomas Spura <tomspur@fedoraproject.org> - 0.13.1-4
 - More changes to build for Python 3 (mostly by Andrew McNabb, #784947)
 - Update package structure of python3-ipython subpackage to match python2-ipython one's
