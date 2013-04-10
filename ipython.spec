@@ -112,8 +112,10 @@ Obsoletes:      ipython < 0.13-1
 %description -n python-ipython
 %{ipython_desc_base}
 
+This package depends on all python-ipython packages but python-ipython-tests.
+
 %package -n python-ipython-console
-Summary:        An enhanced interactive Python shell
+Summary:        An enhanced interactive Python shell for the terminal
 Requires:       python-zmq
 
 
@@ -125,9 +127,10 @@ Requires:       python-simplegeneric
 %description -n python-ipython-console
 %{ipython_desc_base}
 
+This package provides IPython for in a terminal.
 
 %package -n python-ipython-notebook
-Summary:        An enhanced interactive Python shell
+Summary:        An enhanced interactive Python notebook
 Requires:       python-ipython-console = %{version}-%{release}
 Requires:       python-tornado
 Requires:       python-matplotlib
@@ -184,8 +187,10 @@ Requires:       python3-ipython-notebook = %{version}-%{release}
 %description -n python3-ipython
 %{ipython_desc_base}
 
+This package depends on all python3-ipython packages but python3-ipython-tests.
+
 %package -n python3-ipython-console
-Summary:        An enhanced interactive Python shell
+Summary:        An enhanced interactive Python shell for the terminal
 Requires:       python3-zmq
 
 
@@ -197,9 +202,11 @@ Requires:       python3-simplegeneric
 %description -n python3-ipython-console
 %{ipython_desc_base}
 
+This package provides IPython for in a terminal.
+
 
 %package -n python3-ipython-notebook
-Summary:        An enhanced interactive Python shell
+Summary:        An enhanced interactive Python notebook
 Requires:       python3-ipython-console = %{version}-%{release}
 Requires:       python3-tornado
 Requires:       python3-matplotlib
@@ -533,6 +540,9 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %endif # with_python3
 
 %changelog
+* Wed Apr 10 2013 Thomas Spura <tomspur@fedoraproject.org> - 0.13.2-2
+- Improve package descriptions (#950530)
+
 * Sat Apr  6 2013 Thomas Spura <tomspur@fedoraproject.org> - 0.13.2-1
 - update to 0.13.2 fixes #927169, #947633
 - run tests in xvfb
