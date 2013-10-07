@@ -109,6 +109,7 @@ Requires:       python-ipython-gui = %{version}-%{release}
 Requires:       python-ipython-notebook = %{version}-%{release}
 Provides:       ipython = %{version}-%{release}
 Obsoletes:      ipython < 0.13-1
+
 %description -n python-ipython
 %{ipython_desc_base}
 
@@ -118,11 +119,13 @@ This package depends on all python-ipython packages but python-ipython-tests.
 Summary:        An enhanced interactive Python shell for the terminal
 Requires:       python-zmq
 
-
 #bundled libs
 Requires:       pexpect
 Requires:       python-mglob
 Requires:       python-simplegeneric
+
+#For starting ipython from pkg_resources
+Requires:       python-setuptools
 
 %description -n python-ipython-console
 %{ipython_desc_base}
@@ -198,6 +201,9 @@ Requires:       python3-zmq
 Requires:       python3-pexpect
 Requires:       python3-mglob
 Requires:       python3-simplegeneric
+
+#For starting ipython from pkg_resources
+Requires:       python3-setuptools
 
 %description -n python3-ipython-console
 %{ipython_desc_base}
@@ -533,6 +539,7 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %changelog
 * Mon Oct  7 2013 Thomas Spura <tomspur@fedoraproject.org> - 0.13.2-3
 - install into unversioned docdir (#993848)
+- R on setuptools for starting with pkg_resources (#994673)
 
 * Sat Aug 03 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.13.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
