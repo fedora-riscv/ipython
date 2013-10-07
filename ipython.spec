@@ -16,7 +16,7 @@
 
 Name:           ipython
 Version:        0.13.2
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -299,19 +299,10 @@ rm -rf %{buildroot}
 %if 0%{?with_python3}
 pushd %{py3dir}
     %{__python3} setup.py install -O1 --skip-build --root %{buildroot} 
-    # ipython installs docs automatically, but in the wrong place
-    #TODO verify this
-    #mv %{buildroot}%{_datadir}/doc/python3-%{name} \
-    #    %{buildroot}%{_datadir}/doc/python3-%{name}-%{version}
-
 popd
 %endif # with_python3
 
 %{__python} setup.py install -O1 --skip-build --root %{buildroot}
-
-# ipython installs docs automatically, but in the wrong place
-mv %{buildroot}%{_datadir}/doc/%{name} \
-    %{buildroot}%{_datadir}/doc/%{name}-%{version}
 
 
 %clean
@@ -540,6 +531,9 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %endif # with_python3
 
 %changelog
+* Mon Oct  7 2013 Thomas Spura <tomspur@fedoraproject.org> - 0.13.2-3
+- install into unversioned docdir (#993848)
+
 * Sat Aug 03 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.13.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
 
