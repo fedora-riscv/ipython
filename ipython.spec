@@ -360,7 +360,7 @@ export PYTHONSTARTUP=""
 #### -> ignoring test_pylab_import_all_disabled|test_pylab_import_all_enabled
 #####################################################################
 # No *EXCLUDE_TESTS may be empty. Write NONE in such a case.
-%global COMMON_EXCLUDE_TESTS make_label_dec|testIPython|testPython
+%global COMMON_EXCLUDE_TESTS make_label_dec|testIPython|testPython|test_console_starts
 %global PYTHON3EXCLUDE_TESTS NONE
 %global PYTHON2EXCLUDE_TESTS test_pylab_import_all_disabled|test_pylab_import_all_enabled
 
