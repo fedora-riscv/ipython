@@ -29,6 +29,8 @@ Source0:        http://archive.ipython.org/release/%{version}/%{name}-%{version}
 # will be in ipython-0.14
 # https://github.com/ipython/ipython/pull/2681
 Patch0:         ipython-0.13.1-dont-require-matplotlib.patch
+# From upstream's git
+Patch1:         ipython-0.13.2-print-syntax.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -257,6 +259,7 @@ This package contains the gui of %{name}, which requires PyQt.
 %setup -q
 
 %patch0 -p 1
+%patch1 -p 1
 
 # delete bundling libs
 pushd IPython/external
@@ -360,7 +363,7 @@ export PYTHONSTARTUP=""
 #### -> ignoring test_pylab_import_all_disabled|test_pylab_import_all_enabled
 #####################################################################
 # No *EXCLUDE_TESTS may be empty. Write NONE in such a case.
-%global COMMON_EXCLUDE_TESTS make_label_dec|testIPython|testPython|test_console_starts
+%global COMMON_EXCLUDE_TESTS testIPython|testPython|test_console_starts
 %global PYTHON3EXCLUDE_TESTS NONE
 %global PYTHON2EXCLUDE_TESTS test_pylab_import_all_disabled|test_pylab_import_all_enabled
 
