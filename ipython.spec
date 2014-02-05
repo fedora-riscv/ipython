@@ -2,7 +2,8 @@
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
 %endif
 
-%bcond_without run_testsuite
+%bcond_without check
+%bcond_without doc
 
 # where are all the python3 dependencies
 %if 0%{?fedora} > 15
@@ -33,7 +34,10 @@ BuildArch:      noarch
 BuildRequires:  python-devel
 BuildRequires:  python-simplegeneric
 
-%if %{with run_testsuite}
+%if %{with doc}
+%endif
+
+%if %{with check}
 # for checking/testing
 BuildRequires:  python-nose
 BuildRequires:  python-simplegeneric
@@ -164,6 +168,8 @@ Obsoletes:      ipython-tests < 0.13-1
 This package contains the tests of %{name}.
 You can check this way, if ipython works on your platform.
 
+
+%if %{with doc}
 %package -n python-ipython-doc
 Summary:        Documentation for %{name}
 Group:          Documentation
@@ -171,6 +177,7 @@ Provides:       ipython-doc = %{version}-%{release}
 Obsoletes:      ipython-doc < 0.13-1
 %description -n python-ipython-doc
 This package contains the documentation of %{name}.
+%endif
 
 
 %package -n python-ipython-gui
@@ -317,6 +324,19 @@ popd
 %{__python} setup.py build
 
 
+%if %{with doc}
+cd docs
+## TODO: fails with
+##reading sources... [ 71%] api/generated/IPython.utils.io
+##Sphinx error:
+##'ascii' codec can't encode character u'\u0142' in position 204: ordinal not in range(128)
+##make: *** [html] Error 1
+#make html
+mkdir -p build/html/
+cd ..
+%endif
+
+
 %install
 rm -rf %{buildroot}
 %if 0%{?with_python3}
@@ -332,7 +352,7 @@ popd
 rm -rf %{buildroot}
 
 
-%if %{with run_testsuite}
+%if %{with check}
 %check
 # Ensure that the user's .pythonrc.py is not invoked during any tests.
 export PYTHONSTARTUP=""
@@ -464,9 +484,10 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %{python_sitelib}/IPython/*/*/tests
 
 
+%if %{with doc}
 %files -n python-ipython-doc
-# ipython installs its own documentation, but we need to own the directory
-%{_datadir}/doc/%{name}/
+%doc docs/build/html
+%endif
 
 
 %files -n python-ipython-notebook
@@ -545,9 +566,11 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %{python3_sitelib}/IPython/*/*/tests
 
 
+%if %{with doc}
 ##%files -n python3-ipython-doc
 # ipython installs its own documentation, but we need to own the directory
 ##%{_datadir}/doc/python3-%{name}/
+%endif
 
 
 %files -n python3-ipython-notebook
@@ -565,6 +588,8 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 - drop both patches (upstream)
 - add python-ipython-sphinx packages
 - remove %%defattr
+- rename run_testsuite to check
+- building docs (currently fails with an ascii error)
 
 * Mon Oct  7 2013 Thomas Spura <tomspur@fedoraproject.org> - 0.13.2-3
 - install into unversioned docdir (#993848)
