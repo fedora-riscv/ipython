@@ -15,8 +15,8 @@
 %endif
 
 Name:           ipython
-Version:        0.13.2
-Release:        3%{?dist}
+Version:        1.1.0
+Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -26,11 +26,6 @@ Group:          Development/Libraries
 License:        (BSD and MIT and Python) and GPLv2+
 URL:            http://ipython.org/
 Source0:        http://archive.ipython.org/release/%{version}/%{name}-%{version}.tar.gz
-# will be in ipython-0.14
-# https://github.com/ipython/ipython/pull/2681
-Patch0:         ipython-0.13.1-dont-require-matplotlib.patch
-# From upstream's git
-Patch1:         ipython-0.13.2-print-syntax.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -134,6 +129,16 @@ Requires:       python-setuptools
 
 This package provides IPython for in a terminal.
 
+%package -n python-ipython-sphinx
+Summary:        Sphinx directive to support embedded IPython code
+Requires:       python-ipython-console = %{version}-%{release}
+Requires:       python-sphinx
+
+%description -n python-ipython-sphinx
+%{ipython_desc_base}
+
+This package contains the ipython sphinx extension.
+
 %package -n python-ipython-notebook
 Summary:        An enhanced interactive Python notebook
 Requires:       python-ipython-console = %{version}-%{release}
@@ -212,6 +217,16 @@ Requires:       python3-setuptools
 
 This package provides IPython for in a terminal.
 
+%package -n python3-ipython-sphinx
+Summary:        Sphinx directive to support embedded IPython code
+Requires:       python3-ipython-console = %{version}-%{release}
+Requires:       python3-sphinx
+
+%description -n python3-ipython-sphinx
+%{ipython_desc_base}
+
+This package contains the ipython sphinx extension.
+
 
 %package -n python3-ipython-notebook
 Summary:        An enhanced interactive Python notebook
@@ -258,8 +273,7 @@ This package contains the gui of %{name}, which requires PyQt.
 %prep
 %setup -q
 
-%patch0 -p 1
-%patch1 -p 1
+# Patches go here
 
 # delete bundling libs
 pushd IPython/external
@@ -412,6 +426,9 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %{python_sitelib}/IPython/*.py*
 %dir %{python_sitelib}/IPython/kernel
 %{python_sitelib}/IPython/kernel/*.py*
+%{python_sitelib}/IPython/kernel/blocking/
+%{python_sitelib}/IPython/kernel/inprocess/
+%{python_sitelib}/IPython/kernel/ioloop/
 %dir %{python_sitelib}/IPython/testing
 %{python_sitelib}/IPython/testing/*.py*
 %{python_sitelib}/IPython/testing/plugin
@@ -420,21 +437,28 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %{python_sitelib}/IPython/config/
 %{python_sitelib}/IPython/core/
 %{python_sitelib}/IPython/extensions/
-%dir %{python_sitelib}/IPython/frontend/
-%{python_sitelib}/IPython/frontend/terminal/
-%{python_sitelib}/IPython/frontend/__init__.py*
-%{python_sitelib}/IPython/frontend/consoleapp.py*
+#%dir %{python_sitelib}/IPython/frontend/
+#%{python_sitelib}/IPython/frontend/terminal/
+#%{python_sitelib}/IPython/frontend/__init__.py*
+#%{python_sitelib}/IPython/frontend/consoleapp.py*
 %{python_sitelib}/IPython/lib/
 %{python_sitelib}/IPython/nbformat/
+%{python_sitelib}/IPython/nbconvert/
 %{python_sitelib}/IPython/parallel/
 %{python_sitelib}/IPython/scripts/
+%{python_sitelib}/IPython/terminal/
 %{python_sitelib}/IPython/utils/
-%{python_sitelib}/IPython/zmq/
-%exclude %{python_sitelib}/IPython/zmq/gui/
+%{python_sitelib}/IPython/kernel/zmq/
+%exclude %{python_sitelib}/IPython/kernel/zmq/gui/
 
 # tests go into subpackage
 %exclude %{python_sitelib}/IPython/*/tests/
 %exclude %{python_sitelib}/IPython/*/*/tests
+
+
+%files -n python-ipython-sphinx
+%defattr(-,root,root,-)
+%{python_sitelib}/IPython/sphinxext/
 
 
 %files -n python-ipython-tests
@@ -452,13 +476,13 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 
 %files -n python-ipython-notebook
 %defattr(-,root,root,-)
-%{python_sitelib}/IPython/frontend/html/
+%{python_sitelib}/IPython/html/
 
 
 %files -n python-ipython-gui
 %defattr(-,root,root,-)
-%{python_sitelib}/IPython/zmq/gui
-%{python_sitelib}/IPython/frontend/qt/
+%{python_sitelib}/IPython/kernel/zmq/gui
+%{python_sitelib}/IPython/qt/
 
 %if 0%{?with_python3}
 %files -n python3-ipython
@@ -488,6 +512,9 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %dir %{python3_sitelib}/IPython/kernel
 %{python3_sitelib}/IPython/kernel/__pycache__/
 %{python3_sitelib}/IPython/kernel/*.py*
+%{python3_sitelib}/IPython/kernel/blocking/
+%{python3_sitelib}/IPython/kernel/inprocess/
+%{python3_sitelib}/IPython/kernel/ioloop/
 %dir %{python3_sitelib}/IPython/testing
 %{python3_sitelib}/IPython/testing/__pycache__/
 %{python3_sitelib}/IPython/testing/*.py*
@@ -497,22 +524,29 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %{python3_sitelib}/IPython/config/
 %{python3_sitelib}/IPython/core/
 %{python3_sitelib}/IPython/extensions/
-%dir %{python3_sitelib}/IPython/frontend/
-%{python3_sitelib}/IPython/frontend/terminal/
-%{python3_sitelib}/IPython/frontend/__pycache__/
-%{python3_sitelib}/IPython/frontend/__init__.py*
-%{python3_sitelib}/IPython/frontend/consoleapp.py*
+#%dir %{python3_sitelib}/IPython/frontend/
+#%{python3_sitelib}/IPython/frontend/terminal/
+#%{python3_sitelib}/IPython/frontend/__pycache__/
+#%{python3_sitelib}/IPython/frontend/__init__.py*
+#%{python3_sitelib}/IPython/frontend/consoleapp.py*
 %{python3_sitelib}/IPython/lib/
 %{python3_sitelib}/IPython/nbformat/
+%{python3_sitelib}/IPython/nbconvert/
 %{python3_sitelib}/IPython/parallel/
 %{python3_sitelib}/IPython/scripts/
+%{python3_sitelib}/IPython/terminal/
 %{python3_sitelib}/IPython/utils/
-%{python3_sitelib}/IPython/zmq/
-%exclude %{python3_sitelib}/IPython/zmq/gui/
+%{python3_sitelib}/IPython/kernel/zmq/
+%exclude %{python3_sitelib}/IPython/kernel/zmq/gui/
 
 # tests go into subpackage
 %exclude %{python3_sitelib}/IPython/*/tests/
 %exclude %{python3_sitelib}/IPython/*/*/tests
+
+
+%files -n python3-ipython-sphinx
+%defattr(-,root,root,-)
+%{python3_sitelib}/IPython/sphinxext/
 
 
 %files -n python3-ipython-tests
@@ -530,16 +564,21 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 
 %files -n python3-ipython-notebook
 %defattr(-,root,root,-)
-%{python3_sitelib}/IPython/frontend/html/
+%{python3_sitelib}/IPython/html/
 
 
 %files -n python3-ipython-gui
 %defattr(-,root,root,-)
-%{python3_sitelib}/IPython/zmq/gui
-%{python3_sitelib}/IPython/frontend/qt/
+%{python3_sitelib}/IPython/kernel/zmq/gui
+%{python3_sitelib}/IPython/qt/
 %endif # with_python3
 
 %changelog
+* Wed Feb  5 2014 Thomas Spura <tomspur@fedoraproject.org> - 1.1.0-1
+- update to 1.1.0
+- drop both patches (upstream)
+- add python-ipython-sphinx packages
+
 * Mon Oct  7 2013 Thomas Spura <tomspur@fedoraproject.org> - 0.13.2-3
 - install into unversioned docdir (#993848)
 - R on setuptools for starting with pkg_resources (#994673)
