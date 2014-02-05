@@ -33,6 +33,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 BuildRequires:  python-devel
 BuildRequires:  python-simplegeneric
+BuildRequires:  python-jsonschema
 
 %if %{with doc}
 %endif
@@ -65,6 +66,7 @@ BuildRequires:  python3-devel
 BuildRequires:  python3-nose
 BuildRequires:  python3-mglob
 BuildRequires:  python3-simplegeneric
+BuildRequires:  python3-jsonschema
 # "Tools and libraries available at test time:"
 BuildRequires:  python3-zmq
 BuildRequires:  python3-zmq-tests
@@ -124,6 +126,7 @@ Requires:       python-zmq
 Requires:       pexpect
 Requires:       python-mglob
 Requires:       python-simplegeneric
+Requires:       python-jsonschema
 
 #For starting ipython from pkg_resources
 Requires:       python-setuptools
@@ -215,6 +218,7 @@ Requires:       python3-zmq
 Requires:       python3-pexpect
 Requires:       python3-mglob
 Requires:       python3-simplegeneric
+Requires:       python3-jsonschema
 
 #For starting ipython from pkg_resources
 Requires:       python3-setuptools
@@ -292,6 +296,7 @@ rm decorators/_decorators.py
 
 # other packages exist in fedora
 rm simplegeneric/_simplegeneric.py
+rm jsonschema/_jsonschema.py
 %if ! 0%{?with_python3}
 # bundle this on python3 in experimental version for now
 rm pexpect/_pexpect.py
@@ -590,6 +595,7 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 - remove %%defattr
 - rename run_testsuite to check
 - building docs (currently fails with an ascii error)
+- unbundle jsonschema
 
 * Mon Oct  7 2013 Thomas Spura <tomspur@fedoraproject.org> - 0.13.2-3
 - install into unversioned docdir (#993848)
