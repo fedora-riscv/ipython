@@ -403,10 +403,8 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %endif
 
 %files -n python-ipython
-%defattr(-,root,root,-)
 
 %files -n python-ipython-console
-%defattr(-,root,root,-)
 %{_bindir}/ipython
 %{_bindir}/irunner
 %{_bindir}/pycolor
@@ -457,39 +455,32 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 
 
 %files -n python-ipython-sphinx
-%defattr(-,root,root,-)
 %{python_sitelib}/IPython/sphinxext/
 
 
 %files -n python-ipython-tests
-%defattr(-,root,root,-)
 %{_bindir}/iptest
 %{python_sitelib}/IPython/*/tests
 %{python_sitelib}/IPython/*/*/tests
 
 
 %files -n python-ipython-doc
-%defattr(-,root,root,-)
 # ipython installs its own documentation, but we need to own the directory
 %{_datadir}/doc/%{name}
 
 
 %files -n python-ipython-notebook
-%defattr(-,root,root,-)
 %{python_sitelib}/IPython/html/
 
 
 %files -n python-ipython-gui
-%defattr(-,root,root,-)
 %{python_sitelib}/IPython/kernel/zmq/gui
 %{python_sitelib}/IPython/qt/
 
 %if 0%{?with_python3}
 %files -n python3-ipython
-%defattr(-,root,root,-)
 
 %files -n python3-ipython-console
-%defattr(-,root,root,-)
 %{_bindir}/ipython3
 %{_bindir}/irunner3
 %{_bindir}/pycolor3
@@ -545,30 +536,25 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 
 
 %files -n python3-ipython-sphinx
-%defattr(-,root,root,-)
 %{python3_sitelib}/IPython/sphinxext/
 
 
 %files -n python3-ipython-tests
-%defattr(-,root,root,-)
 %{_bindir}/iptest3
 %{python3_sitelib}/IPython/*/tests
 %{python3_sitelib}/IPython/*/*/tests
 
 
 ##%files -n python3-ipython-doc
-##%defattr(-,root,root,-)
 # ipython installs its own documentation, but we need to own the directory
 ##%{_datadir}/doc/python3-%{name}-%{version}
 
 
 %files -n python3-ipython-notebook
-%defattr(-,root,root,-)
 %{python3_sitelib}/IPython/html/
 
 
 %files -n python3-ipython-gui
-%defattr(-,root,root,-)
 %{python3_sitelib}/IPython/kernel/zmq/gui
 %{python3_sitelib}/IPython/qt/
 %endif # with_python3
@@ -578,6 +564,7 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 - update to 1.1.0
 - drop both patches (upstream)
 - add python-ipython-sphinx packages
+- remove %%defattr
 
 * Mon Oct  7 2013 Thomas Spura <tomspur@fedoraproject.org> - 0.13.2-3
 - install into unversioned docdir (#993848)
