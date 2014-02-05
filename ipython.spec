@@ -466,7 +466,7 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 
 %files -n python-ipython-doc
 # ipython installs its own documentation, but we need to own the directory
-%{_datadir}/doc/%{name}
+%{_datadir}/doc/%{name}/
 
 
 %files -n python-ipython-notebook
@@ -547,7 +547,7 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 
 ##%files -n python3-ipython-doc
 # ipython installs its own documentation, but we need to own the directory
-##%{_datadir}/doc/python3-%{name}-%{version}
+##%{_datadir}/doc/python3-%{name}/
 
 
 %files -n python3-ipython-notebook
