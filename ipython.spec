@@ -305,7 +305,7 @@ rm jsonschema/_jsonschema.py
 #rm jsonpointer/_jsonpointer.py
 rm pexpect/_pexpect.py
 
-# available at pypi
+#WAITFOR python3 support #1016466
 #rm path/_path.py
 
 rm simplegeneric/_simplegeneric.py
