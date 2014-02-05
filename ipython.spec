@@ -291,24 +291,20 @@ pushd IPython/external
 # python's own modules
 rm argparse/_argparse.py
 
+# rm decorator/_decorator.py
+
 # use decorators of numpy
 rm decorators/_decorators.py
 
-# other packages exist in fedora
-rm simplegeneric/_simplegeneric.py
 rm jsonschema/_jsonschema.py
 #WAITFOR python3 support #1061622
 #rm jsonpointer/_jsonpointer.py
-%if ! 0%{?with_python3}
-# bundle this on python3 in experimental version for now
 rm pexpect/_pexpect.py
-%endif
-
-# rejected in a PEP, probably no upstream
-#rm Itpl/_Itpl.py
 
 # available at pypi
 #rm path/_path.py
+
+rm simplegeneric/_simplegeneric.py
 
 # ssh modules from paramiko
 
