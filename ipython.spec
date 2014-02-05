@@ -33,6 +33,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 BuildRequires:  python-devel
 BuildRequires:  python-simplegeneric
+BuildRequires:  python-decorator
 BuildRequires:  python-jsonschema
 
 %if %{with doc}
@@ -66,6 +67,7 @@ BuildRequires:  python3-devel
 BuildRequires:  python3-nose
 BuildRequires:  python3-mglob
 BuildRequires:  python3-simplegeneric
+BuildRequires:  python3-decorator
 BuildRequires:  python3-jsonschema
 # "Tools and libraries available at test time:"
 BuildRequires:  python3-zmq
@@ -126,6 +128,7 @@ Requires:       python-zmq
 Requires:       pexpect
 Requires:       python-mglob
 Requires:       python-simplegeneric
+Requires:       python-decorator
 Requires:       python-jsonschema
 
 #For starting ipython from pkg_resources
@@ -218,6 +221,7 @@ Requires:       python3-zmq
 Requires:       python3-pexpect
 Requires:       python3-mglob
 Requires:       python3-simplegeneric
+Requires:       python3-decorator
 Requires:       python3-jsonschema
 
 #For starting ipython from pkg_resources
@@ -291,7 +295,7 @@ pushd IPython/external
 # python's own modules
 rm argparse/_argparse.py
 
-# rm decorator/_decorator.py
+rm decorator/_decorator.py
 
 # use decorators of numpy
 rm decorators/_decorators.py
@@ -594,6 +598,7 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 - rename run_testsuite to check
 - building docs (currently fails with an ascii error)
 - unbundle jsonschema
+- unbundle decorator
 
 * Mon Oct  7 2013 Thomas Spura <tomspur@fedoraproject.org> - 0.13.2-3
 - install into unversioned docdir (#993848)
