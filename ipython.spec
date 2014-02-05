@@ -297,6 +297,8 @@ rm decorators/_decorators.py
 # other packages exist in fedora
 rm simplegeneric/_simplegeneric.py
 rm jsonschema/_jsonschema.py
+#WAITFOR python3 support #1061622
+#rm jsonpointer/_jsonpointer.py
 %if ! 0%{?with_python3}
 # bundle this on python3 in experimental version for now
 rm pexpect/_pexpect.py
