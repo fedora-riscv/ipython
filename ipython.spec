@@ -292,6 +292,8 @@ This package contains the gui of %{name}, which requires PyQt.
 
 # delete bundling libs
 pushd IPython/external
+ls -l
+ls -l *
 # python's own modules
 rm argparse/_argparse.py
 
