@@ -249,6 +249,12 @@ Requires:       python3-ipython-console = %{version}-%{release}
 Requires:       python3-tornado
 Requires:       python3-matplotlib
 
+#################################################
+### Bundled stuff from the notebook goes here ###
+#################################################
+BuildRequires:  fontawesome-fonts-web
+Requires:       fontawesome-fonts-web
+
 %description -n python3-ipython-notebook
 %{ipython_desc_base}
 
@@ -312,6 +318,22 @@ rm simplegeneric/_simplegeneric.py
 
 # ssh modules from paramiko
 
+popd
+
+# unbundle components
+pushd IPython/html/static/components
+    pushd font-awesome
+        rm -rf font
+        ln -s %{_datadir}/fonts/fontawesome font
+        for folder in css less scss; do
+            rm -rf $folder
+            ln -s %{_datadir}/font-awesome-*/${folder}
+        done
+        ls -l
+    popd
+ls -l
+ls -l *
+asdf
 popd
 
 %if 0%{?with_python3}
@@ -593,6 +615,7 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 * Thu Apr  3 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.0.0-1
 - update to 2.0.0
 - bundled argparse has been dropped
+- unbundle fontawesome-fonts{,-web}
 
 * Wed Feb  5 2014 Thomas Spura <tomspur@fedoraproject.org> - 1.1.0-1
 - update to 1.1.0
