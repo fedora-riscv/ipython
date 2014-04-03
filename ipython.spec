@@ -16,7 +16,7 @@
 %endif
 
 Name:           ipython
-Version:        1.1.0
+Version:        2.0.0
 Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
@@ -294,8 +294,6 @@ This package contains the gui of %{name}, which requires PyQt.
 pushd IPython/external
 ls -l
 ls -l *
-# python's own modules
-rm argparse/_argparse.py
 
 rm decorator/_decorator.py
 
@@ -592,6 +590,10 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %endif # with_python3
 
 %changelog
+* Thu Apr  3 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.0.0-1
+- update to 2.0.0
+- bundled argparse has been dropped
+
 * Wed Feb  5 2014 Thomas Spura <tomspur@fedoraproject.org> - 1.1.0-1
 - update to 1.1.0
 - drop both patches (upstream)
