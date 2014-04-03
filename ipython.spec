@@ -259,6 +259,10 @@ BuildRequires:  fontawesome-fonts-web
 Requires:       fontawesome-fonts-web
 BuildRequires:  nodejs-requirejs
 Requires:       nodejs-requirejs
+BuildRequires:  nodejs-underscore
+Requires:       nodejs-underscore
+BuildRequires:  nodejs-highlight-js
+Requires:       nodejs-highlight-js
 
 
 %description -n python3-ipython-notebook
@@ -337,7 +341,8 @@ pushd IPython/html/static/components
         done
         ls -l
     popd
-    for folder in requirejs; do
+# TODO backbone bootstrap google-caja jquery jquery-ui marked
+    for folder in highlight.js requirejs underscore; do
         rm -r ${folder}
         ln -s %{nodejs_sitelib}/${folder}
     done
@@ -627,6 +632,8 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 - bundled argparse has been dropped
 - unbundle fontawesome-fonts{,-web}
 - unbundle nodejs-requirejs
+- unbundle nodejs-underscore
+- unbundle nodejs-highlight-js
 
 * Wed Feb  5 2014 Thomas Spura <tomspur@fedoraproject.org> - 1.1.0-1
 - update to 1.1.0
