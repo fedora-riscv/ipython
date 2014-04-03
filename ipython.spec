@@ -252,8 +252,14 @@ Requires:       python3-matplotlib
 #################################################
 ### Bundled stuff from the notebook goes here ###
 #################################################
+# We need to know nodejs_sitearch and lib
+BuildRequires:  nodejs-packaging
+
 BuildRequires:  fontawesome-fonts-web
 Requires:       fontawesome-fonts-web
+BuildRequires:  nodejs-requirejs
+Requires:       nodejs-requirejs
+
 
 %description -n python3-ipython-notebook
 %{ipython_desc_base}
@@ -331,6 +337,10 @@ pushd IPython/html/static/components
         done
         ls -l
     popd
+    for folder in requirejs; do
+        rm -r ${folder}
+        ln -s %{nodejs_sitelib}/${folder}
+    done
 ls -l
 ls -l *
 asdf
@@ -616,6 +626,7 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 - update to 2.0.0
 - bundled argparse has been dropped
 - unbundle fontawesome-fonts{,-web}
+- unbundle nodejs-requirejs
 
 * Wed Feb  5 2014 Thomas Spura <tomspur@fedoraproject.org> - 1.1.0-1
 - update to 1.1.0
