@@ -358,7 +358,7 @@ popd
 %if 0%{?with_python3}
 rm -rf %{py3dir}
 cp -a . %{py3dir}
-find %{py3dir} -name '*.py' | xargs sed -i '1s|^#!python|#!%{__python3}|'
+find %{py3dir} -name '*.py' -print0 | xargs -0 sed -i '1s|^#!python|#!%{__python3}|'
 %endif # with_python3
 
 
@@ -633,6 +633,7 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %changelog
 * Tue Apr 22 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.0.0-2
 - add BR/R python-path
+- fix python -> python3 sed replacement
 
 * Thu Apr  3 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.0.0-1
 - update to 2.0.0
