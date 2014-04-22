@@ -35,6 +35,7 @@ BuildRequires:  python-devel
 BuildRequires:  python-simplegeneric
 BuildRequires:  python-decorator
 BuildRequires:  python-jsonschema
+BuildRequires:  python-path
 
 %if %{with doc}
 %endif
@@ -66,6 +67,7 @@ BuildRequires:  python3-devel
 # for checking/testing
 BuildRequires:  python3-nose
 BuildRequires:  python3-mglob
+#BuildRequires:  python3-path
 BuildRequires:  python3-simplegeneric
 BuildRequires:  python3-decorator
 BuildRequires:  python3-jsonschema
@@ -127,6 +129,7 @@ Requires:       python-zmq
 #bundled libs
 Requires:       pexpect
 Requires:       python-mglob
+Requires:       python-path
 Requires:       python-simplegeneric
 Requires:       python-decorator
 Requires:       python-jsonschema
@@ -220,6 +223,7 @@ Requires:       python3-zmq
 #bundled libs
 Requires:       python3-pexpect
 Requires:       python3-mglob
+#Requires:       python3-path
 Requires:       python3-simplegeneric
 Requires:       python3-decorator
 Requires:       python3-jsonschema
@@ -627,6 +631,9 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %endif # with_python3
 
 %changelog
+* Tue Apr 22 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.0.0-2
+- add BR/R python-path
+
 * Thu Apr  3 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.0.0-1
 - update to 2.0.0
 - bundled argparse has been dropped
