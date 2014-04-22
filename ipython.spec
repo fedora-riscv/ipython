@@ -404,70 +404,28 @@ rm -rf %{buildroot}
 %check
 # Ensure that the user's .pythonrc.py is not invoked during any tests.
 export PYTHONSTARTUP=""
-#####################################################################
-# Reasons for ignoring tests below:
-# * FAIL: Verify that plot is available when pylab_import_all = True
-#----------------------------------------------------------------------
-#Traceback (most recent call last):
-#    File "/builddir/build/BUILDROOT/ipython-0.13.2-1.fc20.noarch/usr/lib/python2.7/site-packages/IPython/testing/decorators.py", line 228, in skipper_func
-#        return f(*args, **kwargs)
-#    File "/builddir/build/BUILDROOT/ipython-0.13.2-1.fc20.noarch/usr/lib/python2.7/site-packages/IPython/testing/decorators.py", line 228, in skipper_func
-#        return f(*args, **kwargs)
-#    File "/builddir/build/BUILDROOT/ipython-0.13.2-1.fc20.noarch/usr/lib/python2.7/site-packages/IPython/lib/tests/test_irunner_pylab_magic.py", line 92, in test_pylab_import_all_enabled
-#        self._test_runner(runner,source,output)
-#    File "/builddir/build/BUILDROOT/ipython-0.13.2-1.fc20.noarch/usr/lib/python2.7/site-packages/IPython/lib/tests/test_irunner_pylab_magic.py", line 53, in _test_runner
-#        self.fail(message)
-#    AssertionError: Mismatch in number of lines
-#    Expected:
-#    ~~~~~~~~~
-#    In \[1\]: from IPython\.config\.application import Application
-#    In \[2\]: app = Application\.instance\(\)
-#    In \[3\]: app\.pylab_import_all = True
-#    In \[4\]: pylab
-#    ^Welcome to pylab, a matplotlib-based Python environment
-#    For more information, type 'help\(pylab\)'\.
-#    In \[5\]: ip=get_ipython\(\)
-#    In \[6\]: 'plot' in ip\.user_ns
-#    Out\[6\]: True
-#    Got:
-#    ~~~~~~~~~
-#    In [1]: from IPython.config.application import Application
-#    In [2]: app = Application.instance()
-#    In [3]: app.pylab_import_all = True
-#    In [4]: pylab
-#    Xlib:  extension "RANDR" missing on display ":99".
-#    Welcome to pylab, a matplotlib-based Python environment [backend: GTKAgg].
-#    For more information, type 'help(pylab)'.
-#    In [5]: ip=get_ipython()
-#    In [6]: 'plot' in ip.user_ns
-#    Out[6]: True
-#        """Fail immediately, with the given message."""
-#### -> ignoring test_pylab_import_all_disabled|test_pylab_import_all_enabled
-#####################################################################
-# No *EXCLUDE_TESTS may be empty. Write NONE in such a case.
-%global COMMON_EXCLUDE_TESTS testIPython|testPython|test_console_starts
-%global PYTHON3EXCLUDE_TESTS NONE
-%global PYTHON2EXCLUDE_TESTS test_pylab_import_all_disabled|test_pylab_import_all_enabled
-
-%global EXCLUDE_TESTS_3 "%{COMMON_EXCLUDE_TESTS}|%{PYTHON3EXCLUDE_TESTS}"
-%global EXCLUDE_TESTS_2 "%{COMMON_EXCLUDE_TESTS}|%{PYTHON2EXCLUDE_TESTS}"
-
 %if 0%{?with_python3}
 pushd %{py3dir}
-PYTHONPATH=%{buildroot}%{python3_sitelib} \
-    PATH="%{buildroot}%{_bindir}:$PATH" \
-    LC_ALL=en_US.UTF-8 \
-    xvfb-run \
-    %{buildroot}%{_bindir}/iptest3 -v -e %{EXCLUDE_TESTS_3}
+    mkdir run_tests
+    pushd run_tests
+    PYTHONPATH=%{buildroot}%{python3_sitelib} \
+        PATH="%{buildroot}%{_bindir}:$PATH" \
+        LC_ALL=en_US.UTF-8 \
+        xvfb-run \
+        %{buildroot}%{_bindir}/iptest3
+    popd
 popd
 %endif
 
 # TODO no ipython in path in koji
-PYTHONPATH=%{buildroot}%{python_sitelib} \
-    PATH="%{buildroot}%{_bindir}:$PATH" \
-    LC_ALL=en_US.UTF-8 \
-    xvfb-run \
-    %{buildroot}%{_bindir}/iptest -v -e %{EXCLUDE_TESTS_2}
+mkdir run_tests
+pushd run_tests
+    PYTHONPATH=%{buildroot}%{python_sitelib} \
+        PATH="%{buildroot}%{_bindir}:$PATH" \
+        LC_ALL=en_US.UTF-8 \
+        xvfb-run \
+        %{buildroot}%{_bindir}/iptest2
+popd
 %endif
 
 %files -n python-ipython
@@ -634,6 +592,7 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 * Tue Apr 22 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.0.0-2
 - add BR/R python-path
 - fix python -> python3 sed replacement
+- fix running testsuite
 
 * Thu Apr  3 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.0.0-1
 - update to 2.0.0
