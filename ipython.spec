@@ -432,18 +432,16 @@ popd
 
 %files -n python-ipython-console
 %{_bindir}/ipython
-%{_bindir}/irunner
-%{_bindir}/pycolor
+%{_bindir}/ipython2
 %{_bindir}/ipcluster
+%{_bindir}/ipcluster2
 %{_bindir}/ipcontroller
+%{_bindir}/ipcontroller2
 %{_bindir}/ipengine
-%{_bindir}/iplogger
+%{_bindir}/ipengine2
 %{_mandir}/man*/ipython.*
 %{_mandir}/man*/ipengine*
-%{_mandir}/man*/irunner*
-%{_mandir}/man*/pycolor*
 %{_mandir}/man*/ipc*
-%{_mandir}/man*/iplogger*
 
 %dir %{python_sitelib}/IPython
 %{python_sitelib}/IPython/external
@@ -451,6 +449,7 @@ popd
 %dir %{python_sitelib}/IPython/kernel
 %{python_sitelib}/IPython/kernel/*.py*
 %{python_sitelib}/IPython/kernel/blocking/
+%{python_sitelib}/IPython/kernel/comm/
 %{python_sitelib}/IPython/kernel/inprocess/
 %{python_sitelib}/IPython/kernel/ioloop/
 %dir %{python_sitelib}/IPython/testing
@@ -469,7 +468,6 @@ popd
 %{python_sitelib}/IPython/nbformat/
 %{python_sitelib}/IPython/nbconvert/
 %{python_sitelib}/IPython/parallel/
-%{python_sitelib}/IPython/scripts/
 %{python_sitelib}/IPython/terminal/
 %{python_sitelib}/IPython/utils/
 %{python_sitelib}/IPython/kernel/zmq/
@@ -486,6 +484,7 @@ popd
 
 %files -n python-ipython-tests
 %{_bindir}/iptest
+%{_bindir}/iptest2
 %{python_sitelib}/IPython/*/tests
 %{python_sitelib}/IPython/*/*/tests
 
@@ -509,19 +508,13 @@ popd
 
 %files -n python3-ipython-console
 %{_bindir}/ipython3
-%{_bindir}/irunner3
-%{_bindir}/pycolor3
 %{_bindir}/ipcluster3
 %{_bindir}/ipcontroller3
 %{_bindir}/ipengine3
-%{_bindir}/iplogger3
 # no man pages (yet?)
 #%{_mandir}/man*/ipython3.*
 #%{_mandir}/man*/ipengine3*
-#%{_mandir}/man*/irunner3*
-#%{_mandir}/man*/pycolor3*
 #%{_mandir}/man*/ipc*3*
-#%{_mandir}/man*/iplogger3*
 
 %dir %{python3_sitelib}/IPython
 %{python3_sitelib}/IPython/external
@@ -531,6 +524,7 @@ popd
 %{python3_sitelib}/IPython/kernel/__pycache__/
 %{python3_sitelib}/IPython/kernel/*.py*
 %{python3_sitelib}/IPython/kernel/blocking/
+%{python3_sitelib}/IPython/kernel/comm/
 %{python3_sitelib}/IPython/kernel/inprocess/
 %{python3_sitelib}/IPython/kernel/ioloop/
 %dir %{python3_sitelib}/IPython/testing
@@ -551,7 +545,6 @@ popd
 %{python3_sitelib}/IPython/nbformat/
 %{python3_sitelib}/IPython/nbconvert/
 %{python3_sitelib}/IPython/parallel/
-%{python3_sitelib}/IPython/scripts/
 %{python3_sitelib}/IPython/terminal/
 %{python3_sitelib}/IPython/utils/
 %{python3_sitelib}/IPython/kernel/zmq/
@@ -593,6 +586,7 @@ popd
 - add BR/R python-path
 - fix python -> python3 sed replacement
 - fix running testsuite
+- fix %%files
 
 * Thu Apr  3 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.0.0-1
 - update to 2.0.0
