@@ -364,7 +364,7 @@ ls -l *
 # unbundle components
 pushd IPython/html/static/components
 %do_global_symlinking
-asdf
+#asdf
 popd
 
 %if 0%{?with_python3}
@@ -407,6 +407,20 @@ popd
 
 %{__python} setup.py install -O1 --skip-build --root %{buildroot}
 
+# unbundle components again...
+pushd %{buildroot}%{python_sitelib}
+    pushd IPython/html/static/components
+        %do_global_symlinking
+    popd
+popd
+
+%if 0%{?with_python3}
+pushd %{buildroot}%{python3_sitelib}
+    pushd IPython/html/static/components
+        %do_global_symlinking
+    popd
+popd
+%endif # with_python3
 
 %clean
 rm -rf %{buildroot}
