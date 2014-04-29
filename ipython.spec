@@ -335,32 +335,35 @@ rm simplegeneric/_simplegeneric.py
 
 popd
 
+%define do_global_symlinking() \
+    pushd font-awesome \
+        rm -rf font \
+        ln -s %{_datadir}/fonts/fontawesome font \
+        for folder in css less scss; do \
+            rm -rf $folder \
+            ln -s %{_datadir}/font-awesome-*/${folder} \
+        done \
+        ls -l \
+    popd \
+# TODO backbone bootstrap google-caja jquery jquery-ui marked \
+    #for folder in highlight.js requirejs underscore; do \
+    for folder in requirejs underscore; do \
+        rm -r ${folder} \
+        ln -s %{nodejs_sitelib}/${folder} \
+    done \
+# Work around highlight packaging (ipython requires it in build/ subfolder...) \
+# Unbundle JS stuff WITHIN build subfolder (ipython requires it there...) \
+    for folder in highlight.js; do \
+        rm -r $folder \
+        mkdir -p $folder \
+        ln -s %{_jsdir}/$folder/ $folder/build \
+    done \
+ls -l \
+ls -l *
+
 # unbundle components
 pushd IPython/html/static/components
-    pushd font-awesome
-        rm -rf font
-        ln -s %{_datadir}/fonts/fontawesome font
-        for folder in css less scss; do
-            rm -rf $folder
-            ln -s %{_datadir}/font-awesome-*/${folder}
-        done
-        ls -l
-    popd
-# TODO backbone bootstrap google-caja jquery jquery-ui marked
-    #for folder in highlight.js requirejs underscore; do
-    for folder in requirejs underscore; do
-        rm -r ${folder}
-        ln -s %{nodejs_sitelib}/${folder}
-    done
-# Work around highlight packaging (ipython requires it in build/ subfolder...)
-# Unbundle JS stuff WITHIN build subfolder (ipython requires it there...)
-    for folder in highlight.js; do
-        rm -r $folder
-        mkdir -p $folder
-        ln -s %{_jsdir}/$folder/ $folder/build
-    done
-ls -l
-ls -l *
+%do_global_symlinking
 asdf
 popd
 
