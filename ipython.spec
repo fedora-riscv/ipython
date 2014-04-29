@@ -258,6 +258,7 @@ Requires:       python3-matplotlib
 #################################################
 # We need to know nodejs_sitearch and lib
 BuildRequires:  nodejs-packaging
+BuildRequires:  web-assets-devel
 
 BuildRequires:  fontawesome-fonts-web
 Requires:       fontawesome-fonts-web
@@ -265,8 +266,8 @@ BuildRequires:  nodejs-requirejs
 Requires:       nodejs-requirejs
 BuildRequires:  nodejs-underscore
 Requires:       nodejs-underscore
-BuildRequires:  nodejs-highlight-js
-Requires:       nodejs-highlight-js
+BuildRequires:  js-highlight
+Requires:       js-highlight
 
 
 %description -n python3-ipython-notebook
@@ -346,9 +347,17 @@ pushd IPython/html/static/components
         ls -l
     popd
 # TODO backbone bootstrap google-caja jquery jquery-ui marked
-    for folder in highlight.js requirejs underscore; do
+    #for folder in highlight.js requirejs underscore; do
+    for folder in requirejs underscore; do
         rm -r ${folder}
         ln -s %{nodejs_sitelib}/${folder}
+    done
+# Work around highlight packaging (ipython requires it in build/ subfolder...)
+# Unbundle JS stuff WITHIN build subfolder (ipython requires it there...)
+    for folder in highlight.js; do
+        rm -r $folder
+        mkdir -p $folder
+        ln -s %{_jsdir}/$folder/ $folder/build
     done
 ls -l
 ls -l *
@@ -587,6 +596,7 @@ popd
 - fix python -> python3 sed replacement
 - fix running testsuite
 - fix %%files
+- Unbundle js-highlight
 
 * Thu Apr  3 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.0.0-1
 - update to 2.0.0
