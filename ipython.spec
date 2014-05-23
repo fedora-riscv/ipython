@@ -52,6 +52,7 @@ BuildRequires:  python-matplotlib
 #BuildRequires:  python-matplotlib-tk
 BuildRequires:  pymongo
 BuildRequires:  PyQt4
+BuildRequires:  python-mock
 # for frontend
 BuildRequires:  python-pygments
 # for running qt/matplotlib tests
