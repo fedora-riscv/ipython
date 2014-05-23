@@ -215,13 +215,13 @@ Requires:       python3-zmq
 BuildRequires:  python3-decorator
 BuildRequires:  python3-jsonschema
 BuildRequires:  python3-jsonpointer
-#BuildRequires:  python3-path
+BuildRequires:  python3-path
 BuildRequires:  python3-pexpect
 BuildRequires:  python3-simplegeneric
 Requires:       python3-decorator
 Requires:       python3-jsonpointer
 Requires:       python3-jsonschema
-#Requires:       python3-path
+Requires:       python3-path
 Requires:       python3-pexpect
 Requires:       python3-simplegeneric
 
@@ -344,8 +344,7 @@ rm jsonschema/_jsonschema.py
 rm jsonpointer/_jsonpointer.py
 rm pexpect/_pexpect.py
 
-#WAITFOR python3 support #1016466
-#rm path/_path.py
+rm path/_path.py
 
 rm simplegeneric/_simplegeneric.py
 
