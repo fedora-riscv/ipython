@@ -32,6 +32,9 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
 BuildRequires:  python-devel
+%if 0%{?with_python3}
+BuildRequires:  python3-devel
+%endif
 
 %if %{with doc}
 %endif
@@ -39,16 +42,28 @@ BuildRequires:  python-devel
 %if %{with check}
 # for checking/testing
 BuildRequires:  python-nose
-# "Tools and libraries available at test time:"
-BuildRequires:  python-zmq
-BuildRequires:  python-zmq-tests
-BuildRequires:  pexpect
 BuildRequires:  python-matplotlib
+BuildRequires:  python-mock
 BuildRequires:  pymongo
 BuildRequires:  PyQt4
-BuildRequires:  python-mock
+BuildRequires:  python-tornado
+BuildRequires:  python-zmq
+BuildRequires:  python-zmq-tests
 # for frontend
 BuildRequires:  python-pygments
+
+%if 0%{?with_python3}
+BuildRequires:  python3-nose
+BuildRequires:  python3-matplotlib
+BuildRequires:  python3-pymongo
+BuildRequires:  python3-PyQt4
+BuildRequires:  python3-tornado
+BuildRequires:  python3-zmq
+BuildRequires:  python3-zmq-tests
+# for frontend
+BuildRequires:  python3-pygments
+%endif
+
 # for running qt/matplotlib tests
 BuildRequires:  xorg-x11-server-Xvfb
 %endif
@@ -56,22 +71,6 @@ BuildRequires:  xorg-x11-server-Xvfb
 # Require $current_python_interpreter-ipython
 Requires:       python-ipython
 
-# add python3 packages
-%if 0%{?with_python3}
-BuildRequires:  python3-devel
-# "Tools and libraries available at test time:"
-BuildRequires:  python3-zmq
-BuildRequires:  python3-zmq-tests
-BuildRequires:  python3-tornado
-BuildRequires:  python3-pexpect
-BuildRequires:  python3-matplotlib
-BuildRequires:  python3-pymongo
-BuildRequires:  python3-PyQt4
-# for frontend
-BuildRequires:  python3-pygments
-
-Requires:       python3-zmq
-%endif
 
 %global ipython_desc_base \
 IPython provides a replacement for the interactive Python interpreter with\
@@ -214,7 +213,6 @@ Requires:       python3-zmq
 
 
 # bundled python packages
-BuildRequires:  python3-nose
 BuildRequires:  python3-decorator
 BuildRequires:  python3-jsonschema
 BuildRequires:  python3-jsonpointer
