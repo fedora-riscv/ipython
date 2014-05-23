@@ -271,6 +271,26 @@ Requires:       js-highlight
 BuildRequires:  js-marked
 Requires:       js-marked
 
+# Temporal bundling allowed in:
+# https://fedorahosted.org/fpc/ticket/416
+#############################################################################
+# jquery temporary exception lasts until the release that jquery enters
+# the repository. For now, plan on temporary exception for other libraries
+# will expire one release after jquery unbundling has entered the repository.
+# Lessons from the jquery unbundling may lead us to change that time frame
+# as it is our proof of concept of how to unbundle.
+#############################################################################
+Provides:       bundled(js-backbone)
+Provides:       bundled(bootstrap)
+Provides:       bundled(js-bootstrap)
+Provides:       bundled(bootstrap-tour)
+Provides:       bundled(js-bootstrap-tour)
+Provides:       bundled(codemirror)
+Provides:       bundled(js-codemirror)
+Provides:       bundled(js-jquery)
+Provides:       bundled(js-jquery-ui)
+Provides:       bundled(js-google-caja)
+
 
 %description -n python3-ipython-notebook
 %{ipython_desc_base}
@@ -619,6 +639,7 @@ popd
 * Fri May 23 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.1.0-1
 - update to 2.1.0
 - Unbundle js-marked
+- Add provides for bundled exception fpc#416
 
 * Tue Apr 22 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.0.0-2
 - add BR/R python-path
