@@ -362,7 +362,7 @@ popd
         done \
         ls -l \
     popd \
-# TODO backbone bootstrap google-caja jquery jquery-ui marked \
+# TODO backbone bootstrap google-caja jquery jquery-ui \
     #for folder in highlight.js requirejs underscore; do \
     for folder in requirejs underscore; do \
         rm -r ${folder} \
