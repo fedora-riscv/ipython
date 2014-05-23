@@ -16,8 +16,8 @@
 %endif
 
 Name:           ipython
-Version:        2.0.0
-Release:        2%{?dist}
+Version:        2.1.0
+Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -26,7 +26,7 @@ Group:          Development/Libraries
 # There are some extensions released under GPLv2+
 License:        (BSD and MIT and Python) and GPLv2+
 URL:            http://ipython.org/
-Source0:        http://archive.ipython.org/release/%{version}/%{name}-%{version}.tar.gz
+Source0:        https://pypi.python.org/packages/source/i/ipython/ipython-%{version}.tar.gz
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -608,6 +608,9 @@ popd
 %endif # with_python3
 
 %changelog
+* Fri May 23 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.1.0-1
+- update to 2.1.0
+
 * Tue Apr 22 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.0.0-2
 - add BR/R python-path
 - fix python -> python3 sed replacement
