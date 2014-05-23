@@ -122,7 +122,6 @@ Requires:       pexpect
 Requires:       python-decorator
 Requires:       python-jsonschema
 Requires:       python-jsonpointer
-Requires:       python-mglob
 Requires:       python-path
 Requires:       python-simplegeneric
 
@@ -216,14 +215,12 @@ Requires:       python3-zmq
 BuildRequires:  python3-decorator
 BuildRequires:  python3-jsonschema
 BuildRequires:  python3-jsonpointer
-BuildRequires:  python3-mglob
 #BuildRequires:  python3-path
 BuildRequires:  python3-pexpect
 BuildRequires:  python3-simplegeneric
 Requires:       python3-decorator
 Requires:       python3-jsonpointer
 Requires:       python3-jsonschema
-Requires:       python3-mglob
 #Requires:       python3-path
 Requires:       python3-pexpect
 Requires:       python3-simplegeneric
