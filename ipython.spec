@@ -32,10 +32,6 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
 BuildRequires:  python-devel
-BuildRequires:  python-simplegeneric
-BuildRequires:  python-decorator
-BuildRequires:  python-jsonschema
-BuildRequires:  python-path
 
 %if %{with doc}
 %endif
@@ -43,13 +39,11 @@ BuildRequires:  python-path
 %if %{with check}
 # for checking/testing
 BuildRequires:  python-nose
-BuildRequires:  python-simplegeneric
 # "Tools and libraries available at test time:"
 BuildRequires:  python-zmq
 BuildRequires:  python-zmq-tests
 BuildRequires:  pexpect
 BuildRequires:  python-matplotlib
-#BuildRequires:  python-matplotlib-tk
 BuildRequires:  pymongo
 BuildRequires:  PyQt4
 BuildRequires:  python-mock
@@ -65,20 +59,12 @@ Requires:       python-ipython
 # add python3 packages
 %if 0%{?with_python3}
 BuildRequires:  python3-devel
-# for checking/testing
-BuildRequires:  python3-nose
-BuildRequires:  python3-mglob
-#BuildRequires:  python3-path
-BuildRequires:  python3-simplegeneric
-BuildRequires:  python3-decorator
-BuildRequires:  python3-jsonschema
 # "Tools and libraries available at test time:"
 BuildRequires:  python3-zmq
 BuildRequires:  python3-zmq-tests
 BuildRequires:  python3-tornado
 BuildRequires:  python3-pexpect
 BuildRequires:  python3-matplotlib
-#BuildRequires:  python3-matplotlib-tk
 BuildRequires:  python3-pymongo
 BuildRequires:  python3-PyQt4
 # for frontend
@@ -127,15 +113,21 @@ This package depends on all python-ipython packages but python-ipython-tests.
 Summary:        An enhanced interactive Python shell for the terminal
 Requires:       python-zmq
 
-#bundled libs
+# bundled python packages
+BuildRequires:  python-decorator
+BuildRequires:  python-jsonschema
+BuildRequires:  python-jsonpointer
+BuildRequires:  python-path
+BuildRequires:  python-simplegeneric
 Requires:       pexpect
+Requires:       python-decorator
+Requires:       python-jsonschema
+Requires:       python-jsonpointer
 Requires:       python-mglob
 Requires:       python-path
 Requires:       python-simplegeneric
-Requires:       python-decorator
-Requires:       python-jsonschema
 
-#For starting ipython from pkg_resources
+# for starting ipython from pkg_resources
 Requires:       python-setuptools
 
 %description -n python-ipython-console
@@ -221,15 +213,24 @@ Summary:        An enhanced interactive Python shell for the terminal
 Requires:       python3-zmq
 
 
-#bundled libs
-Requires:       python3-pexpect
+# bundled python packages
+BuildRequires:  python3-nose
+BuildRequires:  python3-decorator
+BuildRequires:  python3-jsonschema
+BuildRequires:  python3-jsonpointer
+BuildRequires:  python3-mglob
+#BuildRequires:  python3-path
+BuildRequires:  python3-pexpect
+BuildRequires:  python3-simplegeneric
+Requires:       python3-decorator
+Requires:       python3-jsonpointer
+Requires:       python3-jsonschema
 Requires:       python3-mglob
 #Requires:       python3-path
+Requires:       python3-pexpect
 Requires:       python3-simplegeneric
-Requires:       python3-decorator
-Requires:       python3-jsonschema
 
-#For starting ipython from pkg_resources
+# for starting ipython from pkg_resources
 Requires:       python3-setuptools
 
 %description -n python3-ipython-console
@@ -345,8 +346,7 @@ rm decorator/_decorator.py
 rm decorators/_decorators.py
 
 rm jsonschema/_jsonschema.py
-#WAITFOR python3 support #1061622
-#rm jsonpointer/_jsonpointer.py
+rm jsonpointer/_jsonpointer.py
 rm pexpect/_pexpect.py
 
 #WAITFOR python3 support #1016466
