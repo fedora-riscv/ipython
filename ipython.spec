@@ -268,6 +268,8 @@ BuildRequires:  nodejs-underscore
 Requires:       nodejs-underscore
 BuildRequires:  js-highlight
 Requires:       js-highlight
+BuildRequires:  js-marked
+Requires:       js-marked
 
 
 %description -n python3-ipython-notebook
@@ -357,6 +359,12 @@ popd
         rm -r $folder \
         mkdir -p $folder \
         ln -s %{_jsdir}/$folder/ $folder/build \
+    done \
+ \
+    for folder in marked; do \
+        rm -r $folder \
+        mkdir -p $folder \
+        ln -s %{_jsdir}/$folder/ $folder/lib \
     done \
 ls -l \
 ls -l *
@@ -610,6 +618,7 @@ popd
 %changelog
 * Fri May 23 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.1.0-1
 - update to 2.1.0
+- Unbundle js-marked
 
 * Tue Apr 22 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.0.0-2
 - add BR/R python-path
