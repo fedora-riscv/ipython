@@ -16,7 +16,7 @@
 
 Name:           ipython
 Version:        0.13.2
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -540,6 +540,9 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %endif # with_python3
 
 %changelog
+* Tue May 27 2014 Kalev Lember <kalevlember@gmail.com> - 0.13.2-4
+- Rebuilt for https://fedoraproject.org/wiki/Changes/Python_3.4
+
 * Mon Oct  7 2013 Thomas Spura <tomspur@fedoraproject.org> - 0.13.2-3
 - install into unversioned docdir (#993848)
 - R on setuptools for starting with pkg_resources (#994673)
