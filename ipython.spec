@@ -119,6 +119,7 @@ BuildRequires:  python-decorator
 BuildRequires:  python-jsonschema
 BuildRequires:  python-jsonpointer
 BuildRequires:  python-path
+BuildRequires:  pexpect
 BuildRequires:  python-simplegeneric
 Requires:       pexpect
 Requires:       python-decorator
@@ -638,6 +639,7 @@ popd
 - Add provides for bundled exception fpc#416
 - Add BR Cython
 - disable python3 tests for now (possible blocking in koji)
+- Add BR python-pexpect
 
 * Fri May 30 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.0.0-2
 - add BR/R python-path
