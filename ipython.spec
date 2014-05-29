@@ -41,6 +41,7 @@ BuildRequires:  python3-devel
 
 %if %{with check}
 # for checking/testing
+BuildRequires:  Cython
 BuildRequires:  python-nose
 BuildRequires:  python-matplotlib
 BuildRequires:  python-mock
@@ -53,6 +54,7 @@ BuildRequires:  python-zmq-tests
 BuildRequires:  python-pygments
 
 %if 0%{?with_python3}
+BuildRequires:  python3-cython
 BuildRequires:  python3-nose
 BuildRequires:  python3-matplotlib
 BuildRequires:  python3-pymongo
@@ -62,11 +64,11 @@ BuildRequires:  python3-zmq
 BuildRequires:  python3-zmq-tests
 # for frontend
 BuildRequires:  python3-pygments
-%endif
+%endif # with_python3
 
 # for running qt/matplotlib tests
 BuildRequires:  xorg-x11-server-Xvfb
-%endif
+%endif # with check
 
 # Require $current_python_interpreter-ipython
 Requires:       python-ipython
@@ -635,6 +637,7 @@ popd
 - update to 2.1.0
 - Unbundle js-marked
 - Add provides for bundled exception fpc#416
+- Add BR Cython
 
 * Tue Apr 22 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.0.0-2
 - add BR/R python-path
