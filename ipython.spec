@@ -149,8 +149,9 @@ This package contains the ipython sphinx extension.
 %package -n python-ipython-notebook
 Summary:        An enhanced interactive Python notebook
 Requires:       python-ipython-console = %{version}-%{release}
-Requires:       python-tornado
+Requires:       python-jinja2
 Requires:       python-matplotlib
+Requires:       python-tornado
 Provides:       ipython-notebook = %{version}-%{release}
 
 %description -n python-ipython-notebook
@@ -250,8 +251,9 @@ This package contains the ipython sphinx extension.
 %package -n python3-ipython-notebook
 Summary:        An enhanced interactive Python notebook
 Requires:       python3-ipython-console = %{version}-%{release}
-Requires:       python3-tornado
+Requires:       python3-jinja2
 Requires:       python3-matplotlib
+Requires:       python3-tornado
 
 #################################################
 ### Bundled stuff from the notebook goes here ###
@@ -497,6 +499,9 @@ popd
 %dir %{python_sitelib}/IPython
 %{python_sitelib}/IPython/external
 %{python_sitelib}/IPython/*.py*
+%dir %{python_sitelib}/IPython/html/*
+%{python_sitelib}/IPython/html/__init__.py*
+%{python_sitelib}/IPython/html/nbextensions.py*
 %dir %{python_sitelib}/IPython/kernel
 %{python_sitelib}/IPython/kernel/*.py*
 %{python_sitelib}/IPython/kernel/blocking/
@@ -547,7 +552,9 @@ popd
 
 
 %files -n python-ipython-notebook
-%{python_sitelib}/IPython/html/
+%{python_sitelib}/IPython/html/*
+%exclude %{python_sitelib}/IPython/html/__init__.py*
+%exclude %{python_sitelib}/IPython/html/nbextensions.py*
 
 
 %files -n python-ipython-gui
@@ -571,6 +578,9 @@ popd
 %{python3_sitelib}/IPython/external
 %{python3_sitelib}/IPython/__pycache__/
 %{python3_sitelib}/IPython/*.py*
+%dir %{python3_sitelib}/IPython/html
+%{python3_sitelib}/IPython/html/__init__.py*
+%{python3_sitelib}/IPython/html/nbextensions.py*
 %dir %{python3_sitelib}/IPython/kernel
 %{python3_sitelib}/IPython/kernel/__pycache__/
 %{python3_sitelib}/IPython/kernel/*.py*
@@ -624,7 +634,9 @@ popd
 
 
 %files -n python3-ipython-notebook
-%{python3_sitelib}/IPython/html/
+%{python3_sitelib}/IPython/html/*
+%exclude %{python3_sitelib}/IPython/html/__init__.py*
+%exclude %{python3_sitelib}/IPython/html/nbextensions.py*
 
 
 %files -n python3-ipython-gui
@@ -633,6 +645,9 @@ popd
 %endif # with_python3
 
 %changelog
+* Sun Jun  1 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.1.0-2
+- package part of notebook in main package (#1103423)
+
 * Fri May 30 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.1.0-1
 - update to 2.1.0
 - Unbundle js-marked
