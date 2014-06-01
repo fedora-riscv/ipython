@@ -17,7 +17,7 @@
 
 Name:           ipython
 Version:        2.1.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -139,6 +139,7 @@ This package provides IPython for in a terminal.
 %package -n python-ipython-sphinx
 Summary:        Sphinx directive to support embedded IPython code
 Requires:       python-ipython-console = %{version}-%{release}
+BuildRequires:  python-sphinx
 Requires:       python-sphinx
 
 %description -n python-ipython-sphinx
@@ -240,6 +241,7 @@ This package provides IPython for in a terminal.
 %package -n python3-ipython-sphinx
 Summary:        Sphinx directive to support embedded IPython code
 Requires:       python3-ipython-console = %{version}-%{release}
+BuildRequires:  python3-sphinx
 Requires:       python3-sphinx
 
 %description -n python3-ipython-sphinx
@@ -647,6 +649,7 @@ popd
 %changelog
 * Sun Jun  1 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.1.0-2
 - package part of notebook in main package (#1103423)
+- add BR python-sphinx
 
 * Fri May 30 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.1.0-1
 - update to 2.1.0
