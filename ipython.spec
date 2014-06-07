@@ -17,7 +17,7 @@
 
 Name:           ipython
 Version:        2.1.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -647,6 +647,9 @@ popd
 %endif # with_python3
 
 %changelog
+* Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.1.0-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
+
 * Sun Jun  1 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.1.0-2
 - package part of notebook in main package (#1103423)
 - add BR python-sphinx
