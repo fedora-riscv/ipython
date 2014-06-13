@@ -42,15 +42,6 @@ Main features:
  * Easily embeddable in other Python programs.
  * Integrated access to the pdb debugger and the Python profiler.
 
-%package tests
-Summary:        Tests for %{name}
-Group:          Documentation
-Requires:       python-nose
-Requires:       %{name} = %{version}-%{release}
-%description tests
-This package contains the tests of %{name}.
-You can check this way, you can test, if ipython works on your platform.
-
 %package doc
 Summary:        Documentation for %{name}
 Group:          Documentation
@@ -113,15 +104,6 @@ rm -rf %{buildroot}
 %{python_sitelib}/IPython/testing/*.py*
 %{python_sitelib}/IPython/testing/plugin
 %{python_sitelib}/ipython-%{version}-py?.?.egg-info
-
-
-%files tests
-%defattr(-,root,root,-)
-%{_bindir}/iptest
-%{python_sitelib}/IPython/tests
-%{python_sitelib}/IPython/*/tests
-%{python_sitelib}/IPython/*/*/tests
-
 
 %files doc
 %defattr(-,root,root,-)
