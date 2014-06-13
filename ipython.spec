@@ -42,19 +42,12 @@ Main features:
  * Easily embeddable in other Python programs.
  * Integrated access to the pdb debugger and the Python profiler.
 
+
 %package doc
 Summary:        Documentation for %{name}
 Group:          Documentation
 %description doc
 This package contains the documentation of %{name}.
-
-%package gui
-Summary:        Gui applications from %{name}
-Group:          Applications/Editors
-Requires:       %{name} = %{version}-%{release}
-%description gui
-This package contains the gui of %{name}, which requires wxPython.
-
 
 
 %prep
@@ -109,16 +102,6 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 # ipython installs its own documentation, but we need to own the directory
 %{_datadir}/doc/%{name}-%{version}
-
-%files gui
-%defattr(-,root,root,-)
-%{_bindir}/ipython-wx
-%{_bindir}/ipythonx
-%{_mandir}/man*/ipython-wx*
-%{_mandir}/man*/ipythonx*
-%{python_sitelib}/IPython/gui
-%{python_sitelib}/IPython/frontend/wx
-
 
 
 %changelog
