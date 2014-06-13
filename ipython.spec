@@ -37,6 +37,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 BuildRequires:  python-devel
 BuildRequires:  python-simplegeneric
+BuildRequires:  python-argparse
 
 %if %{with run_testsuite}
 # for checking/testing
