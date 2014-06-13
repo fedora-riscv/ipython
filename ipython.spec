@@ -102,26 +102,14 @@ rm -rf %{buildroot}
 %{_mandir}/man*/pycolor*
 %{_mandir}/man*/ipc*
 %dir %{python_sitelib}/IPython
-%{python_sitelib}/IPython/UserConfig
 %dir %{python_sitelib}/IPython/config
 %{python_sitelib}/IPython/config/*.py*
-%{python_sitelib}/IPython/Extensions
 %{python_sitelib}/IPython/external
 %{python_sitelib}/IPython/*.py*
 %dir %{python_sitelib}/IPython/frontend
-%{python_sitelib}/IPython/frontend/process
-%{python_sitelib}/IPython/frontend/*.py*
-%dir %{python_sitelib}/IPython/frontend/cocoa
 %{python_sitelib}/IPython/frontend/cocoa/*.py*
-%dir %{python_sitelib}/IPython/tools
-%{python_sitelib}/IPython/tools/*.py*
 %dir %{python_sitelib}/IPython/kernel
 %{python_sitelib}/IPython/kernel/*.py*
-%{python_sitelib}/IPython/kernel/config
-%{python_sitelib}/IPython/kernel/scripts
-%dir %{python_sitelib}/IPython/kernel/core
-%{python_sitelib}/IPython/kernel/core/config
-%{python_sitelib}/IPython/kernel/core/*.py*
 %dir %{python_sitelib}/IPython/testing
 %{python_sitelib}/IPython/testing/*.py*
 %{python_sitelib}/IPython/testing/plugin
