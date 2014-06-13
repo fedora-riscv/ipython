@@ -806,9 +806,6 @@ popd
 - add requires on wxpython to gui subpackage (#515570)
 - start unbundling the libraries - more to come (#603937)
 
-* Mon Apr 01 2013 David Cantrell <dcantrell@redhat.com> - 0.10-3
-- ipython requires the 'argparse' module (#874133)
-
 * Tue Apr 13 2010 Thomas Spura <tomspur@fedoraproject.org> - 0.10-2
 - move docs into a subpackage
 - subpackage wxPython
