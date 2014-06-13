@@ -41,7 +41,7 @@ BuildRequires:  python-argparse
 
 %if %{with run_testsuite}
 # for checking/testing
-BuildRequires:  python-nose
+BuildRequires:  python-nose1.1
 BuildRequires:  python-simplegeneric
 # "Tools and libraries available at test time:"
 BuildRequires:  python-zmq
@@ -543,6 +543,8 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %changelog
 * Fri Jun 13 2014 David Cantrell <dcantrell@redhat.com> - 0.13.2-4
 - Rebase el6 EPEL branch to 0.13.2 to fix unicode support (#767404)
+- BuildRequires python-argparse
+- BuildRequires python-nose1.1
 
 * Mon Oct  7 2013 Thomas Spura <tomspur@fedoraproject.org> - 0.13.2-3
 - install into unversioned docdir (#993848)
