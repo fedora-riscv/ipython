@@ -107,14 +107,12 @@ rm -rf %{buildroot}
 %{python_sitelib}/IPython/external
 %{python_sitelib}/IPython/*.py*
 %dir %{python_sitelib}/IPython/frontend
-%{python_sitelib}/IPython/frontend/cocoa/*.py*
 %dir %{python_sitelib}/IPython/kernel
 %{python_sitelib}/IPython/kernel/*.py*
 %dir %{python_sitelib}/IPython/testing
 %{python_sitelib}/IPython/testing/*.py*
 %{python_sitelib}/IPython/testing/plugin
 %{python_sitelib}/ipython-%{version}-py?.?.egg-info
-%exclude %{python_sitelib}/IPython/gui
 
 
 %files tests
