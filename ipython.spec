@@ -2,8 +2,7 @@
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
 %endif
 
-%bcond_without check
-%bcond_without doc
+%bcond_without run_testsuite
 
 # where are all the python3 dependencies
 %if 0%{?fedora} > 15
@@ -16,7 +15,7 @@
 %endif
 
 Name:           ipython
-Version:        2.1.0
+Version:        0.13.2
 Release:        4%{?dist}
 Summary:        An enhanced interactive Python shell
 
@@ -26,53 +25,61 @@ Group:          Development/Libraries
 # There are some extensions released under GPLv2+
 License:        (BSD and MIT and Python) and GPLv2+
 URL:            http://ipython.org/
-Source0:        https://pypi.python.org/packages/source/i/ipython/ipython-%{version}.tar.gz
+Source0:        http://archive.ipython.org/release/%{version}/%{name}-%{version}.tar.gz
+# will be in ipython-0.14
+# https://github.com/ipython/ipython/pull/2681
+Patch0:         ipython-0.13.1-dont-require-matplotlib.patch
+# From upstream's git
+Patch1:         ipython-0.13.2-print-syntax.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
 BuildRequires:  python-devel
-%if 0%{?with_python3}
-BuildRequires:  python3-devel
-%endif
+BuildRequires:  python-simplegeneric
 
-%if %{with doc}
-%endif
-
-%if %{with check}
+%if %{with run_testsuite}
 # for checking/testing
-BuildRequires:  Cython
 BuildRequires:  python-nose
-BuildRequires:  python-matplotlib
-BuildRequires:  python-mock
-BuildRequires:  pymongo
-BuildRequires:  PyQt4
-BuildRequires:  python-tornado
+BuildRequires:  python-simplegeneric
+# "Tools and libraries available at test time:"
 BuildRequires:  python-zmq
 BuildRequires:  python-zmq-tests
+BuildRequires:  pexpect
+BuildRequires:  python-matplotlib
+#BuildRequires:  python-matplotlib-tk
+BuildRequires:  pymongo
+BuildRequires:  PyQt4
 # for frontend
 BuildRequires:  python-pygments
-
-%if 0%{?with_python3}
-BuildRequires:  python3-Cython
-BuildRequires:  python3-nose
-BuildRequires:  python3-matplotlib
-BuildRequires:  python3-pymongo
-BuildRequires:  python3-PyQt4
-BuildRequires:  python3-tornado
-BuildRequires:  python3-zmq
-BuildRequires:  python3-zmq-tests
-# for frontend
-BuildRequires:  python3-pygments
-%endif # with_python3
-
 # for running qt/matplotlib tests
 BuildRequires:  xorg-x11-server-Xvfb
-%endif # with check
+%endif
 
 # Require $current_python_interpreter-ipython
 Requires:       python-ipython
 
+# add python3 packages
+%if 0%{?with_python3}
+BuildRequires:  python3-devel
+# for checking/testing
+BuildRequires:  python3-nose
+BuildRequires:  python3-mglob
+BuildRequires:  python3-simplegeneric
+# "Tools and libraries available at test time:"
+BuildRequires:  python3-zmq
+BuildRequires:  python3-zmq-tests
+BuildRequires:  python3-tornado
+BuildRequires:  python3-pexpect
+BuildRequires:  python3-matplotlib
+#BuildRequires:  python3-matplotlib-tk
+BuildRequires:  python3-pymongo
+BuildRequires:  python3-PyQt4
+# for frontend
+BuildRequires:  python3-pygments
+
+Requires:       python3-zmq
+%endif
 
 %global ipython_desc_base \
 IPython provides a replacement for the interactive Python interpreter with\
@@ -114,21 +121,12 @@ This package depends on all python-ipython packages but python-ipython-tests.
 Summary:        An enhanced interactive Python shell for the terminal
 Requires:       python-zmq
 
-# bundled python packages
-BuildRequires:  python-decorator
-BuildRequires:  python-jsonschema
-BuildRequires:  python-jsonpointer
-BuildRequires:  python-path
-BuildRequires:  pexpect
-BuildRequires:  python-simplegeneric
+#bundled libs
 Requires:       pexpect
-Requires:       python-decorator
-Requires:       python-jsonschema
-Requires:       python-jsonpointer
-Requires:       python-path
+Requires:       python-mglob
 Requires:       python-simplegeneric
 
-# for starting ipython from pkg_resources
+#For starting ipython from pkg_resources
 Requires:       python-setuptools
 
 %description -n python-ipython-console
@@ -136,23 +134,11 @@ Requires:       python-setuptools
 
 This package provides IPython for in a terminal.
 
-%package -n python-ipython-sphinx
-Summary:        Sphinx directive to support embedded IPython code
-Requires:       python-ipython-console = %{version}-%{release}
-BuildRequires:  python-sphinx
-Requires:       python-sphinx
-
-%description -n python-ipython-sphinx
-%{ipython_desc_base}
-
-This package contains the ipython sphinx extension.
-
 %package -n python-ipython-notebook
 Summary:        An enhanced interactive Python notebook
 Requires:       python-ipython-console = %{version}-%{release}
-Requires:       python-jinja2
-Requires:       python-matplotlib
 Requires:       python-tornado
+Requires:       python-matplotlib
 Provides:       ipython-notebook = %{version}-%{release}
 
 %description -n python-ipython-notebook
@@ -173,8 +159,6 @@ Obsoletes:      ipython-tests < 0.13-1
 This package contains the tests of %{name}.
 You can check this way, if ipython works on your platform.
 
-
-%if %{with doc}
 %package -n python-ipython-doc
 Summary:        Documentation for %{name}
 Group:          Documentation
@@ -182,7 +166,6 @@ Provides:       ipython-doc = %{version}-%{release}
 Obsoletes:      ipython-doc < 0.13-1
 %description -n python-ipython-doc
 This package contains the documentation of %{name}.
-%endif
 
 
 %package -n python-ipython-gui
@@ -216,21 +199,12 @@ Summary:        An enhanced interactive Python shell for the terminal
 Requires:       python3-zmq
 
 
-# bundled python packages
-BuildRequires:  python3-decorator
-BuildRequires:  python3-jsonschema
-BuildRequires:  python3-jsonpointer
-BuildRequires:  python3-path
-BuildRequires:  python3-pexpect
-BuildRequires:  python3-simplegeneric
-Requires:       python3-decorator
-Requires:       python3-jsonpointer
-Requires:       python3-jsonschema
-Requires:       python3-path
+#bundled libs
 Requires:       python3-pexpect
+Requires:       python3-mglob
 Requires:       python3-simplegeneric
 
-# for starting ipython from pkg_resources
+#For starting ipython from pkg_resources
 Requires:       python3-setuptools
 
 %description -n python3-ipython-console
@@ -238,63 +212,12 @@ Requires:       python3-setuptools
 
 This package provides IPython for in a terminal.
 
-%package -n python3-ipython-sphinx
-Summary:        Sphinx directive to support embedded IPython code
-Requires:       python3-ipython-console = %{version}-%{release}
-BuildRequires:  python3-sphinx
-Requires:       python3-sphinx
-
-%description -n python3-ipython-sphinx
-%{ipython_desc_base}
-
-This package contains the ipython sphinx extension.
-
 
 %package -n python3-ipython-notebook
 Summary:        An enhanced interactive Python notebook
 Requires:       python3-ipython-console = %{version}-%{release}
-Requires:       python3-jinja2
-Requires:       python3-matplotlib
 Requires:       python3-tornado
-
-#################################################
-### Bundled stuff from the notebook goes here ###
-#################################################
-# We need to know nodejs_sitearch and lib
-BuildRequires:  nodejs-packaging
-BuildRequires:  web-assets-devel
-
-BuildRequires:  fontawesome-fonts-web
-Requires:       fontawesome-fonts-web
-BuildRequires:  nodejs-requirejs
-Requires:       nodejs-requirejs
-BuildRequires:  nodejs-underscore
-Requires:       nodejs-underscore
-BuildRequires:  js-highlight
-Requires:       js-highlight
-BuildRequires:  js-marked
-Requires:       js-marked
-
-# Temporal bundling allowed in:
-# https://fedorahosted.org/fpc/ticket/416
-#############################################################################
-# jquery temporary exception lasts until the release that jquery enters
-# the repository. For now, plan on temporary exception for other libraries
-# will expire one release after jquery unbundling has entered the repository.
-# Lessons from the jquery unbundling may lead us to change that time frame
-# as it is our proof of concept of how to unbundle.
-#############################################################################
-Provides:       bundled(js-backbone)
-Provides:       bundled(bootstrap)
-Provides:       bundled(js-bootstrap)
-Provides:       bundled(bootstrap-tour)
-Provides:       bundled(js-bootstrap-tour)
-Provides:       bundled(codemirror)
-Provides:       bundled(js-codemirror)
-Provides:       bundled(js-jquery)
-Provides:       bundled(js-jquery-ui)
-Provides:       bundled(js-google-caja)
-
+Requires:       python3-matplotlib
 
 %description -n python3-ipython-notebook
 %{ipython_desc_base}
@@ -335,72 +258,38 @@ This package contains the gui of %{name}, which requires PyQt.
 %prep
 %setup -q
 
-# Patches go here
+%patch0 -p 1
+%patch1 -p 1
 
 # delete bundling libs
 pushd IPython/external
-ls -l
-ls -l *
-
-rm decorator/_decorator.py
+# python's own modules
+rm argparse/_argparse.py
 
 # use decorators of numpy
 rm decorators/_decorators.py
 
-rm jsonschema/_jsonschema.py
-rm jsonpointer/_jsonpointer.py
-rm pexpect/_pexpect.py
-
-rm path/_path.py
-
+# other packages exist in fedora
 rm simplegeneric/_simplegeneric.py
+%if ! 0%{?with_python3}
+# bundle this on python3 in experimental version for now
+rm pexpect/_pexpect.py
+%endif
+
+# rejected in a PEP, probably no upstream
+#rm Itpl/_Itpl.py
+
+# available at pypi
+#rm path/_path.py
 
 # ssh modules from paramiko
 
 popd
 
-%define do_global_symlinking() \
-    pushd font-awesome \
-        rm -rf font \
-        ln -s %{_datadir}/fonts/fontawesome font \
-        for folder in css less scss; do \
-            rm -rf $folder \
-            ln -s %{_datadir}/font-awesome-*/${folder} \
-        done \
-        ls -l \
-    popd \
-# TODO backbone bootstrap google-caja jquery jquery-ui \
-    #for folder in highlight.js requirejs underscore; do \
-    for folder in requirejs underscore; do \
-        rm -r ${folder} \
-        ln -s %{nodejs_sitelib}/${folder} \
-    done \
-# Work around highlight packaging (ipython requires it in build/ subfolder...) \
-# Unbundle JS stuff WITHIN build subfolder (ipython requires it there...) \
-    for folder in highlight.js; do \
-        rm -r $folder \
-        mkdir -p $folder \
-        ln -s %{_jsdir}/$folder/ $folder/build \
-    done \
- \
-    for folder in marked; do \
-        rm -r $folder \
-        mkdir -p $folder \
-        ln -s %{_jsdir}/$folder/ $folder/lib \
-    done \
-ls -l \
-ls -l *
-
-# unbundle components
-pushd IPython/html/static/components
-%do_global_symlinking
-#asdf
-popd
-
 %if 0%{?with_python3}
 rm -rf %{py3dir}
 cp -a . %{py3dir}
-find %{py3dir} -name '*.py' -print0 | xargs -0 sed -i '1s|^#!python|#!%{__python3}|'
+find %{py3dir} -name '*.py' | xargs sed -i '1s|^#!python|#!%{__python3}|'
 %endif # with_python3
 
 
@@ -414,19 +303,6 @@ popd
 %{__python} setup.py build
 
 
-%if %{with doc}
-cd docs
-## TODO: fails with
-##reading sources... [ 71%] api/generated/IPython.utils.io
-##Sphinx error:
-##'ascii' codec can't encode character u'\u0142' in position 204: ordinal not in range(128)
-##make: *** [html] Error 1
-#make html
-mkdir -p build/html/
-cd ..
-%endif
-
-
 %install
 rm -rf %{buildroot}
 %if 0%{?with_python3}
@@ -437,79 +313,105 @@ popd
 
 %{__python} setup.py install -O1 --skip-build --root %{buildroot}
 
-# unbundle components again...
-pushd %{buildroot}%{python_sitelib}
-    pushd IPython/html/static/components
-        %do_global_symlinking
-    popd
-popd
-
-%if 0%{?with_python3}
-pushd %{buildroot}%{python3_sitelib}
-    pushd IPython/html/static/components
-        %do_global_symlinking
-    popd
-popd
-%endif # with_python3
 
 %clean
 rm -rf %{buildroot}
 
 
-%if %{with check}
+%if %{with run_testsuite}
 %check
 # Ensure that the user's .pythonrc.py is not invoked during any tests.
 export PYTHONSTARTUP=""
-%if 0%{?with_python3}
-#pushd %{py3dir}
-#    mkdir run_tests
-#    pushd run_tests
-#    PYTHONPATH=%{buildroot}%{python3_sitelib} \
-#        PATH="%{buildroot}%{_bindir}:$PATH" \
-#        LC_ALL=en_US.UTF-8 \
-#        xvfb-run \
-#        %{buildroot}%{_bindir}/iptest3
-#    popd
-#popd
-%endif
+#####################################################################
+# Reasons for ignoring tests below:
+# * FAIL: Verify that plot is available when pylab_import_all = True
+#----------------------------------------------------------------------
+#Traceback (most recent call last):
+#    File "/builddir/build/BUILDROOT/ipython-0.13.2-1.fc20.noarch/usr/lib/python2.7/site-packages/IPython/testing/decorators.py", line 228, in skipper_func
+#        return f(*args, **kwargs)
+#    File "/builddir/build/BUILDROOT/ipython-0.13.2-1.fc20.noarch/usr/lib/python2.7/site-packages/IPython/testing/decorators.py", line 228, in skipper_func
+#        return f(*args, **kwargs)
+#    File "/builddir/build/BUILDROOT/ipython-0.13.2-1.fc20.noarch/usr/lib/python2.7/site-packages/IPython/lib/tests/test_irunner_pylab_magic.py", line 92, in test_pylab_import_all_enabled
+#        self._test_runner(runner,source,output)
+#    File "/builddir/build/BUILDROOT/ipython-0.13.2-1.fc20.noarch/usr/lib/python2.7/site-packages/IPython/lib/tests/test_irunner_pylab_magic.py", line 53, in _test_runner
+#        self.fail(message)
+#    AssertionError: Mismatch in number of lines
+#    Expected:
+#    ~~~~~~~~~
+#    In \[1\]: from IPython\.config\.application import Application
+#    In \[2\]: app = Application\.instance\(\)
+#    In \[3\]: app\.pylab_import_all = True
+#    In \[4\]: pylab
+#    ^Welcome to pylab, a matplotlib-based Python environment
+#    For more information, type 'help\(pylab\)'\.
+#    In \[5\]: ip=get_ipython\(\)
+#    In \[6\]: 'plot' in ip\.user_ns
+#    Out\[6\]: True
+#    Got:
+#    ~~~~~~~~~
+#    In [1]: from IPython.config.application import Application
+#    In [2]: app = Application.instance()
+#    In [3]: app.pylab_import_all = True
+#    In [4]: pylab
+#    Xlib:  extension "RANDR" missing on display ":99".
+#    Welcome to pylab, a matplotlib-based Python environment [backend: GTKAgg].
+#    For more information, type 'help(pylab)'.
+#    In [5]: ip=get_ipython()
+#    In [6]: 'plot' in ip.user_ns
+#    Out[6]: True
+#        """Fail immediately, with the given message."""
+#### -> ignoring test_pylab_import_all_disabled|test_pylab_import_all_enabled
+#####################################################################
+# No *EXCLUDE_TESTS may be empty. Write NONE in such a case.
+%global COMMON_EXCLUDE_TESTS testIPython|testPython|test_console_starts
+%global PYTHON3EXCLUDE_TESTS NONE
+%global PYTHON2EXCLUDE_TESTS test_pylab_import_all_disabled|test_pylab_import_all_enabled
 
-mkdir run_tests
-pushd run_tests
-    PYTHONPATH=%{buildroot}%{python_sitelib} \
-        PATH="%{buildroot}%{_bindir}:$PATH" \
-        LC_ALL=en_US.UTF-8 \
-        xvfb-run \
-        %{buildroot}%{_bindir}/iptest2
+%global EXCLUDE_TESTS_3 "%{COMMON_EXCLUDE_TESTS}|%{PYTHON3EXCLUDE_TESTS}"
+%global EXCLUDE_TESTS_2 "%{COMMON_EXCLUDE_TESTS}|%{PYTHON2EXCLUDE_TESTS}"
+
+%if 0%{?with_python3}
+pushd %{py3dir}
+PYTHONPATH=%{buildroot}%{python3_sitelib} \
+    PATH="%{buildroot}%{_bindir}:$PATH" \
+    LC_ALL=en_US.UTF-8 \
+    xvfb-run \
+    %{buildroot}%{_bindir}/iptest3 -v -e %{EXCLUDE_TESTS_3}
 popd
 %endif
 
+# TODO no ipython in path in koji
+PYTHONPATH=%{buildroot}%{python_sitelib} \
+    PATH="%{buildroot}%{_bindir}:$PATH" \
+    LC_ALL=en_US.UTF-8 \
+    xvfb-run \
+    %{buildroot}%{_bindir}/iptest -v -e %{EXCLUDE_TESTS_2}
+%endif
+
 %files -n python-ipython
+%defattr(-,root,root,-)
 
 %files -n python-ipython-console
+%defattr(-,root,root,-)
 %{_bindir}/ipython
-%{_bindir}/ipython2
+%{_bindir}/irunner
+%{_bindir}/pycolor
 %{_bindir}/ipcluster
-%{_bindir}/ipcluster2
 %{_bindir}/ipcontroller
-%{_bindir}/ipcontroller2
 %{_bindir}/ipengine
-%{_bindir}/ipengine2
+%{_bindir}/iplogger
 %{_mandir}/man*/ipython.*
 %{_mandir}/man*/ipengine*
+%{_mandir}/man*/irunner*
+%{_mandir}/man*/pycolor*
 %{_mandir}/man*/ipc*
+%{_mandir}/man*/iplogger*
 
 %dir %{python_sitelib}/IPython
 %{python_sitelib}/IPython/external
 %{python_sitelib}/IPython/*.py*
-%dir %{python_sitelib}/IPython/html/*
-%{python_sitelib}/IPython/html/__init__.py*
-%{python_sitelib}/IPython/html/nbextensions.py*
 %dir %{python_sitelib}/IPython/kernel
 %{python_sitelib}/IPython/kernel/*.py*
-%{python_sitelib}/IPython/kernel/blocking/
-%{python_sitelib}/IPython/kernel/comm/
-%{python_sitelib}/IPython/kernel/inprocess/
-%{python_sitelib}/IPython/kernel/ioloop/
 %dir %{python_sitelib}/IPython/testing
 %{python_sitelib}/IPython/testing/*.py*
 %{python_sitelib}/IPython/testing/plugin
@@ -518,78 +420,74 @@ popd
 %{python_sitelib}/IPython/config/
 %{python_sitelib}/IPython/core/
 %{python_sitelib}/IPython/extensions/
-#%dir %{python_sitelib}/IPython/frontend/
-#%{python_sitelib}/IPython/frontend/terminal/
-#%{python_sitelib}/IPython/frontend/__init__.py*
-#%{python_sitelib}/IPython/frontend/consoleapp.py*
+%dir %{python_sitelib}/IPython/frontend/
+%{python_sitelib}/IPython/frontend/terminal/
+%{python_sitelib}/IPython/frontend/__init__.py*
+%{python_sitelib}/IPython/frontend/consoleapp.py*
 %{python_sitelib}/IPython/lib/
 %{python_sitelib}/IPython/nbformat/
-%{python_sitelib}/IPython/nbconvert/
 %{python_sitelib}/IPython/parallel/
-%{python_sitelib}/IPython/terminal/
+%{python_sitelib}/IPython/scripts/
 %{python_sitelib}/IPython/utils/
-%{python_sitelib}/IPython/kernel/zmq/
-%exclude %{python_sitelib}/IPython/kernel/zmq/gui/
+%{python_sitelib}/IPython/zmq/
+%exclude %{python_sitelib}/IPython/zmq/gui/
 
 # tests go into subpackage
 %exclude %{python_sitelib}/IPython/*/tests/
 %exclude %{python_sitelib}/IPython/*/*/tests
 
 
-%files -n python-ipython-sphinx
-%{python_sitelib}/IPython/sphinxext/
-
-
 %files -n python-ipython-tests
+%defattr(-,root,root,-)
 %{_bindir}/iptest
-%{_bindir}/iptest2
 %{python_sitelib}/IPython/*/tests
 %{python_sitelib}/IPython/*/*/tests
 
 
-%if %{with doc}
 %files -n python-ipython-doc
-%doc docs/build/html
-%endif
+%defattr(-,root,root,-)
+# ipython installs its own documentation, but we need to own the directory
+%{_datadir}/doc/%{name}
 
 
 %files -n python-ipython-notebook
-%{python_sitelib}/IPython/html/*
-%exclude %{python_sitelib}/IPython/html/__init__.py*
-%exclude %{python_sitelib}/IPython/html/nbextensions.py*
+%defattr(-,root,root,-)
+%{python_sitelib}/IPython/frontend/html/
 
 
 %files -n python-ipython-gui
-%{python_sitelib}/IPython/kernel/zmq/gui
-%{python_sitelib}/IPython/qt/
+%defattr(-,root,root,-)
+%{python_sitelib}/IPython/zmq/gui
+%{python_sitelib}/IPython/frontend/qt/
 
 %if 0%{?with_python3}
 %files -n python3-ipython
+%defattr(-,root,root,-)
 
 %files -n python3-ipython-console
+%defattr(-,root,root,-)
 %{_bindir}/ipython3
+%{_bindir}/irunner3
+%{_bindir}/pycolor3
 %{_bindir}/ipcluster3
 %{_bindir}/ipcontroller3
 %{_bindir}/ipengine3
+%{_bindir}/iplogger3
 # no man pages (yet?)
 #%{_mandir}/man*/ipython3.*
 #%{_mandir}/man*/ipengine3*
+#%{_mandir}/man*/irunner3*
+#%{_mandir}/man*/pycolor3*
 #%{_mandir}/man*/ipc*3*
+#%{_mandir}/man*/iplogger3*
 
 %dir %{python3_sitelib}/IPython
 %{python3_sitelib}/IPython/external
 %{python3_sitelib}/IPython/__pycache__/
 %{python3_sitelib}/IPython/*.py*
-%dir %{python3_sitelib}/IPython/html
-%{python3_sitelib}/IPython/html/__init__.py*
-%{python3_sitelib}/IPython/html/nbextensions.py*
 %dir %{python3_sitelib}/IPython/kernel
 %{python3_sitelib}/IPython/kernel/__pycache__/
 %{python3_sitelib}/IPython/kernel/*.py*
-%{python3_sitelib}/IPython/kernel/blocking/
-%{python3_sitelib}/IPython/kernel/comm/
-%{python3_sitelib}/IPython/kernel/inprocess/
-%{python3_sitelib}/IPython/kernel/ioloop/
 %dir %{python3_sitelib}/IPython/testing
 %{python3_sitelib}/IPython/testing/__pycache__/
 %{python3_sitelib}/IPython/testing/*.py*
@@ -599,99 +497,51 @@ popd
 %{python3_sitelib}/IPython/config/
 %{python3_sitelib}/IPython/core/
 %{python3_sitelib}/IPython/extensions/
-#%dir %{python3_sitelib}/IPython/frontend/
-#%{python3_sitelib}/IPython/frontend/terminal/
-#%{python3_sitelib}/IPython/frontend/__pycache__/
-#%{python3_sitelib}/IPython/frontend/__init__.py*
-#%{python3_sitelib}/IPython/frontend/consoleapp.py*
+%dir %{python3_sitelib}/IPython/frontend/
+%{python3_sitelib}/IPython/frontend/terminal/
+%{python3_sitelib}/IPython/frontend/__pycache__/
+%{python3_sitelib}/IPython/frontend/__init__.py*
+%{python3_sitelib}/IPython/frontend/consoleapp.py*
 %{python3_sitelib}/IPython/lib/
 %{python3_sitelib}/IPython/nbformat/
-%{python3_sitelib}/IPython/nbconvert/
 %{python3_sitelib}/IPython/parallel/
-%{python3_sitelib}/IPython/terminal/
+%{python3_sitelib}/IPython/scripts/
 %{python3_sitelib}/IPython/utils/
-%{python3_sitelib}/IPython/kernel/zmq/
-%exclude %{python3_sitelib}/IPython/kernel/zmq/gui/
+%{python3_sitelib}/IPython/zmq/
+%exclude %{python3_sitelib}/IPython/zmq/gui/
 
 # tests go into subpackage
 %exclude %{python3_sitelib}/IPython/*/tests/
 %exclude %{python3_sitelib}/IPython/*/*/tests
 
 
-%files -n python3-ipython-sphinx
-%{python3_sitelib}/IPython/sphinxext/
-
-
 %files -n python3-ipython-tests
+%defattr(-,root,root,-)
 %{_bindir}/iptest3
 %{python3_sitelib}/IPython/*/tests
 %{python3_sitelib}/IPython/*/*/tests
 
 
-%if %{with doc}
 ##%files -n python3-ipython-doc
+##%defattr(-,root,root,-)
 # ipython installs its own documentation, but we need to own the directory
-##%{_datadir}/doc/python3-%{name}/
-%endif
+##%{_datadir}/doc/python3-%{name}-%{version}
 
 
 %files -n python3-ipython-notebook
-%{python3_sitelib}/IPython/html/*
-%exclude %{python3_sitelib}/IPython/html/__init__.py*
-%exclude %{python3_sitelib}/IPython/html/nbextensions.py*
+%defattr(-,root,root,-)
+%{python3_sitelib}/IPython/frontend/html/
 
 
 %files -n python3-ipython-gui
-%{python3_sitelib}/IPython/kernel/zmq/gui
-%{python3_sitelib}/IPython/qt/
+%defattr(-,root,root,-)
+%{python3_sitelib}/IPython/zmq/gui
+%{python3_sitelib}/IPython/frontend/qt/
 %endif # with_python3
 
 %changelog
-* Fri Jun 13 2014 David Cantrell <dcantrell@redhat.com> - 2.1.0-4
-- Rebase el6 EPEL branch with latest ipython from rawhide (#767404)
-
-* Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.1.0-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
-
-* Sun Jun  1 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.1.0-2
-- package part of notebook in main package (#1103423)
-- add BR python-sphinx
-
-* Fri May 30 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.1.0-1
-- update to 2.1.0
-- Unbundle js-marked
-- Add provides for bundled exception fpc#416
-- Add BR Cython
-- disable python3 tests for now (possible blocking in koji)
-- Add BR python-pexpect
-
-* Fri May 30 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.0.0-2
-- add BR/R python-path
-- fix python -> python3 sed replacement
-- fix running testsuite
-- fix %%files
-- Unbundle js-highlight
-
-* Fri May 30 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.0.0-1
-- update to 2.0.0
-- bundled argparse has been dropped
-- unbundle fontawesome-fonts{,-web}
-- unbundle nodejs-requirejs
-- unbundle nodejs-underscore
-- unbundle nodejs-highlight-js
-
-* Fri May 30 2014 Thomas Spura <tomspur@fedoraproject.org> - 1.1.0-1
-- update to 1.1.0
-- drop both patches (upstream)
-- add python-ipython-sphinx packages
-- remove %%defattr
-- rename run_testsuite to check
-- building docs (currently fails with an ascii error)
-- unbundle jsonschema
-- unbundle decorator
-
-* Tue May 27 2014 Kalev Lember <kalevlember@gmail.com> - 0.13.2-4
-- Rebuilt for https://fedoraproject.org/wiki/Changes/Python_3.4
+* Fri Jun 13 2014 David Cantrell <dcantrell@redhat.com> - 0.13.2-4
+- Rebase el6 EPEL branch to 0.13.2 to fix unicode support (#767404)
 
 * Mon Oct  7 2013 Thomas Spura <tomspur@fedoraproject.org> - 0.13.2-3
 - install into unversioned docdir (#993848)
