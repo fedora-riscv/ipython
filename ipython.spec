@@ -3,8 +3,8 @@
 %endif
 
 Name:           ipython
-Version:        0.10
-Release:        3%{?dist}
+Version:        0.13.2
+Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -154,6 +154,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Fri Jun 13 2014 David Cantrell <dcantrell@redhat.com> - 0.13.2-1
+- Rebase to 0.13.2 to fix Unicode handling (#767404)
+
 * Mon Apr 01 2013 David Cantrell <dcantrell@redhat.com> - 0.10-3
 - ipython requires the 'argparse' module (#874133)
 
