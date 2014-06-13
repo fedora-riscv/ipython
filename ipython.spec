@@ -54,7 +54,9 @@ BuildRequires:  PyQt4
 # for frontend
 BuildRequires:  python-pygments
 # for running qt/matplotlib tests
+%if ! (0%{?rhel} == 6)
 BuildRequires:  xorg-x11-server-Xvfb
+%endif
 %endif
 
 # Require $current_python_interpreter-ipython
@@ -381,12 +383,14 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} \
 popd
 %endif
 
+%if ! (0%{?rhel} == 6)
 # TODO no ipython in path in koji
 PYTHONPATH=%{buildroot}%{python_sitelib} \
     PATH="%{buildroot}%{_bindir}:$PATH" \
     LC_ALL=en_US.UTF-8 \
     xvfb-run \
     %{buildroot}%{_bindir}/iptest -v -e %{EXCLUDE_TESTS_2}
+%endif
 %endif
 
 %files -n python-ipython
@@ -545,6 +549,7 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 - Rebase el6 EPEL branch to 0.13.2 to fix unicode support (#767404)
 - BuildRequires python-argparse
 - BuildRequires python-nose1.1
+- Disable Xvfb test for el6 EPEL branch
 
 * Mon Oct  7 2013 Thomas Spura <tomspur@fedoraproject.org> - 0.13.2-3
 - install into unversioned docdir (#993848)
