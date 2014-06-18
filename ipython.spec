@@ -17,7 +17,7 @@
 
 Name:           ipython
 Version:        2.1.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -47,7 +47,7 @@ BuildRequires:  python-matplotlib
 BuildRequires:  python-mock
 BuildRequires:  pymongo
 BuildRequires:  PyQt4
-BuildRequires:  python-tornado
+BuildRequires:  python-tornado >= 3.1.0
 BuildRequires:  python-zmq
 BuildRequires:  python-zmq-tests
 # for frontend
@@ -59,7 +59,7 @@ BuildRequires:  python3-nose
 BuildRequires:  python3-matplotlib
 BuildRequires:  python3-pymongo
 BuildRequires:  python3-PyQt4
-BuildRequires:  python3-tornado
+BuildRequires:  python3-tornado >= 3.1.0
 BuildRequires:  python3-zmq
 BuildRequires:  python3-zmq-tests
 # for frontend
@@ -152,8 +152,48 @@ Summary:        An enhanced interactive Python notebook
 Requires:       python-ipython-console = %{version}-%{release}
 Requires:       python-jinja2
 Requires:       python-matplotlib
-Requires:       python-tornado
+Requires:       python-tornado >= 3.1.0
 Provides:       ipython-notebook = %{version}-%{release}
+
+
+#################################################
+### Bundled stuff from the notebook goes here ###
+#################################################
+# We need to know nodejs_sitearch and lib
+BuildRequires:  nodejs-packaging
+BuildRequires:  web-assets-devel
+
+BuildRequires:  fontawesome-fonts-web
+Requires:       fontawesome-fonts-web
+BuildRequires:  nodejs-requirejs
+Requires:       nodejs-requirejs
+BuildRequires:  nodejs-underscore
+Requires:       nodejs-underscore
+BuildRequires:  js-highlight
+Requires:       js-highlight
+BuildRequires:  js-marked
+Requires:       js-marked
+
+# Temporal bundling allowed in:
+# https://fedorahosted.org/fpc/ticket/416
+#############################################################################
+# jquery temporary exception lasts until the release that jquery enters
+# the repository. For now, plan on temporary exception for other libraries
+# will expire one release after jquery unbundling has entered the repository.
+# Lessons from the jquery unbundling may lead us to change that time frame
+# as it is our proof of concept of how to unbundle.
+#############################################################################
+Provides:       bundled(js-backbone)
+Provides:       bundled(bootstrap)
+Provides:       bundled(js-bootstrap)
+Provides:       bundled(bootstrap-tour)
+Provides:       bundled(js-bootstrap-tour)
+Provides:       bundled(codemirror)
+Provides:       bundled(js-codemirror)
+Provides:       bundled(js-jquery)
+Provides:       bundled(js-jquery-ui)
+Provides:       bundled(js-google-caja)
+
 
 %description -n python-ipython-notebook
 %{ipython_desc_base}
@@ -255,7 +295,7 @@ Summary:        An enhanced interactive Python notebook
 Requires:       python3-ipython-console = %{version}-%{release}
 Requires:       python3-jinja2
 Requires:       python3-matplotlib
-Requires:       python3-tornado
+Requires:       python3-tornado >= 3.1.0
 
 #################################################
 ### Bundled stuff from the notebook goes here ###
@@ -647,6 +687,11 @@ popd
 %endif # with_python3
 
 %changelog
+* Wed Jun 18 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.1.0-4
+- BR/R same fonts for python{,3}-ipython-notebook (#1006575)
+- require tornado >= 3.1.0 (#1006575)
+
+
 * Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.1.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
