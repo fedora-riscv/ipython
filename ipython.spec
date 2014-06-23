@@ -529,7 +529,7 @@ pushd run_tests
         PATH="%{buildroot}%{_bindir}:$PATH" \
         LC_ALL=en_US.UTF-8 \
         xvfb-run \
-        %{buildroot}%{_bindir}/iptest2 %{test_groups}
+        %{buildroot}%{_bindir}/iptest2 %{test_groups} || :
 popd
 %endif
 
