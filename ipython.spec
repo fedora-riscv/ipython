@@ -507,16 +507,16 @@ rm -rf %{buildroot}
 # Ensure that the user's .pythonrc.py is not invoked during any tests.
 export PYTHONSTARTUP=""
 %if 0%{?with_python3}
-#pushd %{py3dir}
-#    mkdir run_tests
-#    pushd run_tests
-#    PYTHONPATH=%{buildroot}%{python3_sitelib} \
-#        PATH="%{buildroot}%{_bindir}:$PATH" \
-#        LC_ALL=en_US.UTF-8 \
-#        xvfb-run \
-#        %{buildroot}%{_bindir}/iptest3
-#    popd
-#popd
+pushd %{py3dir}
+    mkdir run_tests
+    pushd run_tests
+    PYTHONPATH=%{buildroot}%{python3_sitelib} \
+        PATH="%{buildroot}%{_bindir}:$PATH" \
+        LC_ALL=en_US.UTF-8 \
+        xvfb-run \
+        %{buildroot}%{_bindir}/iptest3
+    popd
+popd
 %endif
 
 mkdir run_tests
@@ -695,6 +695,7 @@ popd
 %changelog
 * Mon Jun 23 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.1.0-5
 - use mathjax from _jsdir instead of cdn
+- enable python3 tests
 
 * Wed Jun 18 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.1.0-4
 - BR/R same fonts for python{,3}-ipython-notebook (#1006575)
