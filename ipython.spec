@@ -17,7 +17,7 @@
 
 Name:           ipython
 Version:        2.1.0
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -27,6 +27,8 @@ Group:          Development/Libraries
 License:        (BSD and MIT and Python) and GPLv2+
 URL:            http://ipython.org/
 Source0:        https://pypi.python.org/packages/source/i/ipython/ipython-%{version}.tar.gz
+# Add _jsdir to default search path
+Patch0:         ipython-2.1.0-_jsdir-search-path.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -154,6 +156,8 @@ Requires:       python-jinja2
 Requires:       python-matplotlib
 Requires:       python-tornado >= 3.1.0
 Provides:       ipython-notebook = %{version}-%{release}
+BuildRequires:  mathjax
+Requires:       mathjax
 
 
 #################################################
@@ -296,6 +300,8 @@ Requires:       python3-ipython-console = %{version}-%{release}
 Requires:       python3-jinja2
 Requires:       python3-matplotlib
 Requires:       python3-tornado >= 3.1.0
+BuildRequires:  mathjax
+Requires:       mathjax
 
 #################################################
 ### Bundled stuff from the notebook goes here ###
@@ -376,6 +382,10 @@ This package contains the gui of %{name}, which requires PyQt.
 %setup -q
 
 # Patches go here
+%patch0 -p1 -b .jsdir
+sed -i "s;_jsdir;%{_jsdir};g" \
+    IPython/html/notebookapp.py
+
 
 # delete bundling libs
 pushd IPython/external
@@ -687,10 +697,12 @@ popd
 %endif # with_python3
 
 %changelog
+* Mon Jun 23 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.1.0-5
+- use mathjax from _jsdir instead of cdn
+
 * Wed Jun 18 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.1.0-4
 - BR/R same fonts for python{,3}-ipython-notebook (#1006575)
 - require tornado >= 3.1.0 (#1006575)
-
 
 * Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.1.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild

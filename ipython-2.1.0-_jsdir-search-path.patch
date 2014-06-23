@@ -1,0 +1,14 @@
+diff --git a/IPython/html/notebookapp.py b/IPython/html/notebookapp.py
+index 9c555d6..7a73666 100644
+--- a/IPython/html/notebookapp.py
++++ b/IPython/html/notebookapp.py
+@@ -443,7 +443,8 @@ def _base_project_url_changed(self, name, old, new):
+         or overriding individual files in the IPython"""
+     )
+     def _extra_static_paths_default(self):
+-        return [os.path.join(self.profile_dir.location, 'static')]
++        return [os.path.join(self.profile_dir.location, 'static'),
++                '_jsdir']
+     
+     @property
+     def static_file_path(self):
