@@ -410,6 +410,7 @@ rm simplegeneric/_simplegeneric.py
 popd
 
 %define do_global_symlinking() \
+pushd IPython/html/static/components \
     pushd font-awesome \
         rm -rf font \
         ln -s %{_datadir}/fonts/fontawesome font \
@@ -439,13 +440,12 @@ popd
         ln -s %{_jsdir}/$folder/ $folder/lib \
     done \
 ls -l \
-ls -l *
+ls -l * \
+popd
 
 # unbundle components
-pushd IPython/html/static/components
 %do_global_symlinking
 #asdf
-popd
 
 %if 0%{?with_python3}
 rm -rf %{py3dir}
@@ -489,16 +489,12 @@ popd
 
 # unbundle components again...
 pushd %{buildroot}%{python_sitelib}
-    pushd IPython/html/static/components
-        %do_global_symlinking
-    popd
+    %do_global_symlinking
 popd
 
 %if 0%{?with_python3}
 pushd %{buildroot}%{python3_sitelib}
-    pushd IPython/html/static/components
-        %do_global_symlinking
-    popd
+    %do_global_symlinking
 popd
 %endif # with_python3
 
