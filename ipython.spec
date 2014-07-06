@@ -17,7 +17,7 @@
 
 Name:           ipython
 Version:        2.1.0
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -29,6 +29,9 @@ URL:            http://ipython.org/
 Source0:        https://pypi.python.org/packages/source/i/ipython/ipython-%{version}.tar.gz
 # Add _jsdir to default search path
 Patch0:         ipython-2.1.0-_jsdir-search-path.patch
+# Port to fontawesome 4
+# Sent upstream: https://github.com/ipython/ipython/pull/6084
+Patch1:         ipython-2.1.0-fontawesome4.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -177,6 +180,11 @@ BuildRequires:  js-highlight
 Requires:       js-highlight
 BuildRequires:  js-marked
 Requires:       js-marked
+
+# BR of helpers for unbundling
+BuildRequires:  nodejs-less
+BuildRequires:  fabric
+
 
 # Temporal bundling allowed in:
 # https://fedorahosted.org/fpc/ticket/416
@@ -385,6 +393,10 @@ This package contains the gui of %{name}, which requires PyQt.
 %patch0 -p1 -b .jsdir
 sed -i "s;_jsdir;%{_jsdir};g" \
     IPython/html/notebookapp.py
+%patch1 -p1 -b .fontawesome4
+
+# Accept less > 1.5.0
+sed -i "s/max_less_version = '1.5.0'/max_less_version = '2.5.0'/g" IPython/html/fabfile.py
 
 
 # delete bundling libs
@@ -446,6 +458,10 @@ popd
 # unbundle components
 %do_global_symlinking
 #asdf
+
+pushd IPython/html
+    fab css
+popd
 
 %if 0%{?with_python3}
 rm -rf %{py3dir}
@@ -697,6 +713,9 @@ popd
 %endif # with_python3
 
 %changelog
+* Sun Jul  6 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.1.0-6
+- port ipython to fontawesome-4 and regenerate css in build (#1006575)
+
 * Mon Jun 23 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.1.0-5
 - use mathjax from _jsdir instead of cdn
 - enable python3 tests
