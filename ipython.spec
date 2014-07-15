@@ -16,7 +16,7 @@
 
 Name:           ipython
 Version:        0.13.2
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -31,6 +31,9 @@ Source0:        http://archive.ipython.org/release/%{version}/%{name}-%{version}
 Patch0:         ipython-0.13.1-dont-require-matplotlib.patch
 # From upstream's git
 Patch1:         ipython-0.13.2-print-syntax.patch
+# Modified from upstreams commit 2f4af9c7e399033c5580e3019b0c4e22518b2f2c
+# CVE-2014-3429: https://bugzilla.redhat.com/show_bug.cgi?id=1119890
+Patch2:         ipython-0.13.2-websocket-origin-cve.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -545,6 +548,9 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %endif # with_python3
 
 %changelog
+* Tue Jul 15 2014 Thomas Spura <tomspur@fedoraproject.org> - 0.13.2-5
+- add fix for CVE-2014-3429 (#1119890)
+
 * Fri Jun 13 2014 David Cantrell <dcantrell@redhat.com> - 0.13.2-4
 - Rebase el6 EPEL branch to 0.13.2 to fix unicode support (#767404)
 - BuildRequires python-argparse
