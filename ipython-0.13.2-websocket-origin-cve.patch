@@ -1,8 +1,20 @@
 diff --git a/IPython/frontend/html/notebook/handlers.py b/IPython/frontend/html/notebook/handlers.py
-index 3542346..3721a43 100644
+index 3542346..077dc97 100644
 --- a/IPython/frontend/html/notebook/handlers.py
 +++ b/IPython/frontend/html/notebook/handlers.py
-@@ -369,6 +369,30 @@ class KernelActionHandler(AuthenticatedHandler):
+@@ -16,6 +16,11 @@ Authors:
+ # Imports
+ #-----------------------------------------------------------------------------
+ 
++try:
++    from urllib.parse import urlparse # Py 3
++except ImportError:
++    from urlparse import urlparse # Py 2
++
+ import logging
+ import Cookie
+ import time
+@@ -369,6 +374,30 @@ class KernelActionHandler(AuthenticatedHandler):
  
  class ZMQStreamHandler(websocket.WebSocketHandler):
  
@@ -33,7 +45,7 @@ index 3542346..3721a43 100644
      def _reserialize_reply(self, msg_list):
          """Reserialize a reply message using JSON.
  
-@@ -410,6 +434,11 @@ class ZMQStreamHandler(websocket.WebSocketHandler):
+@@ -410,6 +439,11 @@ class ZMQStreamHandler(websocket.WebSocketHandler):
  class AuthenticatedZMQStreamHandler(ZMQStreamHandler):
  
      def open(self, kernel_id):
