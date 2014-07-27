@@ -17,7 +17,7 @@
 
 Name:           ipython
 Version:        2.1.0
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -514,6 +514,11 @@ pushd %{buildroot}%{python3_sitelib}
 popd
 %endif # with_python3
 
+# Do we need to replace python3 with python2? Only seems to occur on rawhide, see #1123618
+echo %{buildroot}%{_bindir}/{ipcluster,ipcontroller,ipengine,iptest,ipython} | xargs head -n 2
+echo %{buildroot}%{_bindir}/{ipcluster,ipcontroller,ipengine,iptest,ipython} | xargs sed -i '1s|^#!python|#!%{__python2}|'
+
+
 %clean
 rm -rf %{buildroot}
 
@@ -713,6 +718,9 @@ popd
 %endif # with_python3
 
 %changelog
+* Sun Jul 27 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.1.0-7
+- Replace python3 shebang with python2 one (#1123618)
+
 * Sun Jul  6 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.1.0-6
 - port ipython to fontawesome-4 and regenerate css in build (#1006575)
 
