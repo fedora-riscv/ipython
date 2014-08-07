@@ -516,7 +516,7 @@ popd
 
 # Do we need to replace python3 with python2? Only seems to occur on rawhide, see #1123618
 echo %{buildroot}%{_bindir}/{ipcluster,ipcontroller,ipengine,iptest,ipython} | xargs head -n 2
-echo %{buildroot}%{_bindir}/{ipcluster,ipcontroller,ipengine,iptest,ipython} | xargs sed -i '1s|^#!python|#!%{__python2}|'
+echo %{buildroot}%{_bindir}/{ipcluster,ipcontroller,ipengine,iptest,ipython} | xargs sed -i '1s|^#!python|#!%{__python}|'
 
 
 %clean
