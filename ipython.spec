@@ -16,8 +16,8 @@
 %endif
 
 Name:           ipython
-Version:        2.1.0
-Release:        7%{?dist}
+Version:        2.2.0
+Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -718,6 +718,9 @@ popd
 %endif # with_python3
 
 %changelog
+* Thu Aug  7 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.2.0-1
+- update to 2.2.0
+
 * Sun Jul 27 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.1.0-7
 - Replace python3 shebang with python2 one (#1123618)
 
