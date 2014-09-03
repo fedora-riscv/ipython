@@ -65,6 +65,8 @@ BuildRequires:  xorg-x11-server-Xvfb
 # Require $current_python_interpreter-ipython
 Requires:       python-ipython
 
+Requires:       python-argparse
+
 # add python3 packages
 %if 0%{?with_python3}
 BuildRequires:  python3-devel
@@ -548,6 +550,9 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %endif # with_python3
 
 %changelog
+* Wed Sep 03 2014 David Cantrell <dcantrell@redhat.com> - 0.13.2-6
+- Add Requires for python-argparse (#874133)
+
 * Tue Jul 15 2014 Thomas Spura <tomspur@fedoraproject.org> - 0.13.2-5
 - add fix for CVE-2014-3429 (#1119890)
 
