@@ -718,7 +718,7 @@ popd
 %endif # with_python3
 
 %changelog
-* Fri Nov 11 2014 Orion Poplawski <orion@cora.nwra.com> - 2.3.0-1
+* Fri Nov 14 2014 Orion Poplawski <orion@cora.nwra.com> - 2.3.0-1
 - update to 2.3.0
 
 * Thu Aug  7 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.2.0-1
