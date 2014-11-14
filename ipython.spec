@@ -16,7 +16,7 @@
 %endif
 
 Name:           ipython
-Version:        2.2.0
+Version:        2.3.0
 Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
@@ -718,6 +718,9 @@ popd
 %endif # with_python3
 
 %changelog
+* Fri Nov 11 2014 Orion Poplawski <orion@cora.nwra.com> - 2.3.0-1
+- update to 2.3.0
+
 * Thu Aug  7 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.2.0-1
 - update to 2.2.0
 
