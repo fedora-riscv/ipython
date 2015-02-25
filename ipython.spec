@@ -6,18 +6,19 @@
 %bcond_without doc
 
 # where are all the python3 dependencies
-%if 0%{?fedora} > 15
+%if 0%{?fedora}
 %global with_python3 1
+%global with_notebook 1
 %endif
 
 # where are all the pypy dependencies
-%if 0%{?fedora} > 15
+%if 0%{?fedora}
 %global with_pypy 0
 %endif
 
 Name:           ipython
 Version:        3.1.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -49,7 +50,7 @@ BuildRequires:  python-matplotlib
 BuildRequires:  python-mock
 BuildRequires:  pymongo
 BuildRequires:  PyQt4
-BuildRequires:  python-tornado >= 4.0
+BuildRequires:  python-requests
 BuildRequires:  python-zmq
 BuildRequires:  python-zmq-tests
 # for frontend
@@ -103,7 +104,9 @@ Main features:\
 Summary:        An enhanced interactive Python shell
 Requires:       python-ipython-console = %{version}-%{release}
 Requires:       python-ipython-gui = %{version}-%{release}
+%if 0%{?with_notebook}
 Requires:       python-ipython-notebook = %{version}-%{release}
+%endif
 Provides:       ipython = %{version}-%{release}
 Obsoletes:      ipython < 0.13-1
 
@@ -149,6 +152,7 @@ Requires:       python-sphinx
 
 This package contains the ipython sphinx extension.
 
+%if 0%{?with_notebook}
 %package -n python-ipython-notebook
 Summary:        An enhanced interactive Python notebook
 Requires:       python-ipython-console = %{version}-%{release}
@@ -156,6 +160,7 @@ Requires:       python-jinja2
 Requires:       python-matplotlib
 BuildRequires:  python-mistune >= 0.5
 Requires:       python-mistune >= 0.5
+BuildRequires:  python-tornado >= 4.0
 Requires:       python-tornado >= 4.0
 Provides:       ipython-notebook = %{version}-%{release}
 BuildRequires:  mathjax
@@ -209,6 +214,7 @@ Provides:       bundled(js-google-caja)
 %{ipython_desc_base}
 
 This package contains the ipython notebook.
+%endif
 
 
 %package -n python-ipython-tests
@@ -307,6 +313,7 @@ Requires:       python3-jinja2
 Requires:       python3-matplotlib
 BuildRequires:  python3-mistune >= 0.5
 Requires:       python3-mistune >= 0.5
+BuildRequires:  python3-tornado >= 4.0
 Requires:       python3-tornado >= 4.0
 BuildRequires:  mathjax
 Requires:       mathjax
@@ -441,8 +448,11 @@ ls -l \
 ls -l * \
 popd
 
-# unbundle components
+# unbundle components if building the notebook, otherwise leave for setup to
+# find
+%if 0%{?with_notebook}
 %do_global_symlinking
+%endif
 #asdf
 
 %if 0%{?with_python3}
@@ -500,6 +510,17 @@ popd
 echo %{buildroot}%{_bindir}/{ipcluster,ipcontroller,ipengine,iptest,ipython} | xargs head -n 2
 echo %{buildroot}%{_bindir}/{ipcluster,ipcontroller,ipengine,iptest,ipython} | xargs sed -i '1s|^#!python|#!%{__python}|'
 
+%if !0%{?with_notebook}
+# Need to remove everything but what we ship in console
+rm -r %{buildroot}%{python_sitelib}/IPython/html/__main__.*
+rm -r %{buildroot}%{python_sitelib}/IPython/html/[a-mo-rt-z]*
+rm -r %{buildroot}%{python_sitelib}/IPython/html/nbconvert
+rm -r %{buildroot}%{python_sitelib}/IPython/html/notebook*
+rm -r %{buildroot}%{python_sitelib}/IPython/html/s[a-su-z]*
+rm -r %{buildroot}%{python_sitelib}/IPython/html/static/[a-bd-z]*
+rm -r %{buildroot}%{python_sitelib}/IPython/html/static/c[a-tv-z]*
+%endif
+
 
 %clean
 rm -rf %{buildroot}
@@ -507,7 +528,11 @@ rm -rf %{buildroot}
 
 %if %{with check}
 %check
+%if 0%{?with_notebook}
 %global test_groups config extensions lib testing terminal utils nbformat qt core autoreload nbconvert parallel html  js/services js/base js/notebook js/widgets js/tree
+%else
+%global test_groups config extensions lib testing terminal utils nbformat qt core autoreload parallel
+%endif
 # the following group seems to block on python3.4
 #kernel kernel.inprocess
 
@@ -554,9 +579,10 @@ popd
 %dir %{python_sitelib}/IPython
 %{python_sitelib}/IPython/external
 %{python_sitelib}/IPython/*.py*
-%dir %{python_sitelib}/IPython/html/*
 %{python_sitelib}/IPython/html/__init__.py*
 %{python_sitelib}/IPython/html/nbextensions.py*
+%dir %{python_sitelib}/IPython/html/static
+%{python_sitelib}/IPython/html/static/custom/
 %dir %{python_sitelib}/IPython/kernel
 %{python_sitelib}/IPython/kernel/*.py*
 %{python_sitelib}/IPython/kernel/blocking/
@@ -606,10 +632,13 @@ popd
 %endif
 
 
+%if 0%{?with_notebook}
 %files -n python-ipython-notebook
 %{python_sitelib}/IPython/html/*
 %exclude %{python_sitelib}/IPython/html/__init__.py*
 %exclude %{python_sitelib}/IPython/html/nbextensions.py*
+%exclude %{python_sitelib}/IPython/html/static/custom/
+%endif
 
 
 %files -n python-ipython-gui
@@ -637,6 +666,8 @@ popd
 %dir %{python3_sitelib}/IPython/html
 %{python3_sitelib}/IPython/html/__init__.py*
 %{python3_sitelib}/IPython/html/nbextensions.py*
+%dir %{python3_sitelib}/IPython/html/static
+%{python3_sitelib}/IPython/html/static/custom/
 %dir %{python3_sitelib}/IPython/kernel
 %{python3_sitelib}/IPython/kernel/__pycache__/
 %{python3_sitelib}/IPython/kernel/*.py*
@@ -693,6 +724,7 @@ popd
 %{python3_sitelib}/IPython/html/*
 %exclude %{python3_sitelib}/IPython/html/__init__.py*
 %exclude %{python3_sitelib}/IPython/html/nbextensions.py*
+%exclude %{python3_sitelib}/IPython/html/static/custom/
 
 
 %files -n python3-ipython-gui
@@ -702,6 +734,10 @@ popd
 %endif # with_python3
 
 %changelog
+* Thu May 7 2015 Orion Poplawski <orion@cora.nwra.com> - 3.1.0-2
+- Do not ship notebook on EL, missing python-tornado >= 4.0
+- Move IPython/html/static/custom into -console.
+
 * Sat Apr 25 2015 Orion Poplawski <orion@cora.nwra.com> - 3.1.0-1
 - Update to 3.1.0
 - Add BR/R on mistune
