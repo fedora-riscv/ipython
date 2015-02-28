@@ -16,7 +16,7 @@
 %endif
 
 Name:           ipython
-Version:        2.4.1
+Version:        3.1.0
 Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
@@ -29,9 +29,6 @@ URL:            http://ipython.org/
 Source0:        https://pypi.python.org/packages/source/i/ipython/ipython-%{version}.tar.gz
 # Add _jsdir to default search path
 Patch0:         ipython-2.1.0-_jsdir-search-path.patch
-# Port to fontawesome 4
-# Sent upstream: https://github.com/ipython/ipython/pull/6084
-Patch1:         ipython-2.1.0-fontawesome4.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -52,7 +49,7 @@ BuildRequires:  python-matplotlib
 BuildRequires:  python-mock
 BuildRequires:  pymongo
 BuildRequires:  PyQt4
-BuildRequires:  python-tornado >= 3.1.0
+BuildRequires:  python-tornado >= 4.0
 BuildRequires:  python-zmq
 BuildRequires:  python-zmq-tests
 # for frontend
@@ -64,7 +61,7 @@ BuildRequires:  python3-nose
 BuildRequires:  python3-matplotlib
 BuildRequires:  python3-pymongo
 BuildRequires:  python3-PyQt4
-BuildRequires:  python3-tornado >= 3.1.0
+BuildRequires:  python3-tornado >= 4.0
 BuildRequires:  python3-zmq
 BuildRequires:  python3-zmq-tests
 # for frontend
@@ -122,14 +119,14 @@ Requires:       python-zmq
 # bundled python packages
 BuildRequires:  python-decorator
 BuildRequires:  python-jsonschema
-BuildRequires:  python-jsonpointer
 BuildRequires:  python-path
 BuildRequires:  pexpect
 BuildRequires:  python-simplegeneric
 Requires:       pexpect
 Requires:       python-decorator
+BuildRequires:  python-mistune >= 0.3.1
+Requires:       python-mistune >= 0.3.1
 Requires:       python-jsonschema
-Requires:       python-jsonpointer
 Requires:       python-path
 Requires:       python-simplegeneric
 
@@ -157,7 +154,9 @@ Summary:        An enhanced interactive Python notebook
 Requires:       python-ipython-console = %{version}-%{release}
 Requires:       python-jinja2
 Requires:       python-matplotlib
-Requires:       python-tornado >= 3.1.0
+BuildRequires:  python-mistune >= 0.5
+Requires:       python-mistune >= 0.5
+Requires:       python-tornado >= 4.0
 Provides:       ipython-notebook = %{version}-%{release}
 BuildRequires:  mathjax
 Requires:       mathjax
@@ -183,7 +182,6 @@ Requires:       js-marked
 
 # BR of helpers for unbundling
 BuildRequires:  nodejs-less
-BuildRequires:  fabric
 
 
 # Temporal bundling allowed in:
@@ -271,13 +269,13 @@ Requires:       python3-zmq
 # bundled python packages
 BuildRequires:  python3-decorator
 BuildRequires:  python3-jsonschema
-BuildRequires:  python3-jsonpointer
 BuildRequires:  python3-path
 BuildRequires:  python3-pexpect
 BuildRequires:  python3-simplegeneric
 Requires:       python3-decorator
-Requires:       python3-jsonpointer
 Requires:       python3-jsonschema
+BuildRequires:  python3-mistune >= 0.3.1
+Requires:       python3-mistune >= 0.3.1
 Requires:       python3-path
 Requires:       python3-pexpect
 Requires:       python3-simplegeneric
@@ -307,7 +305,9 @@ Summary:        An enhanced interactive Python notebook
 Requires:       python3-ipython-console = %{version}-%{release}
 Requires:       python3-jinja2
 Requires:       python3-matplotlib
-Requires:       python3-tornado >= 3.1.0
+BuildRequires:  python3-mistune >= 0.5
+Requires:       python3-mistune >= 0.5
+Requires:       python3-tornado >= 4.0
 BuildRequires:  mathjax
 Requires:       mathjax
 
@@ -393,11 +393,6 @@ This package contains the gui of %{name}, which requires PyQt.
 %patch0 -p1 -b .jsdir
 sed -i "s;_jsdir;%{_jsdir};g" \
     IPython/html/notebookapp.py
-%patch1 -p1 -b .fontawesome4
-
-# Accept less > 1.5.0
-sed -i "s/max_less_version = '1.5.0'/max_less_version = '2.5.0'/g" IPython/html/fabfile.py
-
 
 # delete bundling libs
 pushd IPython/external
@@ -409,8 +404,6 @@ rm decorator/_decorator.py
 # use decorators of numpy
 rm decorators/_decorators.py
 
-rm jsonschema/_jsonschema.py
-rm jsonpointer/_jsonpointer.py
 rm pexpect/_pexpect.py
 
 rm path/_path.py
@@ -438,13 +431,6 @@ pushd IPython/html/static/components \
         rm -r ${folder} \
         ln -s %{nodejs_sitelib}/${folder} \
     done \
-# Work around highlight packaging (ipython requires it in build/ subfolder...) \
-# Unbundle JS stuff WITHIN build subfolder (ipython requires it there...) \
-    for folder in highlight.js; do \
-        rm -r $folder \
-        mkdir -p $folder \
-        ln -s %{_jsdir}/$folder/ $folder/build \
-    done \
  \
     for folder in marked; do \
         rm -r $folder \
@@ -458,10 +444,6 @@ popd
 # unbundle components
 %do_global_symlinking
 #asdf
-
-pushd IPython/html
-    fab css
-popd
 
 %if 0%{?with_python3}
 rm -rf %{py3dir}
@@ -533,7 +515,7 @@ rm -rf %{buildroot}
 export PYTHONSTARTUP=""
 %if 0%{?with_python3}
 pushd %{py3dir}
-    mkdir run_tests
+    mkdir -p run_tests
     pushd run_tests
     PYTHONPATH=%{buildroot}%{python3_sitelib} \
         PATH="%{buildroot}%{_bindir}:$PATH" \
@@ -544,7 +526,7 @@ pushd %{py3dir}
 popd
 %endif
 
-mkdir run_tests
+mkdir -p run_tests
 pushd run_tests
     PYTHONPATH=%{buildroot}%{python_sitelib} \
         PATH="%{buildroot}%{_bindir}:$PATH" \
@@ -631,6 +613,7 @@ popd
 
 
 %files -n python-ipython-gui
+%{python_sitelib}/IPython/kernel/resources/
 %{python_sitelib}/IPython/kernel/zmq/gui
 %{python_sitelib}/IPython/qt/
 
@@ -713,11 +696,18 @@ popd
 
 
 %files -n python3-ipython-gui
+%{python3_sitelib}/IPython/kernel/resources/
 %{python3_sitelib}/IPython/kernel/zmq/gui
 %{python3_sitelib}/IPython/qt/
 %endif # with_python3
 
 %changelog
+* Sat Apr 25 2015 Orion Poplawski <orion@cora.nwra.com> - 3.1.0-1
+- Update to 3.1.0
+- Add BR/R on mistune
+- Drop BR/R on jsonpointer
+- Drop fabric
+
 * Thu Feb 26 2015 Orion Poplawski <orion@cora.nwra.com> - 2.4.1-1
 - update to 2.4.1
 
