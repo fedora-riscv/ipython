@@ -127,6 +127,8 @@ BuildRequires:  pexpect
 BuildRequires:  python-simplegeneric
 Requires:       pexpect
 Requires:       python-decorator
+BuildRequires:  python-mistune >= 0.3.1
+Requires:       python-mistune >= 0.3.1
 Requires:       python-jsonschema
 Requires:       python-path
 Requires:       python-simplegeneric
@@ -155,6 +157,8 @@ Summary:        An enhanced interactive Python notebook
 Requires:       python-ipython-console = %{version}-%{release}
 Requires:       python-jinja2
 Requires:       python-matplotlib
+BuildRequires:  python-mistune >= 0.5
+Requires:       python-mistune >= 0.5
 Requires:       python-tornado >= 4.0
 Provides:       ipython-notebook = %{version}-%{release}
 BuildRequires:  mathjax
@@ -274,6 +278,8 @@ BuildRequires:  python3-pexpect
 BuildRequires:  python3-simplegeneric
 Requires:       python3-decorator
 Requires:       python3-jsonschema
+BuildRequires:  python3-mistune >= 0.3.1
+Requires:       python3-mistune >= 0.3.1
 Requires:       python3-path
 Requires:       python3-pexpect
 Requires:       python3-simplegeneric
@@ -303,6 +309,8 @@ Summary:        An enhanced interactive Python notebook
 Requires:       python3-ipython-console = %{version}-%{release}
 Requires:       python3-jinja2
 Requires:       python3-matplotlib
+BuildRequires:  python3-mistune >= 0.5
+Requires:       python3-mistune >= 0.5
 Requires:       python3-tornado >= 4.0
 BuildRequires:  mathjax
 Requires:       mathjax
