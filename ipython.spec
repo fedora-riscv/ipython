@@ -16,7 +16,7 @@
 
 Name:           ipython
 Version:        0.13.2
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -550,7 +550,7 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %endif # with_python3
 
 %changelog
-* Wed Sep 03 2014 David Cantrell <dcantrell@redhat.com> - 0.13.2-6
+* Tue Mar 10 2015 David Cantrell <dcantrell@redhat.com> - 0.13.2-6
 - Add Requires for python-argparse (#874133)
 
 * Tue Jul 15 2014 Thomas Spura <tomspur@fedoraproject.org> - 0.13.2-5
