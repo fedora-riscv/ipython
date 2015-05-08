@@ -1,13 +1,6 @@
-commit 716862fc302c447d756e1c2075c5136e6c9c60b0
-Author: Thomas Spura <thomas.spura@gmail.com>
-Date:   Sun Jul 6 13:11:20 2014 +0200
-
-    Port to fontawesome4
-
-diff --git a/IPython/html/static/notebook/js/maintoolbar.js b/IPython/html/static/notebook/js/maintoolbar.js
-index 01af262..c957bfe 100644
---- a/IPython/html/static/notebook/js/maintoolbar.js
-+++ b/IPython/html/static/notebook/js/maintoolbar.js
+diff -up ipython-2.4.1/IPython/html/static/notebook/js/maintoolbar.js.fontawesome4 ipython-2.4.1/IPython/html/static/notebook/js/maintoolbar.js
+--- ipython-2.4.1/IPython/html/static/notebook/js/maintoolbar.js.fontawesome4	2015-02-09 15:59:57.000000000 -0700
++++ ipython-2.4.1/IPython/html/static/notebook/js/maintoolbar.js	2015-05-08 16:59:45.309052483 -0600
 @@ -27,7 +27,7 @@ var IPython = (function (IPython) {
                  {
                      id : 'save_b',
@@ -98,11 +91,10 @@ index 01af262..c957bfe 100644
                      callback : function () {
                          IPython.notebook.restart_kernel();
                          }
-diff --git a/IPython/html/static/notebook/less/notificationarea.less b/IPython/html/static/notebook/less/notificationarea.less
-index 5b3fd52..00073c0 100644
---- a/IPython/html/static/notebook/less/notificationarea.less
-+++ b/IPython/html/static/notebook/less/notificationarea.less
-@@ -28,19 +28,19 @@
+diff -up ipython-2.4.1/IPython/html/static/notebook/less/notificationarea.less.fontawesome4 ipython-2.4.1/IPython/html/static/notebook/less/notificationarea.less
+--- ipython-2.4.1/IPython/html/static/notebook/less/notificationarea.less.fontawesome4	2015-02-09 15:59:57.000000000 -0700
++++ ipython-2.4.1/IPython/html/static/notebook/less/notificationarea.less	2015-05-08 16:59:45.310052478 -0600
+@@ -17,19 +17,19 @@
  }
  
  .edit_mode_icon:before {
@@ -126,11 +118,22 @@ index 5b3fd52..00073c0 100644
  }
  
  
-diff --git a/IPython/html/static/tree/less/tree.less b/IPython/html/static/tree/less/tree.less
-index 1827f97..a480d67 100644
---- a/IPython/html/static/tree/less/tree.less
-+++ b/IPython/html/static/tree/less/tree.less
-@@ -141,9 +141,9 @@ input.engine_num_input {
+diff -up ipython-2.4.1/IPython/html/static/style/style.less.fontawesome4 ipython-2.4.1/IPython/html/static/style/style.less
+--- ipython-2.4.1/IPython/html/static/style/style.less.fontawesome4	2015-02-09 15:59:57.000000000 -0700
++++ ipython-2.4.1/IPython/html/static/style/style.less	2015-05-08 17:00:15.688893090 -0600
+@@ -4,7 +4,7 @@
+ 
+ // Font-Awesome
+ @import "../components/font-awesome/less/font-awesome.less";
+-@FontAwesomePath:    "../components/font-awesome/font";
++@fa-font-path:    "../components/font-awesome/font";
+ 
+ // base
+ @import "../base/less/style.less";
+diff -up ipython-2.4.1/IPython/html/static/tree/less/tree.less.fontawesome4 ipython-2.4.1/IPython/html/static/tree/less/tree.less
+--- ipython-2.4.1/IPython/html/static/tree/less/tree.less.fontawesome4	2015-02-09 15:59:57.000000000 -0700
++++ ipython-2.4.1/IPython/html/static/tree/less/tree.less	2015-05-08 16:59:45.310052478 -0600
+@@ -128,9 +128,9 @@ input.engine_num_input {
  }
  
  .folder_icon:before {

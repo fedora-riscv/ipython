@@ -17,7 +17,7 @@
 
 Name:           ipython
 Version:        2.4.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -31,7 +31,7 @@ Source0:        https://pypi.python.org/packages/source/i/ipython/ipython-%{vers
 Patch0:         ipython-2.1.0-_jsdir-search-path.patch
 # Port to fontawesome 4
 # Sent upstream: https://github.com/ipython/ipython/pull/6084
-Patch1:         ipython-2.1.0-fontawesome4.patch
+Patch1:         ipython-2.4.1-fontawesome4.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -718,6 +718,9 @@ popd
 %endif # with_python3
 
 %changelog
+* Fri May 8 2015 Orion Poplawski <orion@cora.nwra.com> - 2.4.1-2
+- Fix font-awesome paths (bug #1219956)
+
 * Thu Feb 26 2015 Orion Poplawski <orion@cora.nwra.com> - 2.4.1-1
 - update to 2.4.1
 
