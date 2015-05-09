@@ -141,7 +141,7 @@ diff -up ipython-2.4.1/IPython/html/static/notebook/js/tour.js.fontawesome4 ipyt
    <div class='arrow'></div>\
      <div style='position:absolute; top:7px; right:7px'>\
 -        <button class='btn btn-sm icon-remove' data-role='end'></button></div>\
-+        <button class='btn btn-sm fa fa-remove' data-role='end'></button></div>\
++        <button class='btn btn-sm fa fa-times' data-role='end'></button></div>\
    <h3 class='popover-title'></h3>\
    <div class='popover-content'></div>\
    <div class='popover-navigation'>\
@@ -230,7 +230,7 @@ diff -up ipython-2.4.1/IPython/html/static/widgets/js/widget_container.js.fontaw
                  });
              this.$close = $('<button />')
 -                .addClass('close icon-remove')
-+                .addClass('close fa fa-remove')
++                .addClass('close fa fa-times')
                  .css('margin-left', '5px')
                  .appendTo(this.$title_bar)
                  .click(function(){
