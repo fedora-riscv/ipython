@@ -1,23 +1,19 @@
-%if ! (0%{?rhel} > 5)
-%{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
-%endif
-
 %bcond_without check
 %bcond_without doc
 
 # where are all the python3 dependencies
-%if 0%{?fedora} > 15
+%if 0%{?fedora}
 %global with_python3 1
 %endif
 
 # where are all the pypy dependencies
-%if 0%{?fedora} > 15
+%if 0%{?fedora}
 %global with_pypy 0
 %endif
 
 Name:           ipython
 Version:        2.4.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -32,6 +28,9 @@ Patch0:         ipython-2.1.0-_jsdir-search-path.patch
 # Port to fontawesome 4
 # Sent upstream: https://github.com/ipython/ipython/pull/6084
 Patch1:         ipython-2.4.1-fontawesome4.patch
+# Upstream patch to fix PyQt4 import
+# https://bugzilla.redhat.com/show_bug.cgi?id=1219997
+Patch2:         https://github.com/ipython/ipython/commit/5f275fe135362d5b6cca79d004f8fa272eec24d2.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -394,6 +393,7 @@ This package contains the gui of %{name}, which requires PyQt.
 sed -i "s;_jsdir;%{_jsdir};g" \
     IPython/html/notebookapp.py
 %patch1 -p1 -b .fontawesome4
+%patch2 -p1 -b .pyqt4
 
 # Accept less > 1.5.0
 sed -i "s/max_less_version = '1.5.0'/max_less_version = '2.5.0'/g" IPython/html/fabfile.py
@@ -477,7 +477,7 @@ pushd %{py3dir}
 popd
 %endif # with_python3
 
-%{__python} setup.py build
+%{__python2} setup.py build
 
 
 %if %{with doc}
@@ -501,10 +501,10 @@ pushd %{py3dir}
 popd
 %endif # with_python3
 
-%{__python} setup.py install -O1 --skip-build --root %{buildroot}
+%{__python2} setup.py install -O1 --skip-build --root %{buildroot}
 
 # unbundle components again...
-pushd %{buildroot}%{python_sitelib}
+pushd %{buildroot}%{python2_sitelib}
     %do_global_symlinking
 popd
 
@@ -515,8 +515,8 @@ popd
 %endif # with_python3
 
 # Do we need to replace python3 with python2? Only seems to occur on rawhide, see #1123618
-echo %{buildroot}%{_bindir}/{ipcluster,ipcontroller,ipengine,iptest,ipython} | xargs head -n 2
-echo %{buildroot}%{_bindir}/{ipcluster,ipcontroller,ipengine,iptest,ipython} | xargs sed -i '1s|^#!python|#!%{__python}|'
+echo %{buildroot}%{_bindir}/{ipcluster,ipcontroller,ipengine,iptest,ipython} | xargs head -n 1
+echo %{buildroot}%{_bindir}/{ipcluster,ipcontroller,ipengine,iptest,ipython} | xargs sed -i '1s|^#!%{__python3}|#!%{__python2}|'
 
 
 %clean
@@ -533,7 +533,7 @@ rm -rf %{buildroot}
 export PYTHONSTARTUP=""
 %if 0%{?with_python3}
 pushd %{py3dir}
-    mkdir run_tests
+    mkdir -p run_tests
     pushd run_tests
     PYTHONPATH=%{buildroot}%{python3_sitelib} \
         PATH="%{buildroot}%{_bindir}:$PATH" \
@@ -544,9 +544,9 @@ pushd %{py3dir}
 popd
 %endif
 
-mkdir run_tests
+mkdir -p run_tests
 pushd run_tests
-    PYTHONPATH=%{buildroot}%{python_sitelib} \
+    PYTHONPATH=%{buildroot}%{python2_sitelib} \
         PATH="%{buildroot}%{_bindir}:$PATH" \
         LC_ALL=en_US.UTF-8 \
         xvfb-run \
@@ -569,53 +569,53 @@ popd
 %{_mandir}/man*/ipengine*
 %{_mandir}/man*/ipc*
 
-%dir %{python_sitelib}/IPython
-%{python_sitelib}/IPython/external
-%{python_sitelib}/IPython/*.py*
-%dir %{python_sitelib}/IPython/html/*
-%{python_sitelib}/IPython/html/__init__.py*
-%{python_sitelib}/IPython/html/nbextensions.py*
-%dir %{python_sitelib}/IPython/kernel
-%{python_sitelib}/IPython/kernel/*.py*
-%{python_sitelib}/IPython/kernel/blocking/
-%{python_sitelib}/IPython/kernel/comm/
-%{python_sitelib}/IPython/kernel/inprocess/
-%{python_sitelib}/IPython/kernel/ioloop/
-%dir %{python_sitelib}/IPython/testing
-%{python_sitelib}/IPython/testing/*.py*
-%{python_sitelib}/IPython/testing/plugin
-%{python_sitelib}/ipython-%{version}-py?.?.egg-info
+%dir %{python2_sitelib}/IPython
+%{python2_sitelib}/IPython/external
+%{python2_sitelib}/IPython/*.py*
+%dir %{python2_sitelib}/IPython/html/*
+%{python2_sitelib}/IPython/html/__init__.py*
+%{python2_sitelib}/IPython/html/nbextensions.py*
+%dir %{python2_sitelib}/IPython/kernel
+%{python2_sitelib}/IPython/kernel/*.py*
+%{python2_sitelib}/IPython/kernel/blocking/
+%{python2_sitelib}/IPython/kernel/comm/
+%{python2_sitelib}/IPython/kernel/inprocess/
+%{python2_sitelib}/IPython/kernel/ioloop/
+%dir %{python2_sitelib}/IPython/testing
+%{python2_sitelib}/IPython/testing/*.py*
+%{python2_sitelib}/IPython/testing/plugin
+%{python2_sitelib}/ipython-%{version}-py?.?.egg-info
 
-%{python_sitelib}/IPython/config/
-%{python_sitelib}/IPython/core/
-%{python_sitelib}/IPython/extensions/
-#%dir %{python_sitelib}/IPython/frontend/
-#%{python_sitelib}/IPython/frontend/terminal/
-#%{python_sitelib}/IPython/frontend/__init__.py*
-#%{python_sitelib}/IPython/frontend/consoleapp.py*
-%{python_sitelib}/IPython/lib/
-%{python_sitelib}/IPython/nbformat/
-%{python_sitelib}/IPython/nbconvert/
-%{python_sitelib}/IPython/parallel/
-%{python_sitelib}/IPython/terminal/
-%{python_sitelib}/IPython/utils/
-%{python_sitelib}/IPython/kernel/zmq/
-%exclude %{python_sitelib}/IPython/kernel/zmq/gui/
+%{python2_sitelib}/IPython/config/
+%{python2_sitelib}/IPython/core/
+%{python2_sitelib}/IPython/extensions/
+#%dir %{python2_sitelib}/IPython/frontend/
+#%{python2_sitelib}/IPython/frontend/terminal/
+#%{python2_sitelib}/IPython/frontend/__init__.py*
+#%{python2_sitelib}/IPython/frontend/consoleapp.py*
+%{python2_sitelib}/IPython/lib/
+%{python2_sitelib}/IPython/nbformat/
+%{python2_sitelib}/IPython/nbconvert/
+%{python2_sitelib}/IPython/parallel/
+%{python2_sitelib}/IPython/terminal/
+%{python2_sitelib}/IPython/utils/
+%{python2_sitelib}/IPython/kernel/zmq/
+%exclude %{python2_sitelib}/IPython/kernel/zmq/gui/
 
 # tests go into subpackage
-%exclude %{python_sitelib}/IPython/*/tests/
-%exclude %{python_sitelib}/IPython/*/*/tests
+%exclude %{python2_sitelib}/IPython/*/tests/
+%exclude %{python2_sitelib}/IPython/*/*/tests
 
 
 %files -n python-ipython-sphinx
-%{python_sitelib}/IPython/sphinxext/
+%{python2_sitelib}/IPython/sphinxext/
 
 
 %files -n python-ipython-tests
 %{_bindir}/iptest
 %{_bindir}/iptest2
-%{python_sitelib}/IPython/*/tests
-%{python_sitelib}/IPython/*/*/tests
+%{python2_sitelib}/IPython/*/tests
+%{python2_sitelib}/IPython/*/*/tests
 
 
 %if %{with doc}
@@ -625,14 +625,14 @@ popd
 
 
 %files -n python-ipython-notebook
-%{python_sitelib}/IPython/html/*
-%exclude %{python_sitelib}/IPython/html/__init__.py*
-%exclude %{python_sitelib}/IPython/html/nbextensions.py*
+%{python2_sitelib}/IPython/html/*
+%exclude %{python2_sitelib}/IPython/html/__init__.py*
+%exclude %{python2_sitelib}/IPython/html/nbextensions.py*
 
 
 %files -n python-ipython-gui
-%{python_sitelib}/IPython/kernel/zmq/gui
-%{python_sitelib}/IPython/qt/
+%{python2_sitelib}/IPython/kernel/zmq/gui
+%{python2_sitelib}/IPython/qt/
 
 %if 0%{?with_python3}
 %files -n python3-ipython
@@ -718,6 +718,10 @@ popd
 %endif # with_python3
 
 %changelog
+* Fri May 8 2015 Orion Poplawski <orion@cora.nwra.com> - 2.4.1-3
+- Add upstream patch to fix PyQt4 import (bug #219997)
+- Use python2 macros, fix python3 shebang fix
+
 * Fri May 8 2015 Orion Poplawski <orion@cora.nwra.com> - 2.4.1-2
 - Fix font-awesome paths (bug #1219956)
 

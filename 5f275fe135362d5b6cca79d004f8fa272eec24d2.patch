@@ -1,0 +1,46 @@
+From 5f275fe135362d5b6cca79d004f8fa272eec24d2 Mon Sep 17 00:00:00 2001
+From: Thomas Kluyver <takowl@gmail.com>
+Date: Fri, 17 Oct 2014 16:01:59 -0700
+Subject: [PATCH] Fix Qt loader commit_api() for 'pyqtv1' or 'pyqtdefault'
+
+Our Qt loaders have three options representing PyQt - pyqt (with v2
+strings API), pyqtv1 (v1 ditto), and pyqtdefault, which is v2 on Python
+3 only. When loading pyqtv1 or pyqtdefault, the code to deny imports of
+other bindings would assume that api != pyqt meant we were using pyqt5,
+and forbid future imports of PyQt4.
+
+This changes the logic around so PyQt4 is the else: case, catching all
+three possible names for it. PyQt5 and PySide have, so far, only one
+name each.
+---
+ IPython/external/qt_loaders.py | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/IPython/external/qt_loaders.py b/IPython/external/qt_loaders.py
+index 7cb90d8..34c7be8 100644
+--- a/IPython/external/qt_loaders.py
++++ b/IPython/external/qt_loaders.py
+@@ -57,11 +57,11 @@ def commit_api(api):
+     if api == QT_API_PYSIDE:
+         ID.forbid('PyQt4')
+         ID.forbid('PyQt5')
+-    elif api == QT_API_PYQT:
++    elif api == QT_API_PYQT5:
+         ID.forbid('PySide')
+-        ID.forbid('PyQt5')
+-    else:
+         ID.forbid('PyQt4')
++    else:   # There are three other possibilities, all representing PyQt4
++        ID.forbid('PyQt5')
+         ID.forbid('PySide')
+ 
+ 
+@@ -241,7 +241,7 @@ def load_qt(api_options):
+     ----------
+     api_options: List of strings
+         The order of APIs to try. Valid items are 'pyside',
+-        'pyqt', 'pyqt5' and 'pyqtv1'
++        'pyqt', 'pyqt5', 'pyqtv1' and 'pyqtdefault'
+ 
+     Returns
+     -------
