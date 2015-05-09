@@ -1,6 +1,6 @@
 diff -up ipython-2.4.1/IPython/html/static/notebook/js/maintoolbar.js.fontawesome4 ipython-2.4.1/IPython/html/static/notebook/js/maintoolbar.js
 --- ipython-2.4.1/IPython/html/static/notebook/js/maintoolbar.js.fontawesome4	2015-02-09 15:59:57.000000000 -0700
-+++ ipython-2.4.1/IPython/html/static/notebook/js/maintoolbar.js	2015-05-08 16:59:45.309052483 -0600
++++ ipython-2.4.1/IPython/html/static/notebook/js/maintoolbar.js	2015-05-09 14:00:47.090072312 -0600
 @@ -27,7 +27,7 @@ var IPython = (function (IPython) {
                  {
                      id : 'save_b',
@@ -91,9 +91,54 @@ diff -up ipython-2.4.1/IPython/html/static/notebook/js/maintoolbar.js.fontawesom
                      callback : function () {
                          IPython.notebook.restart_kernel();
                          }
+diff -up ipython-2.4.1/IPython/html/static/notebook/js/tour.js.fontawesome4 ipython-2.4.1/IPython/html/static/notebook/js/tour.js
+--- ipython-2.4.1/IPython/html/static/notebook/js/tour.js.fontawesome4	2015-02-09 15:59:57.000000000 -0700
++++ ipython-2.4.1/IPython/html/static/notebook/js/tour.js	2015-05-09 14:09:31.136108557 -0600
+@@ -89,7 +89,7 @@ var tour_steps = [
+     onShow: function(tour) { $([IPython.events]).trigger('status_busy.Kernel'); },
+     content: "The Kernel indicator looks like this when the Kernel is busy.",
+   }, {
+-    element: ".icon-stop",
++    element: ".fa-stop",
+     placement: 'bottom',
+     title: "Interrupting the Kernel",
+     onHide: function(tour) { $([IPython.events]).trigger('status_idle.Kernel'); },
+@@ -97,7 +97,7 @@ var tour_steps = [
+   }, {
+     element: "#notification_kernel",
+     placement: 'bottom',
+-    onShow: function(tour) { $('.icon-stop').click(); },
++    onShow: function(tour) { $('.fa-stop').click(); },
+     title: "Notification Area",
+     content: "Messages in response to user actions (Save, Interrupt, etc) appear here."
+   }, {
+@@ -112,18 +112,18 @@ var tour_steps = [
+ var tour_style = "<div class='popover tour' style='position:relative'>\
+   <div class='arrow'></div>\
+     <div style='position:absolute; top:7px; right:7px'>\
+-        <button class='btn btn-sm icon-remove' data-role='end'></button></div>\
++        <button class='btn btn-sm fa-remove' data-role='end'></button></div>\
+   <h3 class='popover-title'></h3>\
+   <div class='popover-content'></div>\
+   <div class='popover-navigation'>\
+-    <button class='btn btn-default icon-step-backward' data-role='prev'></button>\
+-    <button class='btn btn-default icon-step-forward pull-right' data-role='next'></button>\
+-    <button id='tour-pause' class='btn btn-sm btn-default icon-pause' data-resume-text='' data-pause-text='' data-role='pause-resume'></button>\
++    <button class='btn btn-default fa-step-backward' data-role='prev'></button>\
++    <button class='btn btn-default fa-step-forward pull-right' data-role='next'></button>\
++    <button id='tour-pause' class='btn btn-sm btn-default fa-pause' data-resume-text='' data-pause-text='' data-role='pause-resume'></button>\
+   </div>\
+ </div>";
+ 
+ var command_icon_hack =  function() {$('#modal_indicator').css('min-height', 20);}
+-var toggle_pause_play = function () { $('#tour-pause').toggleClass('icon-pause icon-play'); };
++var toggle_pause_play = function () { $('#tour-pause').toggleClass('fa-pause fa-play'); };
+ var edit_mode = function() { 
+     IPython.notebook.focus_cell(); 
+     IPython.notebook.edit_mode();
 diff -up ipython-2.4.1/IPython/html/static/notebook/less/notificationarea.less.fontawesome4 ipython-2.4.1/IPython/html/static/notebook/less/notificationarea.less
 --- ipython-2.4.1/IPython/html/static/notebook/less/notificationarea.less.fontawesome4	2015-02-09 15:59:57.000000000 -0700
-+++ ipython-2.4.1/IPython/html/static/notebook/less/notificationarea.less	2015-05-08 16:59:45.310052478 -0600
++++ ipython-2.4.1/IPython/html/static/notebook/less/notificationarea.less	2015-05-09 14:00:47.090072312 -0600
 @@ -17,19 +17,19 @@
  }
  
@@ -120,7 +165,7 @@ diff -up ipython-2.4.1/IPython/html/static/notebook/less/notificationarea.less.f
  
 diff -up ipython-2.4.1/IPython/html/static/style/style.less.fontawesome4 ipython-2.4.1/IPython/html/static/style/style.less
 --- ipython-2.4.1/IPython/html/static/style/style.less.fontawesome4	2015-02-09 15:59:57.000000000 -0700
-+++ ipython-2.4.1/IPython/html/static/style/style.less	2015-05-08 17:00:15.688893090 -0600
++++ ipython-2.4.1/IPython/html/static/style/style.less	2015-05-09 14:00:47.091072338 -0600
 @@ -4,7 +4,7 @@
  
  // Font-Awesome
@@ -132,7 +177,16 @@ diff -up ipython-2.4.1/IPython/html/static/style/style.less.fontawesome4 ipython
  @import "../base/less/style.less";
 diff -up ipython-2.4.1/IPython/html/static/tree/less/tree.less.fontawesome4 ipython-2.4.1/IPython/html/static/tree/less/tree.less
 --- ipython-2.4.1/IPython/html/static/tree/less/tree.less.fontawesome4	2015-02-09 15:59:57.000000000 -0700
-+++ ipython-2.4.1/IPython/html/static/tree/less/tree.less	2015-05-08 16:59:45.310052478 -0600
++++ ipython-2.4.1/IPython/html/static/tree/less/tree.less	2015-05-09 14:00:47.091072338 -0600
+@@ -26,7 +26,7 @@ ul.breadcrumb {
+     a:focus, a:hover {
+         text-decoration: none;
+     }
+-    i.icon-home {
++    i.fa-home {
+         font-size: 16px;
+         margin-right: 4px;
+     }
 @@ -128,9 +128,9 @@ input.engine_num_input {
  }
  
@@ -145,3 +199,95 @@ diff -up ipython-2.4.1/IPython/html/static/tree/less/tree.less.fontawesome4 ipyt
 -    .icon(@book)
 +    content: @fa-var-book
  }
+diff -up ipython-2.4.1/IPython/html/static/widgets/js/widget_container.js.fontawesome4 ipython-2.4.1/IPython/html/static/widgets/js/widget_container.js
+--- ipython-2.4.1/IPython/html/static/widgets/js/widget_container.js.fontawesome4	2015-02-09 15:59:57.000000000 -0700
++++ ipython-2.4.1/IPython/html/static/widgets/js/widget_container.js	2015-05-09 14:05:18.867928088 -0600
+@@ -90,7 +90,7 @@ define(["widgets/js/widget"], function(W
+                     that.bring_to_front();
+                 });
+             this.$close = $('<button />')
+-                .addClass('close icon-remove')
++                .addClass('close fa-remove')
+                 .css('margin-left', '5px')
+                 .appendTo(this.$title_bar)
+                 .click(function(){
+@@ -98,14 +98,14 @@ define(["widgets/js/widget"], function(W
+                     event.stopPropagation();
+                 });
+             this.$minimize = $('<button />')
+-                .addClass('close icon-arrow-down')
++                .addClass('close fa-arrow-down')
+                 .appendTo(this.$title_bar)
+                 .click(function(){
+                     that.popped_out = !that.popped_out;
+                     if (!that.popped_out) {
+                         that.$minimize
+-                            .removeClass('icon-arrow-down')
+-                            .addClass('icon-arrow-up');
++                            .removeClass('fa-arrow-down')
++                            .addClass('fa-arrow-up');
+                             
+                         that.$window
+                             .draggable('destroy')
+@@ -118,8 +118,8 @@ define(["widgets/js/widget"], function(W
+                         that.$close.hide();
+                     } else {
+                         that.$minimize
+-                            .addClass('icon-arrow-down')
+-                            .removeClass('icon-arrow-up');
++                            .addClass('fa-arrow-down')
++                            .removeClass('fa-arrow-up');
+ 
+                         that.$window
+                             .removeClass('docked-widget-modal')
+diff -up ipython-2.4.1/IPython/html/templates/notebook.html.fontawesome4 ipython-2.4.1/IPython/html/templates/notebook.html
+--- ipython-2.4.1/IPython/html/templates/notebook.html.fontawesome4	2015-02-09 15:59:57.000000000 -0700
++++ ipython-2.4.1/IPython/html/templates/notebook.html	2015-05-09 14:13:12.280388805 -0600
+@@ -242,7 +242,7 @@ class="notebook_app"
+                 {% for helplinks in sections %}
+                     {% for link in helplinks %}
+                         <li><a href="{{link[0]}}" {{'target="_blank" title="Opens in a new window"' if link[2]}}>
+-                        {{'<i class="icon-external-link menu-icon pull-right"></i>' if link[2]}}
++                        {{'<i class="fa-external-link menu-icon pull-right"></i>' if link[2]}}
+                         {{link[1]}}
+                         </a></li>
+                     {% endfor %}
+diff -up ipython-2.4.1/IPython/html/templates/tree.html.fontawesome4 ipython-2.4.1/IPython/html/templates/tree.html
+--- ipython-2.4.1/IPython/html/templates/tree.html.fontawesome4	2015-02-09 15:59:57.000000000 -0700
++++ ipython-2.4.1/IPython/html/templates/tree.html	2015-05-09 14:01:20.460942464 -0600
+@@ -42,7 +42,7 @@ data-notebook-path="{{notebook_path}}"
+             <div class="span4 clearfix">
+                 <span id="notebook_buttons" class="pull-right">
+                     <button id="new_notebook" title="Create new notebook" class="btn btn-small">New Notebook</button>
+-                    <button id="refresh_notebook_list" title="Refresh notebook list" class="btn btn-small"><i class="icon-refresh"></i></button>
++                    <button id="refresh_notebook_list" title="Refresh notebook list" class="btn btn-small"><i class="fa-refresh"></i></button>
+                 </span>
+             </div>
+         </div>
+@@ -51,7 +51,7 @@ data-notebook-path="{{notebook_path}}"
+           <div id="notebook_list_header" class="row-fluid list_header">
+               <div id="project_name">
+                 <ul class="breadcrumb">
+-                    <li><a href="{{breadcrumbs[0][0]}}"><i class="icon-home"></i></a><span>/</span></li>
++                    <li><a href="{{breadcrumbs[0][0]}}"><i class="fa-home"></i></a><span>/</span></li>
+                     {% for crumb in breadcrumbs[1:] %}
+                         <li><a href="{{crumb[0]}}">{{crumb[1]}}</a> <span>/</span></li>
+                     {% endfor %}
+@@ -69,7 +69,7 @@ data-notebook-path="{{notebook_path}}"
+             </div>
+             <div class="span4" class="clearfix">
+                 <span id="running_buttons" class="pull-right">
+-                    <button id="refresh_running_list" title="Refresh running list" class="btn btn-small"><i class="icon-refresh"></i></button>
++                    <button id="refresh_running_list" title="Refresh running list" class="btn btn-small"><i class="fa-refresh"></i></button>
+                 </span>
+             </div>
+         </div>
+@@ -89,7 +89,7 @@ data-notebook-path="{{notebook_path}}"
+             </div>
+             <div class="span4" class="clearfix">
+                 <span id="cluster_buttons" class="pull-right">
+-                    <button id="refresh_cluster_list" title="Refresh cluster list" class="btn btn-small"><i class="icon-refresh"></i></button>
++                    <button id="refresh_cluster_list" title="Refresh cluster list" class="btn btn-small"><i class="fa-refresh"></i></button>
+                 </span>
+             </div>
+         </div>

@@ -13,7 +13,7 @@
 
 Name:           ipython
 Version:        2.4.1
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -718,8 +718,11 @@ popd
 %endif # with_python3
 
 %changelog
+* Sat May 9 2015 Orion Poplawski <orion@cora.nwra.com> - 2.4.1-4
+- More font-awesome fixes (bug #1170270)
+
 * Fri May 8 2015 Orion Poplawski <orion@cora.nwra.com> - 2.4.1-3
-- Add upstream patch to fix PyQt4 import (bug #219997)
+- Add upstream patch to fix PyQt4 import (bug #1219997)
 - Use python2 macros, fix python3 shebang fix
 
 * Fri May 8 2015 Orion Poplawski <orion@cora.nwra.com> - 2.4.1-2
