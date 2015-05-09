@@ -14,7 +14,7 @@
 
 Name:           ipython
 Version:        3.1.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -462,7 +462,7 @@ pushd %{py3dir}
 popd
 %endif # with_python3
 
-%{__python} setup.py build
+%{__python2} setup.py build
 
 
 %if %{with doc}
@@ -485,10 +485,10 @@ pushd %{py3dir}
 popd
 %endif # with_python3
 
-%{__python} setup.py install -O1 --skip-build --root %{buildroot}
+%{__python2} setup.py install -O1 --skip-build --root %{buildroot}
 
 # unbundle components again...
-pushd %{buildroot}%{python_sitelib}
+pushd %{buildroot}%{python2_sitelib}
     %do_global_symlinking
 popd
 
@@ -500,17 +500,17 @@ popd
 
 # Do we need to replace python3 with python2? Only seems to occur on rawhide, see #1123618
 echo %{buildroot}%{_bindir}/{ipcluster,ipcontroller,ipengine,iptest,ipython} | xargs head -n 2
-echo %{buildroot}%{_bindir}/{ipcluster,ipcontroller,ipengine,iptest,ipython} | xargs sed -i '1s|^#!python|#!%{__python}|'
+echo %{buildroot}%{_bindir}/{ipcluster,ipcontroller,ipengine,iptest,ipython} | xargs sed -i '1s|^#!%{__python3}|#!%{__python2}|'
 
 %if !0%{?with_notebook}
 # Need to remove everything but what we ship in console
-rm -r %{buildroot}%{python_sitelib}/IPython/html/__main__.*
-rm -r %{buildroot}%{python_sitelib}/IPython/html/[a-mo-rt-z]*
-rm -r %{buildroot}%{python_sitelib}/IPython/html/nbconvert
-rm -r %{buildroot}%{python_sitelib}/IPython/html/notebook*
-rm -r %{buildroot}%{python_sitelib}/IPython/html/s[a-su-z]*
-rm -r %{buildroot}%{python_sitelib}/IPython/html/static/[a-bd-z]*
-rm -r %{buildroot}%{python_sitelib}/IPython/html/static/c[a-tv-z]*
+rm -r %{buildroot}%{python2_sitelib}/IPython/html/__main__.*
+rm -r %{buildroot}%{python2_sitelib}/IPython/html/[a-mo-rt-z]*
+rm -r %{buildroot}%{python2_sitelib}/IPython/html/nbconvert
+rm -r %{buildroot}%{python2_sitelib}/IPython/html/notebook*
+rm -r %{buildroot}%{python2_sitelib}/IPython/html/s[a-su-z]*
+rm -r %{buildroot}%{python2_sitelib}/IPython/html/static/[a-bd-z]*
+rm -r %{buildroot}%{python2_sitelib}/IPython/html/static/c[a-tv-z]*
 %endif
 
 
@@ -541,7 +541,7 @@ popd
 
 mkdir -p run_tests
 pushd run_tests
-    PYTHONPATH=%{buildroot}%{python_sitelib} \
+    PYTHONPATH=%{buildroot}%{python2_sitelib} \
         PATH="%{buildroot}%{_bindir}:$PATH" \
         LC_ALL=en_US.UTF-8 \
         xvfb-run \
@@ -564,54 +564,54 @@ popd
 %{_mandir}/man*/ipengine*
 %{_mandir}/man*/ipc*
 
-%dir %{python_sitelib}/IPython
-%{python_sitelib}/IPython/external
-%{python_sitelib}/IPython/*.py*
-%{python_sitelib}/IPython/html/__init__.py*
-%{python_sitelib}/IPython/html/nbextensions.py*
-%dir %{python_sitelib}/IPython/html/static
-%{python_sitelib}/IPython/html/static/custom/
-%dir %{python_sitelib}/IPython/kernel
-%{python_sitelib}/IPython/kernel/*.py*
-%{python_sitelib}/IPython/kernel/blocking/
-%{python_sitelib}/IPython/kernel/comm/
-%{python_sitelib}/IPython/kernel/inprocess/
-%{python_sitelib}/IPython/kernel/ioloop/
-%dir %{python_sitelib}/IPython/testing
-%{python_sitelib}/IPython/testing/*.py*
-%{python_sitelib}/IPython/testing/plugin
-%{python_sitelib}/ipython-%{version}-py?.?.egg-info
+%dir %{python2_sitelib}/IPython
+%{python2_sitelib}/IPython/external
+%{python2_sitelib}/IPython/*.py*
+%{python2_sitelib}/IPython/html/__init__.py*
+%{python2_sitelib}/IPython/html/nbextensions.py*
+%dir %{python2_sitelib}/IPython/html/static
+%{python2_sitelib}/IPython/html/static/custom/
+%dir %{python2_sitelib}/IPython/kernel
+%{python2_sitelib}/IPython/kernel/*.py*
+%{python2_sitelib}/IPython/kernel/blocking/
+%{python2_sitelib}/IPython/kernel/comm/
+%{python2_sitelib}/IPython/kernel/inprocess/
+%{python2_sitelib}/IPython/kernel/ioloop/
+%dir %{python2_sitelib}/IPython/testing
+%{python2_sitelib}/IPython/testing/*.py*
+%{python2_sitelib}/IPython/testing/plugin
+%{python2_sitelib}/ipython-%{version}-py?.?.egg-info
 
-%{python_sitelib}/IPython/config/
-%{python_sitelib}/IPython/core/
-%{python_sitelib}/IPython/extensions/
-#%dir %{python_sitelib}/IPython/frontend/
-#%{python_sitelib}/IPython/frontend/terminal/
-#%{python_sitelib}/IPython/frontend/__init__.py*
-#%{python_sitelib}/IPython/frontend/consoleapp.py*
-%{python_sitelib}/IPython/lib/
-%{python_sitelib}/IPython/nbformat/
-%{python_sitelib}/IPython/nbconvert/
-%{python_sitelib}/IPython/parallel/
-%{python_sitelib}/IPython/terminal/
-%{python_sitelib}/IPython/utils/
-%{python_sitelib}/IPython/kernel/zmq/
-%exclude %{python_sitelib}/IPython/kernel/zmq/gui/
+%{python2_sitelib}/IPython/config/
+%{python2_sitelib}/IPython/core/
+%{python2_sitelib}/IPython/extensions/
+#%dir %{python2_sitelib}/IPython/frontend/
+#%{python2_sitelib}/IPython/frontend/terminal/
+#%{python2_sitelib}/IPython/frontend/__init__.py*
+#%{python2_sitelib}/IPython/frontend/consoleapp.py*
+%{python2_sitelib}/IPython/lib/
+%{python2_sitelib}/IPython/nbformat/
+%{python2_sitelib}/IPython/nbconvert/
+%{python2_sitelib}/IPython/parallel/
+%{python2_sitelib}/IPython/terminal/
+%{python2_sitelib}/IPython/utils/
+%{python2_sitelib}/IPython/kernel/zmq/
+%exclude %{python2_sitelib}/IPython/kernel/zmq/gui/
 
 # tests go into subpackage
-%exclude %{python_sitelib}/IPython/*/tests/
-%exclude %{python_sitelib}/IPython/*/*/tests
+%exclude %{python2_sitelib}/IPython/*/tests/
+%exclude %{python2_sitelib}/IPython/*/*/tests
 
 
 %files -n python-ipython-sphinx
-%{python_sitelib}/IPython/sphinxext/
+%{python2_sitelib}/IPython/sphinxext/
 
 
 %files -n python-ipython-tests
 %{_bindir}/iptest
 %{_bindir}/iptest2
-%{python_sitelib}/IPython/*/tests
-%{python_sitelib}/IPython/*/*/tests
+%{python2_sitelib}/IPython/*/tests
+%{python2_sitelib}/IPython/*/*/tests
 
 
 %if %{with doc}
@@ -622,17 +622,17 @@ popd
 
 %if 0%{?with_notebook}
 %files -n python-ipython-notebook
-%{python_sitelib}/IPython/html/*
-%exclude %{python_sitelib}/IPython/html/__init__.py*
-%exclude %{python_sitelib}/IPython/html/nbextensions.py*
-%exclude %{python_sitelib}/IPython/html/static/custom/
+%{python2_sitelib}/IPython/html/*
+%exclude %{python2_sitelib}/IPython/html/__init__.py*
+%exclude %{python2_sitelib}/IPython/html/nbextensions.py*
+%exclude %{python2_sitelib}/IPython/html/static/custom/
 %endif
 
 
 %files -n python-ipython-gui
-%{python_sitelib}/IPython/kernel/resources/
-%{python_sitelib}/IPython/kernel/zmq/gui
-%{python_sitelib}/IPython/qt/
+%{python2_sitelib}/IPython/kernel/resources/
+%{python2_sitelib}/IPython/kernel/zmq/gui
+%{python2_sitelib}/IPython/qt/
 
 %if 0%{?with_python3}
 %files -n python3-ipython
@@ -722,6 +722,10 @@ popd
 %endif # with_python3
 
 %changelog
+* Fri May 8 2015 Orion Poplawski <orion@cora.nwra.com> - 3.1.0-3
+- Use python2 macros
+- Fix python3 shebang fix
+
 * Thu May 7 2015 Orion Poplawski <orion@cora.nwra.com> - 3.1.0-2
 - Do not ship notebook on EL, missing python-tornado >= 4.0
 - Move IPython/html/static/custom into -console.
