@@ -1,7 +1,3 @@
-%if ! (0%{?rhel} > 5)
-%{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
-%endif
-
 %bcond_without check
 %bcond_without doc
 
@@ -21,7 +17,6 @@ Version:        3.1.0
 Release:        2%{?dist}
 Summary:        An enhanced interactive Python shell
 
-Group:          Development/Libraries
 # See bug #603178 for a quick overview for the choice of licenses
 # most files are under BSD and just a few under Python or MIT
 # There are some extensions released under GPLv2+
@@ -30,8 +25,6 @@ URL:            http://ipython.org/
 Source0:        https://pypi.python.org/packages/source/i/ipython/ipython-%{version}.tar.gz
 # Add _jsdir to default search path
 Patch0:         ipython-2.1.0-_jsdir-search-path.patch
-
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
 BuildRequires:  python-devel
@@ -486,7 +479,6 @@ cd ..
 
 
 %install
-rm -rf %{buildroot}
 %if 0%{?with_python3}
 pushd %{py3dir}
     %{__python3} setup.py install -O1 --skip-build --root %{buildroot} 
@@ -520,10 +512,6 @@ rm -r %{buildroot}%{python_sitelib}/IPython/html/s[a-su-z]*
 rm -r %{buildroot}%{python_sitelib}/IPython/html/static/[a-bd-z]*
 rm -r %{buildroot}%{python_sitelib}/IPython/html/static/c[a-tv-z]*
 %endif
-
-
-%clean
-rm -rf %{buildroot}
 
 
 %if %{with check}
