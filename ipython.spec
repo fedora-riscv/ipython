@@ -14,7 +14,7 @@
 
 Name:           ipython
 Version:        3.1.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -722,6 +722,9 @@ popd
 %endif # with_python3
 
 %changelog
+* Wed Jun 17 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.1.0-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
+
 * Fri May 8 2015 Orion Poplawski <orion@cora.nwra.com> - 3.1.0-3
 - Use python2 macros
 - Fix python3 shebang fix
