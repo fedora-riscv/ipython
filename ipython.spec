@@ -13,7 +13,7 @@
 
 Name:           ipython
 Version:        2.4.1
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -425,7 +425,7 @@ popd
 pushd IPython/html/static/components \
     pushd font-awesome \
         rm -rf font \
-        ln -s %{_datadir}/fonts/fontawesome fonts \
+        ln -s %{_datadir}/fonts/fontawesome font \
         for folder in css less scss; do \
             rm -rf $folder \
             ln -s %{_datadir}/font-awesome-*/${folder} \
@@ -718,6 +718,9 @@ popd
 %endif # with_python3
 
 %changelog
+* Mon Jul 13 2015 Orion Poplawski <orion@cora.nwra.com> - 2.4.1-6
+- Fix fontawesome path
+
 * Sat May 9 2015 Orion Poplawski <orion@cora.nwra.com> - 2.4.1-5
 - Sync more font-awesome changes from 3.1.0
 

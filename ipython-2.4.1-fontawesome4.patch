@@ -1,6 +1,6 @@
 diff -up ipython-2.4.1/IPython/html/static/base/less/page.less.fontawesome4 ipython-2.4.1/IPython/html/static/base/less/page.less
 --- ipython-2.4.1/IPython/html/static/base/less/page.less.fontawesome4	2015-02-09 15:59:57.000000000 -0700
-+++ ipython-2.4.1/IPython/html/static/base/less/page.less	2015-05-09 16:17:39.812771635 -0600
++++ ipython-2.4.1/IPython/html/static/base/less/page.less	2015-07-13 16:41:01.717487964 -0600
 @@ -95,3 +95,8 @@ span#login_widget {
      }
  }
@@ -12,7 +12,7 @@ diff -up ipython-2.4.1/IPython/html/static/base/less/page.less.fontawesome4 ipyt
 +}
 diff -up ipython-2.4.1/IPython/html/static/notebook/js/maintoolbar.js.fontawesome4 ipython-2.4.1/IPython/html/static/notebook/js/maintoolbar.js
 --- ipython-2.4.1/IPython/html/static/notebook/js/maintoolbar.js.fontawesome4	2015-02-09 15:59:57.000000000 -0700
-+++ ipython-2.4.1/IPython/html/static/notebook/js/maintoolbar.js	2015-05-09 16:17:39.809771565 -0600
++++ ipython-2.4.1/IPython/html/static/notebook/js/maintoolbar.js	2015-07-13 16:41:01.717487964 -0600
 @@ -27,7 +27,7 @@ var IPython = (function (IPython) {
                  {
                      id : 'save_b',
@@ -105,7 +105,7 @@ diff -up ipython-2.4.1/IPython/html/static/notebook/js/maintoolbar.js.fontawesom
                          }
 diff -up ipython-2.4.1/IPython/html/static/notebook/js/toolbar.js.fontawesome4 ipython-2.4.1/IPython/html/static/notebook/js/toolbar.js
 --- ipython-2.4.1/IPython/html/static/notebook/js/toolbar.js.fontawesome4	2015-02-09 15:59:57.000000000 -0700
-+++ ipython-2.4.1/IPython/html/static/notebook/js/toolbar.js	2015-05-09 16:17:39.809771565 -0600
++++ ipython-2.4.1/IPython/html/static/notebook/js/toolbar.js	2015-07-13 16:41:01.717487964 -0600
 @@ -75,7 +75,7 @@ var IPython = (function (IPython) {
                  .addClass('btn')
                  .attr("title", el.label)
@@ -117,7 +117,7 @@ diff -up ipython-2.4.1/IPython/html/static/notebook/js/toolbar.js.fontawesome4 i
              if( id !== undefined )
 diff -up ipython-2.4.1/IPython/html/static/notebook/js/tour.js.fontawesome4 ipython-2.4.1/IPython/html/static/notebook/js/tour.js
 --- ipython-2.4.1/IPython/html/static/notebook/js/tour.js.fontawesome4	2015-02-09 15:59:57.000000000 -0700
-+++ ipython-2.4.1/IPython/html/static/notebook/js/tour.js	2015-05-09 16:17:39.810771588 -0600
++++ ipython-2.4.1/IPython/html/static/notebook/js/tour.js	2015-07-13 16:41:01.718487959 -0600
 @@ -89,7 +89,7 @@ var tour_steps = [
      onShow: function(tour) { $([IPython.events]).trigger('status_busy.Kernel'); },
      content: "The Kernel indicator looks like this when the Kernel is busy.",
@@ -162,7 +162,7 @@ diff -up ipython-2.4.1/IPython/html/static/notebook/js/tour.js.fontawesome4 ipyt
      IPython.notebook.edit_mode();
 diff -up ipython-2.4.1/IPython/html/static/notebook/less/notificationarea.less.fontawesome4 ipython-2.4.1/IPython/html/static/notebook/less/notificationarea.less
 --- ipython-2.4.1/IPython/html/static/notebook/less/notificationarea.less.fontawesome4	2015-02-09 15:59:57.000000000 -0700
-+++ ipython-2.4.1/IPython/html/static/notebook/less/notificationarea.less	2015-05-09 16:17:49.372995963 -0600
++++ ipython-2.4.1/IPython/html/static/notebook/less/notificationarea.less	2015-07-13 16:41:01.718487959 -0600
 @@ -17,7 +17,7 @@
  }
  
@@ -188,7 +188,7 @@ diff -up ipython-2.4.1/IPython/html/static/notebook/less/notificationarea.less.f
  
 diff -up ipython-2.4.1/IPython/html/static/style/style.less.fontawesome4 ipython-2.4.1/IPython/html/static/style/style.less
 --- ipython-2.4.1/IPython/html/static/style/style.less.fontawesome4	2015-02-09 15:59:57.000000000 -0700
-+++ ipython-2.4.1/IPython/html/static/style/style.less	2015-05-09 16:17:39.810771588 -0600
++++ ipython-2.4.1/IPython/html/static/style/style.less	2015-07-13 16:41:01.718487959 -0600
 @@ -4,7 +4,7 @@
  
  // Font-Awesome
@@ -200,7 +200,7 @@ diff -up ipython-2.4.1/IPython/html/static/style/style.less.fontawesome4 ipython
  @import "../base/less/style.less";
 diff -up ipython-2.4.1/IPython/html/static/tree/less/tree.less.fontawesome4 ipython-2.4.1/IPython/html/static/tree/less/tree.less
 --- ipython-2.4.1/IPython/html/static/tree/less/tree.less.fontawesome4	2015-02-09 15:59:57.000000000 -0700
-+++ ipython-2.4.1/IPython/html/static/tree/less/tree.less	2015-05-09 16:17:50.019011122 -0600
++++ ipython-2.4.1/IPython/html/static/tree/less/tree.less	2015-07-13 16:41:01.718487959 -0600
 @@ -26,7 +26,7 @@ ul.breadcrumb {
      a:focus, a:hover {
          text-decoration: none;
@@ -224,7 +224,7 @@ diff -up ipython-2.4.1/IPython/html/static/tree/less/tree.less.fontawesome4 ipyt
  }
 diff -up ipython-2.4.1/IPython/html/static/widgets/js/widget_container.js.fontawesome4 ipython-2.4.1/IPython/html/static/widgets/js/widget_container.js
 --- ipython-2.4.1/IPython/html/static/widgets/js/widget_container.js.fontawesome4	2015-02-09 15:59:57.000000000 -0700
-+++ ipython-2.4.1/IPython/html/static/widgets/js/widget_container.js	2015-05-09 16:17:39.811771611 -0600
++++ ipython-2.4.1/IPython/html/static/widgets/js/widget_container.js	2015-07-13 16:41:01.718487959 -0600
 @@ -90,7 +90,7 @@ define(["widgets/js/widget"], function(W
                      that.bring_to_front();
                  });
@@ -265,7 +265,7 @@ diff -up ipython-2.4.1/IPython/html/static/widgets/js/widget_container.js.fontaw
                              .removeClass('docked-widget-modal')
 diff -up ipython-2.4.1/IPython/html/templates/notebook.html.fontawesome4 ipython-2.4.1/IPython/html/templates/notebook.html
 --- ipython-2.4.1/IPython/html/templates/notebook.html.fontawesome4	2015-02-09 15:59:57.000000000 -0700
-+++ ipython-2.4.1/IPython/html/templates/notebook.html	2015-05-09 16:17:39.811771611 -0600
++++ ipython-2.4.1/IPython/html/templates/notebook.html	2015-07-13 16:41:01.719487955 -0600
 @@ -242,7 +242,7 @@ class="notebook_app"
                  {% for helplinks in sections %}
                      {% for link in helplinks %}
@@ -277,7 +277,7 @@ diff -up ipython-2.4.1/IPython/html/templates/notebook.html.fontawesome4 ipython
                      {% endfor %}
 diff -up ipython-2.4.1/IPython/html/templates/tree.html.fontawesome4 ipython-2.4.1/IPython/html/templates/tree.html
 --- ipython-2.4.1/IPython/html/templates/tree.html.fontawesome4	2015-02-09 15:59:57.000000000 -0700
-+++ ipython-2.4.1/IPython/html/templates/tree.html	2015-05-09 16:17:39.811771611 -0600
++++ ipython-2.4.1/IPython/html/templates/tree.html	2015-07-13 16:41:01.719487955 -0600
 @@ -42,7 +42,7 @@ data-notebook-path="{{notebook_path}}"
              <div class="span4 clearfix">
                  <span id="notebook_buttons" class="pull-right">
@@ -316,7 +316,7 @@ diff -up ipython-2.4.1/IPython/html/templates/tree.html.fontawesome4 ipython-2.4
          </div>
 diff -up ipython-2.4.1/IPython/nbconvert/templates/html/slides_reveal.tpl.fontawesome4 ipython-2.4.1/IPython/nbconvert/templates/html/slides_reveal.tpl
 --- ipython-2.4.1/IPython/nbconvert/templates/html/slides_reveal.tpl.fontawesome4	2015-02-09 15:59:57.000000000 -0700
-+++ ipython-2.4.1/IPython/nbconvert/templates/html/slides_reveal.tpl	2015-05-09 16:17:39.812771635 -0600
++++ ipython-2.4.1/IPython/nbconvert/templates/html/slides_reveal.tpl	2015-07-13 16:41:01.719487955 -0600
 @@ -72,7 +72,7 @@ if( window.location.search.match( /print
  <![endif]-->
  
@@ -334,14 +334,3 @@ diff -up ipython-2.4.1/IPython/nbconvert/templates/html/slides_reveal.tpl.fontaw
 \ No newline at end of file
 +{% endblock footer %}
 diff -up ipython-2.4.1/setupbase.py.fontawesome4 ipython-2.4.1/setupbase.py
---- ipython-2.4.1/setupbase.py.fontawesome4	2015-02-09 15:59:57.000000000 -0700
-+++ ipython-2.4.1/setupbase.py	2015-05-09 16:17:52.989080813 -0600
-@@ -155,7 +155,7 @@ def find_package_data():
-         pjoin(components, "bootstrap", "bootstrap", "js", "bootstrap.min.js"),
-         pjoin(components, "bootstrap-tour", "build", "css", "bootstrap-tour.min.css"),
-         pjoin(components, "bootstrap-tour", "build", "js", "bootstrap-tour.min.js"),
--        pjoin(components, "font-awesome", "font", "*.*"),
-+        pjoin(components, "font-awesome", "fonts", "*.*"),
-         pjoin(components, "google-caja", "html-css-sanitizer-minified.js"),
-         pjoin(components, "highlight.js", "build", "highlight.pack.js"),
-         pjoin(components, "jquery", "jquery.min.js"),
