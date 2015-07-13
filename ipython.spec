@@ -13,8 +13,8 @@
 %endif
 
 Name:           ipython
-Version:        3.1.0
-Release:        4%{?dist}
+Version:        3.2.1
+Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -722,6 +722,9 @@ popd
 %endif # with_python3
 
 %changelog
+* Mon Jul 13 2015 Orion Poplawski <orion@cora.nwra.com> - 3.2.1-1
+- Update to 3.2.1
+
 * Wed Jun 17 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.1.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
 
