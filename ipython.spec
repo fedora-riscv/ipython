@@ -31,6 +31,9 @@ Patch1:         ipython-2.4.1-fontawesome4.patch
 # Upstream patch to fix PyQt4 import
 # https://bugzilla.redhat.com/show_bug.cgi?id=1219997
 Patch2:         https://github.com/ipython/ipython/commit/5f275fe135362d5b6cca79d004f8fa272eec24d2.patch
+# Update to 2.x branch for security and other fixes
+# https://bugzilla.redhat.com/show_bug.cgi?id=1243842
+Patch3:         ipython-2.x.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -394,6 +397,7 @@ sed -i "s;_jsdir;%{_jsdir};g" \
     IPython/html/notebookapp.py
 %patch1 -p1 -b .fontawesome4
 %patch2 -p1 -b .pyqt4
+%patch3 -p1 -b .2.x
 
 # Accept less > 1.5.0
 sed -i "s/max_less_version = '1.5.0'/max_less_version = '2.5.0'/g" IPython/html/fabfile.py
@@ -718,6 +722,9 @@ popd
 %endif # with_python3
 
 %changelog
+* Thu Jul 16 2015 Orion Poplawski <orion@cora.nwra.com> - 2.4.1-7
+- Update to 2.x to fix CSRF issue (bug #1243842)
+
 * Mon Jul 13 2015 Orion Poplawski <orion@cora.nwra.com> - 2.4.1-6
 - Fix fontawesome path
 
