@@ -394,10 +394,8 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %endif
 
 %files -n python-ipython
-%defattr(-,root,root,-)
 
 %files -n python-ipython-console
-%defattr(-,root,root,-)
 %{_bindir}/ipython
 %{_bindir}/irunner
 %{_bindir}/pycolor
@@ -443,34 +441,28 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 
 
 %files -n python-ipython-tests
-%defattr(-,root,root,-)
 %{_bindir}/iptest
 %{python_sitelib}/IPython/*/tests
 %{python_sitelib}/IPython/*/*/tests
 
 
 %files -n python-ipython-doc
-%defattr(-,root,root,-)
 # ipython installs its own documentation, but we need to own the directory
 %{_datadir}/doc/%{name}
 
 
 %files -n python-ipython-notebook
-%defattr(-,root,root,-)
 %{python_sitelib}/IPython/frontend/html/
 
 
 %files -n python-ipython-gui
-%defattr(-,root,root,-)
 %{python_sitelib}/IPython/zmq/gui
 %{python_sitelib}/IPython/frontend/qt/
 
 %if 0%{?with_python3}
 %files -n python3-ipython
-%defattr(-,root,root,-)
 
 %files -n python3-ipython-console
-%defattr(-,root,root,-)
 %{_bindir}/ipython3
 %{_bindir}/irunner3
 %{_bindir}/pycolor3
@@ -521,25 +513,21 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 
 
 %files -n python3-ipython-tests
-%defattr(-,root,root,-)
 %{_bindir}/iptest3
 %{python3_sitelib}/IPython/*/tests
 %{python3_sitelib}/IPython/*/*/tests
 
 
 ##%files -n python3-ipython-doc
-##%defattr(-,root,root,-)
 # ipython installs its own documentation, but we need to own the directory
 ##%{_datadir}/doc/python3-%{name}-%{version}
 
 
 %files -n python3-ipython-notebook
-%defattr(-,root,root,-)
 %{python3_sitelib}/IPython/frontend/html/
 
 
 %files -n python3-ipython-gui
-%defattr(-,root,root,-)
 %{python3_sitelib}/IPython/zmq/gui
 %{python3_sitelib}/IPython/frontend/qt/
 %endif # with_python3
