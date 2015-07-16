@@ -16,7 +16,7 @@
 
 Name:           ipython
 Version:        0.13.2
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -62,10 +62,6 @@ BuildRequires:  xorg-x11-server-Xvfb
 %endif
 %endif
 
-# Require $current_python_interpreter-ipython
-Requires:       python-ipython
-
-Requires:       python-argparse
 
 # add python3 packages
 %if 0%{?with_python3}
@@ -85,8 +81,6 @@ BuildRequires:  python3-pymongo
 BuildRequires:  python3-PyQt4
 # for frontend
 BuildRequires:  python3-pygments
-
-Requires:       python3-zmq
 %endif
 
 %global ipython_desc_base \
@@ -131,6 +125,7 @@ Requires:       python-zmq
 
 #bundled libs
 Requires:       pexpect
+Requires:       python-argparse
 Requires:       python-mglob
 Requires:       python-simplegeneric
 
@@ -550,6 +545,9 @@ PYTHONPATH=%{buildroot}%{python_sitelib} \
 %endif # with_python3
 
 %changelog
+* Thu Jul 16 2015 Orion Poplawski <orion@cora.nwra.com> - 0.13.2-7
+- Properly add Requires for python-argparse (bug #1234773)
+
 * Tue Mar 10 2015 David Cantrell <dcantrell@redhat.com> - 0.13.2-6
 - Add Requires for python-argparse (#874133)
 
