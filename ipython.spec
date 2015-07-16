@@ -13,7 +13,7 @@
 
 Name:           ipython
 Version:        2.4.1
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
