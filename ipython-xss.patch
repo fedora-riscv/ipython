@@ -1,0 +1,14 @@
+diff -up ipython-2.4.1/IPython/html/notebookapp.py.xss ipython-2.4.1/IPython/html/notebookapp.py
+--- ipython-2.4.1/IPython/html/notebookapp.py.xss	2015-09-02 10:50:15.976483562 -0600
++++ ipython-2.4.1/IPython/html/notebookapp.py	2015-09-02 10:51:43.214125986 -0600
+@@ -158,7 +158,9 @@ class NotebookWebApplication(web.Applica
+         # and thus guaranteed to be ASCII: 'héllo' is really 'h%C3%A9llo'.
+         base_url = py3compat.unicode_to_str(base_url, 'ascii')
+         template_path = settings_overrides.get("template_path", os.path.join(os.path.dirname(__file__), "templates"))
+-        jenv_opt = jinja_env_options if jinja_env_options else {}
++        jenv_opt = {"autoescape": True}
++        jenv_opt.update(jinja_env_options if jinja_env_options else {})
++
+         env = Environment(loader=FileSystemLoader(template_path),**jenv_opt )
+         settings = dict(
+             # basics

@@ -13,7 +13,7 @@
 
 Name:           ipython
 Version:        2.4.1
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -34,6 +34,10 @@ Patch2:         https://github.com/ipython/ipython/commit/5f275fe135362d5b6cca79
 # Update to 2.x branch for security and other fixes
 # https://bugzilla.redhat.com/show_bug.cgi?id=1243842
 Patch3:         ipython-2.x.patch
+# Fix XSS vulnerability in notebook HTML template handling
+# https://bugzilla.redhat.com/show_bug.cgi?id=1259405
+# Backported from https://github.com/ipython/ipython/commit/3ab41641cf6fce3860c73d5cf4645aa12e1e5892
+Patch4:         ipython-xss.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -398,6 +402,7 @@ sed -i "s;_jsdir;%{_jsdir};g" \
 %patch1 -p1 -b .fontawesome4
 %patch2 -p1 -b .pyqt4
 %patch3 -p1 -b .2.x
+%patch4 -p1 -b .xss
 
 # Accept less > 1.5.0
 sed -i "s/max_less_version = '1.5.0'/max_less_version = '2.5.0'/g" IPython/html/fabfile.py
@@ -593,10 +598,6 @@ popd
 %{python2_sitelib}/IPython/config/
 %{python2_sitelib}/IPython/core/
 %{python2_sitelib}/IPython/extensions/
-#%dir %{python2_sitelib}/IPython/frontend/
-#%{python2_sitelib}/IPython/frontend/terminal/
-#%{python2_sitelib}/IPython/frontend/__init__.py*
-#%{python2_sitelib}/IPython/frontend/consoleapp.py*
 %{python2_sitelib}/IPython/lib/
 %{python2_sitelib}/IPython/nbformat/
 %{python2_sitelib}/IPython/nbconvert/
@@ -646,10 +647,6 @@ popd
 %{_bindir}/ipcluster3
 %{_bindir}/ipcontroller3
 %{_bindir}/ipengine3
-# no man pages (yet?)
-#%{_mandir}/man*/ipython3.*
-#%{_mandir}/man*/ipengine3*
-#%{_mandir}/man*/ipc*3*
 
 %dir %{python3_sitelib}/IPython
 %{python3_sitelib}/IPython/external
@@ -674,11 +671,6 @@ popd
 %{python3_sitelib}/IPython/config/
 %{python3_sitelib}/IPython/core/
 %{python3_sitelib}/IPython/extensions/
-#%dir %{python3_sitelib}/IPython/frontend/
-#%{python3_sitelib}/IPython/frontend/terminal/
-#%{python3_sitelib}/IPython/frontend/__pycache__/
-#%{python3_sitelib}/IPython/frontend/__init__.py*
-#%{python3_sitelib}/IPython/frontend/consoleapp.py*
 %{python3_sitelib}/IPython/lib/
 %{python3_sitelib}/IPython/nbformat/
 %{python3_sitelib}/IPython/nbconvert/
@@ -722,6 +714,9 @@ popd
 %endif # with_python3
 
 %changelog
+* Wed Sep 2 2015 Orion Poplawski <orion@cora.nwra.com> - 2.4.1-8
+- Add backported upstream patch to fix XSS vulnerability (bug #1259405)
+
 * Thu Jul 16 2015 Orion Poplawski <orion@cora.nwra.com> - 2.4.1-7
 - Update to 2.x to fix CSRF issue (bug #1243842)
 
