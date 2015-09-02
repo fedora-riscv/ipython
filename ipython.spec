@@ -14,7 +14,7 @@
 
 Name:           ipython
 Version:        3.2.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -25,6 +25,9 @@ URL:            http://ipython.org/
 Source0:        https://pypi.python.org/packages/source/i/ipython/ipython-%{version}.tar.gz
 # Add _jsdir to default search path
 Patch0:         ipython-2.1.0-_jsdir-search-path.patch
+# Fix XSS vulnerability in notebook HTML template handling
+# https://bugzilla.redhat.com/show_bug.cgi?id=1259405
+Patch1:         https://github.com/ipython/ipython/commit/3ab41641cf6fce3860c73d5cf4645aa12e1e5892.patch
 
 BuildArch:      noarch
 BuildRequires:  python-devel
@@ -391,6 +394,7 @@ This package contains the gui of %{name}, which requires PyQt.
 
 # Patches go here
 %patch0 -p1 -b .jsdir
+%patch1 -p1 -b .xss
 sed -i "s;_jsdir;%{_jsdir};g" \
     IPython/html/notebookapp.py
 
@@ -585,10 +589,6 @@ popd
 %{python2_sitelib}/IPython/config/
 %{python2_sitelib}/IPython/core/
 %{python2_sitelib}/IPython/extensions/
-#%dir %{python2_sitelib}/IPython/frontend/
-#%{python2_sitelib}/IPython/frontend/terminal/
-#%{python2_sitelib}/IPython/frontend/__init__.py*
-#%{python2_sitelib}/IPython/frontend/consoleapp.py*
 %{python2_sitelib}/IPython/lib/
 %{python2_sitelib}/IPython/nbformat/
 %{python2_sitelib}/IPython/nbconvert/
@@ -642,10 +642,6 @@ popd
 %{_bindir}/ipcluster3
 %{_bindir}/ipcontroller3
 %{_bindir}/ipengine3
-# no man pages (yet?)
-#%{_mandir}/man*/ipython3.*
-#%{_mandir}/man*/ipengine3*
-#%{_mandir}/man*/ipc*3*
 
 %dir %{python3_sitelib}/IPython
 %{python3_sitelib}/IPython/external
@@ -672,11 +668,6 @@ popd
 %{python3_sitelib}/IPython/config/
 %{python3_sitelib}/IPython/core/
 %{python3_sitelib}/IPython/extensions/
-#%dir %{python3_sitelib}/IPython/frontend/
-#%{python3_sitelib}/IPython/frontend/terminal/
-#%{python3_sitelib}/IPython/frontend/__pycache__/
-#%{python3_sitelib}/IPython/frontend/__init__.py*
-#%{python3_sitelib}/IPython/frontend/consoleapp.py*
 %{python3_sitelib}/IPython/lib/
 %{python3_sitelib}/IPython/nbformat/
 %{python3_sitelib}/IPython/nbconvert/
@@ -722,6 +713,9 @@ popd
 %endif # with_python3
 
 %changelog
+* Wed Sep 2 2015 Orion Poplawski <orion@cora.nwra.com> - 3.2.1-2
+- Add upstream patch to fix XSS vulnerability (bug #1259405)
+
 * Mon Jul 13 2015 Orion Poplawski <orion@cora.nwra.com> - 3.2.1-1
 - Update to 3.2.1
 
