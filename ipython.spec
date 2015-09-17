@@ -716,7 +716,7 @@ popd
 %endif # with_python3
 
 %changelog
-* Thu Sep 19 2015 Orion Poplawski <orion@cora.nwra.com> - 3.2.1-3
+* Thu Sep 17 2015 Orion Poplawski <orion@cora.nwra.com> - 3.2.1-3
 - Add upstream patch to fix file execution vulnerability (bug #1264068)
 
 * Wed Sep 2 2015 Orion Poplawski <orion@cora.nwra.com> - 3.2.1-2
