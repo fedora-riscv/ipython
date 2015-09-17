@@ -14,7 +14,7 @@
 
 Name:           ipython
 Version:        3.2.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -28,6 +28,9 @@ Patch0:         ipython-2.1.0-_jsdir-search-path.patch
 # Fix XSS vulnerability in notebook HTML template handling
 # https://bugzilla.redhat.com/show_bug.cgi?id=1259405
 Patch1:         https://github.com/ipython/ipython/commit/3ab41641cf6fce3860c73d5cf4645aa12e1e5892.patch
+# Fix Maliciously crafted files can be executed due to wrong file type determination
+# https://bugzilla.redhat.com/show_bug.cgi?id=1264067
+Patch2:         https://github.com/ipython/ipython/commit/0a8096adf165e2465550bd5893d7e352544e5967.patch
 
 BuildArch:      noarch
 BuildRequires:  python-devel
@@ -713,6 +716,9 @@ popd
 %endif # with_python3
 
 %changelog
+* Thu Sep 19 2015 Orion Poplawski <orion@cora.nwra.com> - 3.2.1-3
+- Add upstream patch to fix file execution vulnerability (bug #1264068)
+
 * Wed Sep 2 2015 Orion Poplawski <orion@cora.nwra.com> - 3.2.1-2
 - Add upstream patch to fix XSS vulnerability (bug #1259405)
 
