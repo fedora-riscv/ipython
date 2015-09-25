@@ -14,7 +14,7 @@
 
 Name:           ipython
 Version:        3.2.1
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -574,6 +574,7 @@ popd
 %dir %{python2_sitelib}/IPython
 %{python2_sitelib}/IPython/external
 %{python2_sitelib}/IPython/*.py*
+%dir %{python2_sitelib}/IPython/html
 %{python2_sitelib}/IPython/html/__init__.py*
 %{python2_sitelib}/IPython/html/nbextensions.py*
 %dir %{python2_sitelib}/IPython/html/static
@@ -716,6 +717,9 @@ popd
 %endif # with_python3
 
 %changelog
+* Fri Sep 25 2015 Orion Poplawski <orion@cora.nwra.com> - 3.2.1-4
+- Own IPython/html directory
+
 * Thu Sep 17 2015 Orion Poplawski <orion@cora.nwra.com> - 3.2.1-3
 - Add upstream patch to fix file execution vulnerability (bug #1264068)
 
