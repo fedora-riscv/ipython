@@ -13,7 +13,7 @@
 
 Name:           ipython
 Version:        2.4.1
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        An enhanced interactive Python shell
 
 Group:          Development/Libraries
@@ -581,6 +581,7 @@ popd
 %dir %{python2_sitelib}/IPython
 %{python2_sitelib}/IPython/external
 %{python2_sitelib}/IPython/*.py*
+%dir %{python2_sitelib}/IPython/html
 %dir %{python2_sitelib}/IPython/html/*
 %{python2_sitelib}/IPython/html/__init__.py*
 %{python2_sitelib}/IPython/html/nbextensions.py*
@@ -714,6 +715,9 @@ popd
 %endif # with_python3
 
 %changelog
+* Fri Sep 25 2015 Orion Poplawski <orion@cora.nwra.com> - 2.4.1-9
+- Own IPython/html directory
+
 * Wed Sep 2 2015 Orion Poplawski <orion@cora.nwra.com> - 2.4.1-8
 - Add backported upstream patch to fix XSS vulnerability (bug #1259405)
 
