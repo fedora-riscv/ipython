@@ -14,7 +14,7 @@
 
 Name:           ipython
 Version:        3.2.1
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -122,9 +122,17 @@ Requires:       python-zmq
 BuildRequires:  python-decorator
 BuildRequires:  python-jsonschema
 BuildRequires:  python-path
+%if 0%{?fedora}
+BuildRequires:  python-pexpect
+%else
 BuildRequires:  pexpect
+%endif
 BuildRequires:  python-simplegeneric
+%if 0%{?fedora}
+Requires:       python-pexpect
+%else
 Requires:       pexpect
+%endif
 Requires:       python-decorator
 BuildRequires:  python-mistune >= 0.3.1
 Requires:       python-mistune >= 0.3.1
@@ -717,6 +725,9 @@ popd
 %endif # with_python3
 
 %changelog
+* Fri Oct 9 2015 Orion Poplawski <orion@cora.nwra.com> - 3.2.1-5
+- Require python-pexpect in Fedora
+
 * Fri Sep 25 2015 Orion Poplawski <orion@cora.nwra.com> - 3.2.1-4
 - Own IPython/html directory
 
