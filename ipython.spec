@@ -14,7 +14,7 @@
 
 Name:           ipython
 Version:        3.2.1
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -725,6 +725,9 @@ popd
 %endif # with_python3
 
 %changelog
+* Tue Nov 10 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.2.1-6
+- Rebuilt for https://fedoraproject.org/wiki/Changes/python3.5
+
 * Fri Oct 9 2015 Orion Poplawski <orion@cora.nwra.com> - 3.2.1-5
 - Require python-pexpect in Fedora
 
