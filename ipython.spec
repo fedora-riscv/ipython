@@ -14,7 +14,7 @@
 
 Name:           ipython
 Version:        3.2.1
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -725,6 +725,9 @@ popd
 %endif # with_python3
 
 %changelog
+* Mon Sep 26 2016 Dominik Mierzejewski <rpm@greysector.net> - 3.2.1-9
+- rebuilt for matplotlib-2.0.0
+
 * Tue Jul 19 2016 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.2.1-8
 - https://fedoraproject.org/wiki/Changes/Automatic_Provides_for_Python_RPM_Packages
 
