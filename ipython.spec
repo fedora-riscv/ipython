@@ -14,7 +14,7 @@
 
 Name:           ipython
 Version:        3.2.1
-Release:        9%{?dist}
+Release:        10%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -725,6 +725,9 @@ popd
 %endif # with_python3
 
 %changelog
+* Mon Dec 19 2016 Miro Hrončok <mhroncok@redhat.com> - 3.2.1-10
+- Rebuild for Python 3.6
+
 * Mon Sep 26 2016 Dominik Mierzejewski <rpm@greysector.net> - 3.2.1-9
 - rebuilt for matplotlib-2.0.0
 
