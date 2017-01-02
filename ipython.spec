@@ -230,7 +230,6 @@ This package contains the ipython notebook.
 
 %package -n python2-ipython-tests
 Summary:        Tests for %{name}
-Group:          Documentation
 %{?python_provide:%python_provide python2-ipython-tests}
 Requires:       python2-nose
 Requires:       python2-zmq-tests
@@ -245,7 +244,6 @@ You can check this way, if ipython works on your platform.
 %if %{with doc}
 %package -n python2-ipython-doc
 Summary:        Documentation for %{name}
-Group:          Documentation
 %{?python_provide:%python_provide python2-ipython-doc}
 Provides:       ipython-doc = %{version}-%{release}
 Obsoletes:      ipython-doc < 0.13-1
@@ -256,7 +254,6 @@ This package contains the documentation of %{name}.
 
 %package -n python2-ipython-gui
 Summary:        Gui applications from %{name}
-Group:          Applications/Editors
 %{?python_provide:%python_provide python2-ipython-gui}
 Requires:       python2-ipython-console = %{version}-%{release}
 Requires:       PyQt4
@@ -382,7 +379,6 @@ This package contains the ipython notebook.
 
 %package -n python3-ipython-tests
 Summary:        Tests for %{name}
-Group:          Documentation
 %{?python_provide:%python_provide python3-ipython-tests}
 Requires:       python3-nose
 Requires:       python3-zmq-tests
@@ -393,14 +389,12 @@ You can check this way, if ipython works on your platform.
 
 %package -n python3-ipython-doc
 Summary:        Documentation for %{name}
-Group:          Documentation
 %{?python_provide:%python_provide python3-ipython-doc}
 %description -n python3-ipython-doc
 This package contains the documentation of %{name}.
 
 %package -n python3-ipython-gui
 Summary:        Gui applications from %{name}
-Group:          Applications/Editors
 %{?python_provide:%python_provide python3-ipython-gui}
 Requires:       python3-ipython-console = %{version}-%{release}
 Requires:       python3-PyQt4
@@ -740,6 +734,7 @@ popd
 %changelog
 * Mon Jan 02 2017 Thomas Spura <tomspur@fedoraproject.org> - 3.2.1-11
 - rename python-* packages to python2-* (#1409249)
+- remove group tag
 
 * Mon Dec 19 2016 Miro Hrončok <mhroncok@redhat.com> - 3.2.1-10
 - Rebuild for Python 3.6
