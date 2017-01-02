@@ -14,7 +14,7 @@
 
 Name:           ipython
 Version:        3.2.1
-Release:        10%{?dist}
+Release:        11%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -33,7 +33,7 @@ Patch1:         https://github.com/ipython/ipython/commit/3ab41641cf6fce3860c73d
 Patch2:         https://github.com/ipython/ipython/commit/0a8096adf165e2465550bd5893d7e352544e5967.patch
 
 BuildArch:      noarch
-BuildRequires:  python-devel
+BuildRequires:  python2-devel
 %if 0%{?with_python3}
 BuildRequires:  python3-devel
 %endif
@@ -43,15 +43,15 @@ BuildRequires:  python3-devel
 
 %if %{with check}
 # for checking/testing
-BuildRequires:  Cython
-BuildRequires:  python-nose
-BuildRequires:  python-matplotlib
-BuildRequires:  python-mock
-BuildRequires:  pymongo
+BuildRequires:  python2-Cython
+BuildRequires:  python2-nose
+BuildRequires:  python2-matplotlib
+BuildRequires:  python2-mock
+BuildRequires:  python2-pymongo
 BuildRequires:  PyQt4
-BuildRequires:  python-requests
-BuildRequires:  python-zmq
-BuildRequires:  python-zmq-tests
+BuildRequires:  python2-requests
+BuildRequires:  python2-zmq
+BuildRequires:  python2-zmq-tests
 # for frontend
 BuildRequires:  python-pygments
 
@@ -99,76 +99,80 @@ Main features:\
 %description
 %{ipython_desc_base}
 
-%package -n python-ipython
+%package -n python2-ipython
 Summary:        An enhanced interactive Python shell
-Requires:       python-ipython-console = %{version}-%{release}
-Requires:       python-ipython-gui = %{version}-%{release}
+%{?python_provide:%python_provide python2-ipython}
+Requires:       python2-ipython-console = %{version}-%{release}
+Requires:       python2-ipython-gui = %{version}-%{release}
 %if 0%{?with_notebook}
-Requires:       python-ipython-notebook = %{version}-%{release}
+Requires:       python2-ipython-notebook = %{version}-%{release}
 %endif
 Provides:       ipython = %{version}-%{release}
 Obsoletes:      ipython < 0.13-1
 
-%description -n python-ipython
+%description -n python2-ipython
 %{ipython_desc_base}
 
-This package depends on all python-ipython packages but python-ipython-tests.
+This package depends on all python2-ipython packages but python2-ipython-tests.
 
-%package -n python-ipython-console
+%package -n python2-ipython-console
 Summary:        An enhanced interactive Python shell for the terminal
-Requires:       python-zmq
+%{?python_provide:%python_provide python2-ipython-console}
+Requires:       python2-zmq
 
 # bundled python packages
-BuildRequires:  python-decorator
+BuildRequires:  python2-decorator
 BuildRequires:  python-jsonschema
 BuildRequires:  python-path
 %if 0%{?fedora}
-BuildRequires:  python-pexpect
+BuildRequires:  python2-pexpect
 %else
 BuildRequires:  pexpect
 %endif
-BuildRequires:  python-simplegeneric
+BuildRequires:  python2-simplegeneric
 %if 0%{?fedora}
-Requires:       python-pexpect
+Requires:       python2-pexpect
 %else
 Requires:       pexpect
 %endif
-Requires:       python-decorator
+Requires:       python2-decorator
 BuildRequires:  python-mistune >= 0.3.1
 Requires:       python-mistune >= 0.3.1
 Requires:       python-jsonschema
 Requires:       python-path
-Requires:       python-simplegeneric
+Requires:       python2-simplegeneric
 
 # for starting ipython from pkg_resources
-Requires:       python-setuptools
+Requires:       python2-setuptools
 
-%description -n python-ipython-console
+%description -n python2-ipython-console
 %{ipython_desc_base}
 
 This package provides IPython for in a terminal.
 
-%package -n python-ipython-sphinx
+%package -n python2-ipython-sphinx
 Summary:        Sphinx directive to support embedded IPython code
-Requires:       python-ipython-console = %{version}-%{release}
-BuildRequires:  python-sphinx
-Requires:       python-sphinx
+%{?python_provide:%python_provide python2-ipython-sphinx}
+Requires:       python2-ipython-console = %{version}-%{release}
+BuildRequires:  python2-sphinx
+Requires:       python2-sphinx
 
-%description -n python-ipython-sphinx
+%description -n python2-ipython-sphinx
 %{ipython_desc_base}
 
 This package contains the ipython sphinx extension.
 
 %if 0%{?with_notebook}
-%package -n python-ipython-notebook
+%package -n python2-ipython-notebook
 Summary:        An enhanced interactive Python notebook
-Requires:       python-ipython-console = %{version}-%{release}
+%{?python_provide:%python_provide python2-ipython-notebook}
+Requires:       python2-ipython-console = %{version}-%{release}
 Requires:       python-jinja2
-Requires:       python-matplotlib
+Requires:       python2-matplotlib
 BuildRequires:  python-mistune >= 0.5
 Requires:       python-mistune >= 0.5
-BuildRequires:  python-tornado >= 4.0
-Requires:       python-tornado >= 4.0
+BuildRequires:  python2-tornado >= 4.0
+Requires:       python2-tornado >= 4.0
 Provides:       ipython-notebook = %{version}-%{release}
 BuildRequires:  mathjax
 Requires:       mathjax
@@ -217,47 +221,50 @@ Provides:       bundled(js-jquery-ui)
 Provides:       bundled(js-google-caja)
 
 
-%description -n python-ipython-notebook
+%description -n python2-ipython-notebook
 %{ipython_desc_base}
 
 This package contains the ipython notebook.
 %endif
 
 
-%package -n python-ipython-tests
+%package -n python2-ipython-tests
 Summary:        Tests for %{name}
 Group:          Documentation
-Requires:       python-nose
-Requires:       python-zmq-tests
-Requires:       python-ipython-console = %{version}-%{release}
+%{?python_provide:%python_provide python2-ipython-tests}
+Requires:       python2-nose
+Requires:       python2-zmq-tests
+Requires:       python2-ipython-console = %{version}-%{release}
 Provides:       ipython-tests = %{version}-%{release}
 Obsoletes:      ipython-tests < 0.13-1
-%description -n python-ipython-tests
+%description -n python2-ipython-tests
 This package contains the tests of %{name}.
 You can check this way, if ipython works on your platform.
 
 
 %if %{with doc}
-%package -n python-ipython-doc
+%package -n python2-ipython-doc
 Summary:        Documentation for %{name}
 Group:          Documentation
+%{?python_provide:%python_provide python2-ipython-doc}
 Provides:       ipython-doc = %{version}-%{release}
 Obsoletes:      ipython-doc < 0.13-1
-%description -n python-ipython-doc
+%description -n python2-ipython-doc
 This package contains the documentation of %{name}.
 %endif
 
 
-%package -n python-ipython-gui
+%package -n python2-ipython-gui
 Summary:        Gui applications from %{name}
 Group:          Applications/Editors
-Requires:       python-ipython-console = %{version}-%{release}
+%{?python_provide:%python_provide python2-ipython-gui}
+Requires:       python2-ipython-console = %{version}-%{release}
 Requires:       PyQt4
-Requires:       python-matplotlib
+Requires:       python2-matplotlib
 Requires:       python-pygments
 Provides:       ipython-gui = %{version}-%{release}
 Obsoletes:      ipython-gui < 0.13-1
-%description -n python-ipython-gui
+%description -n python2-ipython-gui
 This package contains the gui of %{name}, which requires PyQt.
 
 
@@ -266,6 +273,7 @@ This package contains the gui of %{name}, which requires PyQt.
 # TODO revisit python3 packages again, once python2 restructuring is done
 %package -n python3-ipython
 Summary:        An enhanced interactive Python shell
+%{?python_provide:%python_provide python3-ipython}
 Requires:       python3-ipython-console = %{version}-%{release}
 Requires:       python3-ipython-gui = %{version}-%{release}
 Requires:       python3-ipython-notebook = %{version}-%{release}
@@ -303,6 +311,7 @@ This package provides IPython for in a terminal.
 
 %package -n python3-ipython-sphinx
 Summary:        Sphinx directive to support embedded IPython code
+%{?python_provide:%python_provide python3-ipython-sphinx}
 Requires:       python3-ipython-console = %{version}-%{release}
 BuildRequires:  python3-sphinx
 Requires:       python3-sphinx
@@ -315,6 +324,7 @@ This package contains the ipython sphinx extension.
 
 %package -n python3-ipython-notebook
 Summary:        An enhanced interactive Python notebook
+%{?python_provide:%python_provide python3-ipython-notebook}
 Requires:       python3-ipython-console = %{version}-%{release}
 Requires:       python3-jinja2
 Requires:       python3-matplotlib
@@ -373,6 +383,7 @@ This package contains the ipython notebook.
 %package -n python3-ipython-tests
 Summary:        Tests for %{name}
 Group:          Documentation
+%{?python_provide:%python_provide python3-ipython-tests}
 Requires:       python3-nose
 Requires:       python3-zmq-tests
 Requires:       python3-ipython-console = %{version}-%{release}
@@ -383,12 +394,14 @@ You can check this way, if ipython works on your platform.
 %package -n python3-ipython-doc
 Summary:        Documentation for %{name}
 Group:          Documentation
+%{?python_provide:%python_provide python3-ipython-doc}
 %description -n python3-ipython-doc
 This package contains the documentation of %{name}.
 
 %package -n python3-ipython-gui
 Summary:        Gui applications from %{name}
 Group:          Applications/Editors
+%{?python_provide:%python_provide python3-ipython-gui}
 Requires:       python3-ipython-console = %{version}-%{release}
 Requires:       python3-PyQt4
 Requires:       python3-matplotlib
@@ -564,9 +577,9 @@ pushd run_tests
 popd
 %endif
 
-%files -n python-ipython
+%files -n python2-ipython
 
-%files -n python-ipython-console
+%files -n python2-ipython-console
 %{_bindir}/ipython
 %{_bindir}/ipython2
 %{_bindir}/ipcluster
@@ -615,11 +628,11 @@ popd
 %exclude %{python2_sitelib}/IPython/*/*/tests
 
 
-%files -n python-ipython-sphinx
+%files -n python2-ipython-sphinx
 %{python2_sitelib}/IPython/sphinxext/
 
 
-%files -n python-ipython-tests
+%files -n python2-ipython-tests
 %{_bindir}/iptest
 %{_bindir}/iptest2
 %{python2_sitelib}/IPython/*/tests
@@ -627,13 +640,13 @@ popd
 
 
 %if %{with doc}
-%files -n python-ipython-doc
+%files -n python2-ipython-doc
 %doc docs/build/html
 %endif
 
 
 %if 0%{?with_notebook}
-%files -n python-ipython-notebook
+%files -n python2-ipython-notebook
 %{python2_sitelib}/IPython/html/*
 %exclude %{python2_sitelib}/IPython/html/__init__.py*
 %exclude %{python2_sitelib}/IPython/html/nbextensions.py*
@@ -641,7 +654,7 @@ popd
 %endif
 
 
-%files -n python-ipython-gui
+%files -n python2-ipython-gui
 %{python2_sitelib}/IPython/kernel/resources/
 %{python2_sitelib}/IPython/kernel/zmq/gui
 %{python2_sitelib}/IPython/qt/
@@ -725,6 +738,9 @@ popd
 %endif # with_python3
 
 %changelog
+* Mon Jan 02 2017 Thomas Spura <tomspur@fedoraproject.org> - 3.2.1-11
+- rename python-* packages to python2-* (#1409249)
+
 * Mon Dec 19 2016 Miro Hrončok <mhroncok@redhat.com> - 3.2.1-10
 - Rebuild for Python 3.6
 
