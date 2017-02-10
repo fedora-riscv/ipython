@@ -14,7 +14,7 @@
 
 Name:           ipython
 Version:        3.2.1
-Release:        11%{?dist}
+Release:        12%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -732,6 +732,9 @@ popd
 %endif # with_python3
 
 %changelog
+* Fri Feb 10 2017 Fedora Release Engineering <releng@fedoraproject.org> - 3.2.1-12
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
+
 * Mon Jan 02 2017 Thomas Spura <tomspur@fedoraproject.org> - 3.2.1-11
 - rename python-* packages to python2-* (#1409249)
 - remove group tag
