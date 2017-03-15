@@ -4,7 +4,6 @@
 # where are all the python3 dependencies
 %if 0%{?fedora}
 %global with_python3 1
-%global with_notebook 1
 %endif
 
 # where are all the pypy dependencies
@@ -13,8 +12,8 @@
 %endif
 
 Name:           ipython
-Version:        3.2.1
-Release:        12%{?dist}
+Version:        5.3.0
+Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -22,15 +21,7 @@ Summary:        An enhanced interactive Python shell
 # There are some extensions released under GPLv2+
 License:        (BSD and MIT and Python) and GPLv2+
 URL:            http://ipython.org/
-Source0:        https://pypi.python.org/packages/source/i/ipython/ipython-%{version}.tar.gz
-# Add _jsdir to default search path
-Patch0:         ipython-2.1.0-_jsdir-search-path.patch
-# Fix XSS vulnerability in notebook HTML template handling
-# https://bugzilla.redhat.com/show_bug.cgi?id=1259405
-Patch1:         https://github.com/ipython/ipython/commit/3ab41641cf6fce3860c73d5cf4645aa12e1e5892.patch
-# Fix Maliciously crafted files can be executed due to wrong file type determination
-# https://bugzilla.redhat.com/show_bug.cgi?id=1264067
-Patch2:         https://github.com/ipython/ipython/commit/0a8096adf165e2465550bd5893d7e352544e5967.patch
+Source0:        https://files.pythonhosted.org/packages/source/i/ipython/ipython-%{version}.tar.gz
 
 BuildArch:      noarch
 BuildRequires:  python2-devel
@@ -39,6 +30,7 @@ BuildRequires:  python3-devel
 %endif
 
 %if %{with doc}
+BuildRequires:  python3-sphinx
 %endif
 
 %if %{with check}
@@ -52,6 +44,13 @@ BuildRequires:  PyQt4
 BuildRequires:  python2-requests
 BuildRequires:  python2-zmq
 BuildRequires:  python2-zmq-tests
+BuildRequires:  python-pathlib
+BuildRequires:  python-backports-shutil_get_terminal_size
+BuildRequires:  python2-nbformat
+BuildRequires:  python2-pytest
+BuildRequires:  python2-ipykernel
+BuildRequires:  python2-jupyter-client
+BuildRequires:  python2-testpath
 # for frontend
 BuildRequires:  python-pygments
 
@@ -64,6 +63,11 @@ BuildRequires:  python3-PyQt4
 BuildRequires:  python3-tornado >= 4.0
 BuildRequires:  python3-zmq
 BuildRequires:  python3-zmq-tests
+BuildRequires:  python3-nbformat
+BuildRequires:  python3-pytest
+BuildRequires:  python3-ipykernel
+BuildRequires:  python3-jupyter-client
+BuildRequires:  python3-testpath
 # for frontend
 BuildRequires:  python3-pygments
 %endif # with_python3
@@ -102,23 +106,15 @@ Main features:\
 %package -n python2-ipython
 Summary:        An enhanced interactive Python shell
 %{?python_provide:%python_provide python2-ipython}
-Requires:       python2-ipython-console = %{version}-%{release}
-Requires:       python2-ipython-gui = %{version}-%{release}
-%if 0%{?with_notebook}
-Requires:       python2-ipython-notebook = %{version}-%{release}
-%endif
+%{?python_provide:%python_provide python2-ipython-console}
 Provides:       ipython = %{version}-%{release}
 Obsoletes:      ipython < 0.13-1
+Provides:       python2-ipython-console = %{version}-%{release}
+Obsoletes:      python2-ipython-console < 5.3.0-1
 
-%description -n python2-ipython
-%{ipython_desc_base}
-
-This package depends on all python2-ipython packages but python2-ipython-tests.
-
-%package -n python2-ipython-console
-Summary:        An enhanced interactive Python shell for the terminal
-%{?python_provide:%python_provide python2-ipython-console}
 Requires:       python2-zmq
+Requires:       python-pathlib
+Requires:       python-backports-shutil_get_terminal_size
 
 # bundled python packages
 BuildRequires:  python2-decorator
@@ -141,11 +137,16 @@ Requires:       python-mistune >= 0.3.1
 Requires:       python-jsonschema
 Requires:       python-path
 Requires:       python2-simplegeneric
+BuildRequires:  python-traitlets >= 4.2
+BuildRequires:  python2-prompt_toolkit
+Requires:       python2-prompt_toolkit
+BuildRequires:  python2-pickleshare
+Requires:       python2-pickleshare
 
 # for starting ipython from pkg_resources
 Requires:       python2-setuptools
 
-%description -n python2-ipython-console
+%description -n python2-ipython
 %{ipython_desc_base}
 
 This package provides IPython for in a terminal.
@@ -153,7 +154,7 @@ This package provides IPython for in a terminal.
 %package -n python2-ipython-sphinx
 Summary:        Sphinx directive to support embedded IPython code
 %{?python_provide:%python_provide python2-ipython-sphinx}
-Requires:       python2-ipython-console = %{version}-%{release}
+Requires:       python2-ipython = %{version}-%{release}
 BuildRequires:  python2-sphinx
 Requires:       python2-sphinx
 
@@ -162,78 +163,18 @@ Requires:       python2-sphinx
 
 This package contains the ipython sphinx extension.
 
-%if 0%{?with_notebook}
-%package -n python2-ipython-notebook
-Summary:        An enhanced interactive Python notebook
-%{?python_provide:%python_provide python2-ipython-notebook}
-Requires:       python2-ipython-console = %{version}-%{release}
-Requires:       python-jinja2
-Requires:       python2-matplotlib
-BuildRequires:  python-mistune >= 0.5
-Requires:       python-mistune >= 0.5
-BuildRequires:  python2-tornado >= 4.0
-Requires:       python2-tornado >= 4.0
-Provides:       ipython-notebook = %{version}-%{release}
-BuildRequires:  mathjax
-Requires:       mathjax
-
-
-#################################################
-### Bundled stuff from the notebook goes here ###
-#################################################
-# We need to know nodejs_sitearch and lib
-BuildRequires:  nodejs-packaging
-BuildRequires:  web-assets-devel
-
-BuildRequires:  fontawesome-fonts-web
-Requires:       fontawesome-fonts-web
-BuildRequires:  nodejs-requirejs
-Requires:       nodejs-requirejs
-BuildRequires:  nodejs-underscore
-Requires:       nodejs-underscore
-BuildRequires:  js-highlight
-Requires:       js-highlight
-BuildRequires:  js-marked
-Requires:       js-marked
-
-# BR of helpers for unbundling
-BuildRequires:  nodejs-less
-
-
-# Temporal bundling allowed in:
-# https://fedorahosted.org/fpc/ticket/416
-#############################################################################
-# jquery temporary exception lasts until the release that jquery enters
-# the repository. For now, plan on temporary exception for other libraries
-# will expire one release after jquery unbundling has entered the repository.
-# Lessons from the jquery unbundling may lead us to change that time frame
-# as it is our proof of concept of how to unbundle.
-#############################################################################
-Provides:       bundled(js-backbone)
-Provides:       bundled(bootstrap)
-Provides:       bundled(js-bootstrap)
-Provides:       bundled(bootstrap-tour)
-Provides:       bundled(js-bootstrap-tour)
-Provides:       bundled(codemirror)
-Provides:       bundled(js-codemirror)
-Provides:       bundled(js-jquery)
-Provides:       bundled(js-jquery-ui)
-Provides:       bundled(js-google-caja)
-
-
-%description -n python2-ipython-notebook
-%{ipython_desc_base}
-
-This package contains the ipython notebook.
-%endif
-
 
 %package -n python2-ipython-tests
 Summary:        Tests for %{name}
 %{?python_provide:%python_provide python2-ipython-tests}
 Requires:       python2-nose
 Requires:       python2-zmq-tests
-Requires:       python2-ipython-console = %{version}-%{release}
+Requires:       python2-ipython = %{version}-%{release}
+Requires:       python2-nbformat
+Requires:       python2-pytest
+Requires:       python2-ipykernel
+Requires:       python2-jupyter-client
+Requires:       python2-testpath
 Provides:       ipython-tests = %{version}-%{release}
 Obsoletes:      ipython-tests < 0.13-1
 %description -n python2-ipython-tests
@@ -252,37 +193,15 @@ This package contains the documentation of %{name}.
 %endif
 
 
-%package -n python2-ipython-gui
-Summary:        Gui applications from %{name}
-%{?python_provide:%python_provide python2-ipython-gui}
-Requires:       python2-ipython-console = %{version}-%{release}
-Requires:       PyQt4
-Requires:       python2-matplotlib
-Requires:       python-pygments
-Provides:       ipython-gui = %{version}-%{release}
-Obsoletes:      ipython-gui < 0.13-1
-%description -n python2-ipython-gui
-This package contains the gui of %{name}, which requires PyQt.
-
-
-
 %if 0%{?with_python3}
-# TODO revisit python3 packages again, once python2 restructuring is done
 %package -n python3-ipython
 Summary:        An enhanced interactive Python shell
 %{?python_provide:%python_provide python3-ipython}
-Requires:       python3-ipython-console = %{version}-%{release}
-Requires:       python3-ipython-gui = %{version}-%{release}
-Requires:       python3-ipython-notebook = %{version}-%{release}
-%description -n python3-ipython
-%{ipython_desc_base}
+%{?python_provide:%python_provide python3-ipython-console}
+Provides:       python3-ipython-console = %{version}-%{release}
+Obsoletes:      python3-ipython-console < 5.3.0-1
 
-This package depends on all python3-ipython packages but python3-ipython-tests.
-
-%package -n python3-ipython-console
-Summary:        An enhanced interactive Python shell for the terminal
 Requires:       python3-zmq
-
 
 # bundled python packages
 BuildRequires:  python3-decorator
@@ -297,11 +216,16 @@ Requires:       python3-mistune >= 0.3.1
 Requires:       python3-path
 Requires:       python3-pexpect
 Requires:       python3-simplegeneric
+BuildRequires:  python3-traitlets >= 4.2
+BuildRequires:  python3-prompt_toolkit
+Requires:       python3-prompt_toolkit
+BuildRequires:  python3-pickleshare
+Requires:       python3-pickleshare
 
 # for starting ipython from pkg_resources
 Requires:       python3-setuptools
 
-%description -n python3-ipython-console
+%description -n python3-ipython
 %{ipython_desc_base}
 
 This package provides IPython for in a terminal.
@@ -309,7 +233,7 @@ This package provides IPython for in a terminal.
 %package -n python3-ipython-sphinx
 Summary:        Sphinx directive to support embedded IPython code
 %{?python_provide:%python_provide python3-ipython-sphinx}
-Requires:       python3-ipython-console = %{version}-%{release}
+Requires:       python3-ipython = %{version}-%{release}
 BuildRequires:  python3-sphinx
 Requires:       python3-sphinx
 
@@ -319,89 +243,28 @@ Requires:       python3-sphinx
 This package contains the ipython sphinx extension.
 
 
-%package -n python3-ipython-notebook
-Summary:        An enhanced interactive Python notebook
-%{?python_provide:%python_provide python3-ipython-notebook}
-Requires:       python3-ipython-console = %{version}-%{release}
-Requires:       python3-jinja2
-Requires:       python3-matplotlib
-BuildRequires:  python3-mistune >= 0.5
-Requires:       python3-mistune >= 0.5
-BuildRequires:  python3-tornado >= 4.0
-Requires:       python3-tornado >= 4.0
-BuildRequires:  mathjax
-Requires:       mathjax
-
-#################################################
-### Bundled stuff from the notebook goes here ###
-#################################################
-# We need to know nodejs_sitearch and lib
-BuildRequires:  nodejs-packaging
-BuildRequires:  web-assets-devel
-
-BuildRequires:  fontawesome-fonts-web
-Requires:       fontawesome-fonts-web
-BuildRequires:  nodejs-requirejs
-Requires:       nodejs-requirejs
-BuildRequires:  nodejs-underscore
-Requires:       nodejs-underscore
-BuildRequires:  js-highlight
-Requires:       js-highlight
-BuildRequires:  js-marked
-Requires:       js-marked
-
-# Temporal bundling allowed in:
-# https://fedorahosted.org/fpc/ticket/416
-#############################################################################
-# jquery temporary exception lasts until the release that jquery enters
-# the repository. For now, plan on temporary exception for other libraries
-# will expire one release after jquery unbundling has entered the repository.
-# Lessons from the jquery unbundling may lead us to change that time frame
-# as it is our proof of concept of how to unbundle.
-#############################################################################
-Provides:       bundled(js-backbone)
-Provides:       bundled(bootstrap)
-Provides:       bundled(js-bootstrap)
-Provides:       bundled(bootstrap-tour)
-Provides:       bundled(js-bootstrap-tour)
-Provides:       bundled(codemirror)
-Provides:       bundled(js-codemirror)
-Provides:       bundled(js-jquery)
-Provides:       bundled(js-jquery-ui)
-Provides:       bundled(js-google-caja)
-
-
-%description -n python3-ipython-notebook
-%{ipython_desc_base}
-
-This package contains the ipython notebook.
-
-
 %package -n python3-ipython-tests
 Summary:        Tests for %{name}
 %{?python_provide:%python_provide python3-ipython-tests}
 Requires:       python3-nose
 Requires:       python3-zmq-tests
-Requires:       python3-ipython-console = %{version}-%{release}
+Requires:       python3-ipython = %{version}-%{release}
+Requires:       python3-nbformat
+Requires:       python3-pytest
+Requires:       python3-ipykernel
+Requires:       python3-jupyter-client
+Requires:       python3-testpath
 %description -n python3-ipython-tests
 This package contains the tests of %{name}.
 You can check this way, if ipython works on your platform.
 
+%if %{with doc}
 %package -n python3-ipython-doc
 Summary:        Documentation for %{name}
 %{?python_provide:%python_provide python3-ipython-doc}
 %description -n python3-ipython-doc
 This package contains the documentation of %{name}.
-
-%package -n python3-ipython-gui
-Summary:        Gui applications from %{name}
-%{?python_provide:%python_provide python3-ipython-gui}
-Requires:       python3-ipython-console = %{version}-%{release}
-Requires:       python3-PyQt4
-Requires:       python3-matplotlib
-Requires:       python3-pygments
-%description -n python3-ipython-gui
-This package contains the gui of %{name}, which requires PyQt.
+%endif # with doc
 
 %endif # with_python3
 
@@ -410,65 +273,15 @@ This package contains the gui of %{name}, which requires PyQt.
 %prep
 %setup -q
 
-# Patches go here
-%patch0 -p1 -b .jsdir
-%patch1 -p1 -b .xss
-sed -i "s;_jsdir;%{_jsdir};g" \
-    IPython/html/notebookapp.py
-
 # delete bundling libs
 pushd IPython/external
 ls -l
 ls -l *
 
-rm decorator/_decorator.py
-
 # use decorators of numpy
 rm decorators/_decorators.py
 
-rm pexpect/_pexpect.py
-
-rm path/_path.py
-
-rm simplegeneric/_simplegeneric.py
-
-# ssh modules from paramiko
-
 popd
-
-%define do_global_symlinking() \
-pushd IPython/html/static/components \
-    pushd font-awesome \
-        rm -rf font \
-        ln -s %{_datadir}/fonts/fontawesome font \
-        for folder in css less scss; do \
-            rm -rf $folder \
-            ln -s %{_datadir}/font-awesome-*/${folder} \
-        done \
-        ls -l \
-    popd \
-# TODO backbone bootstrap google-caja jquery jquery-ui \
-    #for folder in highlight.js requirejs underscore; do \
-    for folder in requirejs underscore; do \
-        rm -r ${folder} \
-        ln -s %{nodejs_sitelib}/${folder} \
-    done \
- \
-    for folder in marked; do \
-        rm -r $folder \
-        mkdir -p $folder \
-        ln -s %{_jsdir}/$folder/ $folder/lib \
-    done \
-ls -l \
-ls -l * \
-popd
-
-# unbundle components if building the notebook, otherwise leave for setup to
-# find
-%if 0%{?with_notebook}
-%do_global_symlinking
-%endif
-#asdf
 
 %if 0%{?with_python3}
 rm -rf %{py3dir}
@@ -488,15 +301,11 @@ popd
 
 
 %if %{with doc}
-cd docs
-## TODO: fails with
-##reading sources... [ 71%] api/generated/IPython.utils.io
-##Sphinx error:
-##'ascii' codec can't encode character u'\u0142' in position 204: ordinal not in range(128)
-##make: *** [html] Error 1
-#make html
+pushd docs
+PYTHONPATH=.. make html SPHINXBUILD=sphinx-build-3
 mkdir -p build/html/
-cd ..
+rm -rf build/html/.buildinfo
+popd
 %endif
 
 
@@ -509,40 +318,14 @@ popd
 
 %{__python2} setup.py install -O1 --skip-build --root %{buildroot}
 
-# unbundle components again...
-pushd %{buildroot}%{python2_sitelib}
-    %do_global_symlinking
-popd
-
-%if 0%{?with_python3}
-pushd %{buildroot}%{python3_sitelib}
-    %do_global_symlinking
-popd
-%endif # with_python3
-
 # Do we need to replace python3 with python2? Only seems to occur on rawhide, see #1123618
-echo %{buildroot}%{_bindir}/{ipcluster,ipcontroller,ipengine,iptest,ipython} | xargs head -n 2
-echo %{buildroot}%{_bindir}/{ipcluster,ipcontroller,ipengine,iptest,ipython} | xargs sed -i '1s|^#!%{__python3}|#!%{__python2}|'
-
-%if !0%{?with_notebook}
-# Need to remove everything but what we ship in console
-rm -r %{buildroot}%{python2_sitelib}/IPython/html/__main__.*
-rm -r %{buildroot}%{python2_sitelib}/IPython/html/[a-mo-rt-z]*
-rm -r %{buildroot}%{python2_sitelib}/IPython/html/nbconvert
-rm -r %{buildroot}%{python2_sitelib}/IPython/html/notebook*
-rm -r %{buildroot}%{python2_sitelib}/IPython/html/s[a-su-z]*
-rm -r %{buildroot}%{python2_sitelib}/IPython/html/static/[a-bd-z]*
-rm -r %{buildroot}%{python2_sitelib}/IPython/html/static/c[a-tv-z]*
-%endif
+echo %{buildroot}%{_bindir}/{iptest,ipython} | xargs head -n 2
+echo %{buildroot}%{_bindir}/{iptest,ipython} | xargs sed -i '1s|^#!%{__python3}|#!%{__python2}|'
 
 
 %if %{with check}
 %check
-%if 0%{?with_notebook}
-%global test_groups config extensions lib testing terminal utils nbformat qt core autoreload nbconvert parallel html  js/services js/base js/notebook js/widgets js/tree
-%else
-%global test_groups config extensions lib testing terminal utils nbformat qt core autoreload parallel
-%endif
+%global test_groups extensions lib testing terminal utils nbformat core autoreload
 # the following group seems to block on python3.4
 #kernel kernel.inprocess
 
@@ -556,7 +339,7 @@ pushd %{py3dir}
         PATH="%{buildroot}%{_bindir}:$PATH" \
         LC_ALL=en_US.UTF-8 \
         xvfb-run \
-        %{buildroot}%{_bindir}/iptest3 %{test_groups} || :
+        %{buildroot}%{_bindir}/iptest3 %{test_groups}
     popd
 popd
 %endif
@@ -567,59 +350,33 @@ pushd run_tests
         PATH="%{buildroot}%{_bindir}:$PATH" \
         LC_ALL=en_US.UTF-8 \
         xvfb-run \
-        %{buildroot}%{_bindir}/iptest2 %{test_groups} || :
+        %{buildroot}%{_bindir}/iptest2 %{test_groups}
 popd
 %endif
 
 %files -n python2-ipython
-
-%files -n python2-ipython-console
 %{_bindir}/ipython
 %{_bindir}/ipython2
-%{_bindir}/ipcluster
-%{_bindir}/ipcluster2
-%{_bindir}/ipcontroller
-%{_bindir}/ipcontroller2
-%{_bindir}/ipengine
-%{_bindir}/ipengine2
 %{_mandir}/man*/ipython.*
-%{_mandir}/man*/ipengine*
-%{_mandir}/man*/ipc*
 
 %dir %{python2_sitelib}/IPython
 %{python2_sitelib}/IPython/external
 %{python2_sitelib}/IPython/*.py*
-%dir %{python2_sitelib}/IPython/html
-%{python2_sitelib}/IPython/html/__init__.py*
-%{python2_sitelib}/IPython/html/nbextensions.py*
-%dir %{python2_sitelib}/IPython/html/static
-%{python2_sitelib}/IPython/html/static/custom/
 %dir %{python2_sitelib}/IPython/kernel
 %{python2_sitelib}/IPython/kernel/*.py*
-%{python2_sitelib}/IPython/kernel/blocking/
-%{python2_sitelib}/IPython/kernel/comm/
-%{python2_sitelib}/IPython/kernel/inprocess/
-%{python2_sitelib}/IPython/kernel/ioloop/
 %dir %{python2_sitelib}/IPython/testing
 %{python2_sitelib}/IPython/testing/*.py*
 %{python2_sitelib}/IPython/testing/plugin
 %{python2_sitelib}/ipython-%{version}-py?.?.egg-info
 
-%{python2_sitelib}/IPython/config/
 %{python2_sitelib}/IPython/core/
 %{python2_sitelib}/IPython/extensions/
 %{python2_sitelib}/IPython/lib/
-%{python2_sitelib}/IPython/nbformat/
-%{python2_sitelib}/IPython/nbconvert/
-%{python2_sitelib}/IPython/parallel/
 %{python2_sitelib}/IPython/terminal/
 %{python2_sitelib}/IPython/utils/
-%{python2_sitelib}/IPython/kernel/zmq/
-%exclude %{python2_sitelib}/IPython/kernel/zmq/gui/
 
 # tests go into subpackage
 %exclude %{python2_sitelib}/IPython/*/tests/
-%exclude %{python2_sitelib}/IPython/*/*/tests
 
 
 %files -n python2-ipython-sphinx
@@ -630,7 +387,6 @@ popd
 %{_bindir}/iptest
 %{_bindir}/iptest2
 %{python2_sitelib}/IPython/*/tests
-%{python2_sitelib}/IPython/*/*/tests
 
 
 %if %{with doc}
@@ -638,67 +394,31 @@ popd
 %doc docs/build/html
 %endif
 
-
-%if 0%{?with_notebook}
-%files -n python2-ipython-notebook
-%{python2_sitelib}/IPython/html/*
-%exclude %{python2_sitelib}/IPython/html/__init__.py*
-%exclude %{python2_sitelib}/IPython/html/nbextensions.py*
-%exclude %{python2_sitelib}/IPython/html/static/custom/
-%endif
-
-
-%files -n python2-ipython-gui
-%{python2_sitelib}/IPython/kernel/resources/
-%{python2_sitelib}/IPython/kernel/zmq/gui
-%{python2_sitelib}/IPython/qt/
-
 %if 0%{?with_python3}
 %files -n python3-ipython
-
-%files -n python3-ipython-console
 %{_bindir}/ipython3
-%{_bindir}/ipcluster3
-%{_bindir}/ipcontroller3
-%{_bindir}/ipengine3
 
 %dir %{python3_sitelib}/IPython
 %{python3_sitelib}/IPython/external
 %{python3_sitelib}/IPython/__pycache__/
 %{python3_sitelib}/IPython/*.py*
-%dir %{python3_sitelib}/IPython/html
-%{python3_sitelib}/IPython/html/__init__.py*
-%{python3_sitelib}/IPython/html/nbextensions.py*
-%dir %{python3_sitelib}/IPython/html/static
-%{python3_sitelib}/IPython/html/static/custom/
 %dir %{python3_sitelib}/IPython/kernel
 %{python3_sitelib}/IPython/kernel/__pycache__/
 %{python3_sitelib}/IPython/kernel/*.py*
-%{python3_sitelib}/IPython/kernel/blocking/
-%{python3_sitelib}/IPython/kernel/comm/
-%{python3_sitelib}/IPython/kernel/inprocess/
-%{python3_sitelib}/IPython/kernel/ioloop/
 %dir %{python3_sitelib}/IPython/testing
 %{python3_sitelib}/IPython/testing/__pycache__/
 %{python3_sitelib}/IPython/testing/*.py*
 %{python3_sitelib}/IPython/testing/plugin
 %{python3_sitelib}/ipython-%{version}-py?.?.egg-info
 
-%{python3_sitelib}/IPython/config/
 %{python3_sitelib}/IPython/core/
 %{python3_sitelib}/IPython/extensions/
 %{python3_sitelib}/IPython/lib/
-%{python3_sitelib}/IPython/nbformat/
-%{python3_sitelib}/IPython/nbconvert/
-%{python3_sitelib}/IPython/parallel/
 %{python3_sitelib}/IPython/terminal/
 %{python3_sitelib}/IPython/utils/
-%{python3_sitelib}/IPython/kernel/zmq/
-%exclude %{python3_sitelib}/IPython/kernel/zmq/gui/
 
 # tests go into subpackage
 %exclude %{python3_sitelib}/IPython/*/tests/
-%exclude %{python3_sitelib}/IPython/*/*/tests
 
 
 %files -n python3-ipython-sphinx
@@ -708,30 +428,28 @@ popd
 %files -n python3-ipython-tests
 %{_bindir}/iptest3
 %{python3_sitelib}/IPython/*/tests
-%{python3_sitelib}/IPython/*/*/tests
 
 
 %if %{with doc}
-##%files -n python3-ipython-doc
-# ipython installs its own documentation, but we need to own the directory
-##%{_datadir}/doc/python3-%{name}/
+%files -n python3-ipython-doc
+%doc docs/build/html
 %endif
 
 
-%files -n python3-ipython-notebook
-%{python3_sitelib}/IPython/html/*
-%exclude %{python3_sitelib}/IPython/html/__init__.py*
-%exclude %{python3_sitelib}/IPython/html/nbextensions.py*
-%exclude %{python3_sitelib}/IPython/html/static/custom/
-
-
-%files -n python3-ipython-gui
-%{python3_sitelib}/IPython/kernel/resources/
-%{python3_sitelib}/IPython/kernel/zmq/gui
-%{python3_sitelib}/IPython/qt/
 %endif # with_python3
 
 %changelog
+* Wed Mar 08 2017 Tomas Orsava <torsava@redhat.com> - 5.3.0-1
+- Updated to 5.3.0
+- Removed the gui and notebook subpackages as they are now distributed
+  separately (packages python-qtconsole and python-notebook respectively)
+- Binaries ipcluster, ipcontroller and ipengine no longer exist
+- Removed all patches (0-2)
+- Modified check section to fail the build upon test failures
+- Fixed building of documentation
+- Removed the pythonX-ipython-console subpackages, the functionality is now
+  provided by the pythonX-ipython packages themselves
+
 * Fri Feb 10 2017 Fedora Release Engineering <releng@fedoraproject.org> - 3.2.1-12
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
 
