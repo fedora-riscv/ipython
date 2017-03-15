@@ -40,7 +40,6 @@ BuildRequires:  python2-nose
 BuildRequires:  python2-matplotlib
 BuildRequires:  python2-mock
 BuildRequires:  python2-pymongo
-BuildRequires:  PyQt4
 BuildRequires:  python2-requests
 BuildRequires:  python2-zmq
 BuildRequires:  python2-zmq-tests
@@ -59,7 +58,6 @@ BuildRequires:  python3-Cython
 BuildRequires:  python3-nose
 BuildRequires:  python3-matplotlib
 BuildRequires:  python3-pymongo
-BuildRequires:  python3-PyQt4
 BuildRequires:  python3-tornado >= 4.0
 BuildRequires:  python3-zmq
 BuildRequires:  python3-zmq-tests
