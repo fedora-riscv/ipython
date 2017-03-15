@@ -13,7 +13,7 @@
 
 Name:           ipython
 Version:        5.3.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -138,6 +138,7 @@ Requires:       python-jsonschema
 Requires:       python-path
 Requires:       python2-simplegeneric
 BuildRequires:  python-traitlets >= 4.2
+Requires:       python-traitlets >= 4.2
 BuildRequires:  python2-prompt_toolkit
 Requires:       python2-prompt_toolkit
 BuildRequires:  python2-pickleshare
@@ -217,6 +218,7 @@ Requires:       python3-path
 Requires:       python3-pexpect
 Requires:       python3-simplegeneric
 BuildRequires:  python3-traitlets >= 4.2
+Requires:       python3-traitlets >= 4.2
 BuildRequires:  python3-prompt_toolkit
 Requires:       python3-prompt_toolkit
 BuildRequires:  python3-pickleshare
@@ -439,6 +441,9 @@ popd
 %endif # with_python3
 
 %changelog
+* Wed Mar 15 2017 Miro Hrončok <mhroncok@redhat.com> - 5.3.0-2
+- Also require traitlets
+
 * Wed Mar 08 2017 Tomas Orsava <torsava@redhat.com> - 5.3.0-1
 - Updated to 5.3.0
 - Removed the gui and notebook subpackages as they are now distributed
