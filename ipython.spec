@@ -13,7 +13,7 @@
 
 Name:           ipython
 Version:        5.3.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -106,6 +106,7 @@ Summary:        An enhanced interactive Python shell
 %{?python_provide:%python_provide python2-ipython}
 %{?python_provide:%python_provide python2-ipython-console}
 Provides:       ipython = %{version}-%{release}
+Provides:       ipython2 = %{version}-%{release}
 Obsoletes:      ipython < 0.13-1
 Provides:       python2-ipython-console = %{version}-%{release}
 Obsoletes:      python2-ipython-console < 5.3.0-1
@@ -197,6 +198,7 @@ This package contains the documentation of %{name}.
 Summary:        An enhanced interactive Python shell
 %{?python_provide:%python_provide python3-ipython}
 %{?python_provide:%python_provide python3-ipython-console}
+Provides:       ipython3 = %{version}-%{release}
 Provides:       python3-ipython-console = %{version}-%{release}
 Obsoletes:      python3-ipython-console < 5.3.0-1
 
@@ -442,6 +444,9 @@ popd
 %endif # with_python3
 
 %changelog
+* Fri Mar 17 2017 Miro Hrončok <mhroncok@redhat.com> - 5.3.0-4
+- Provide ipython2/3
+
 * Fri Mar 17 2017 Miro Hrončok <mhroncok@redhat.com> - 5.3.0-3
 - Remove bogus shebangs
 
