@@ -13,7 +13,7 @@
 
 Name:           ipython
 Version:        5.3.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -283,6 +283,9 @@ rm decorators/_decorators.py
 
 popd
 
+# Remove shebangs
+sed -i '1d' $(grep -lr '^#!/usr/' IPython)
+
 %if 0%{?with_python3}
 rm -rf %{py3dir}
 cp -a . %{py3dir}
@@ -439,6 +442,9 @@ popd
 %endif # with_python3
 
 %changelog
+* Fri Mar 17 2017 Miro Hrončok <mhroncok@redhat.com> - 5.3.0-3
+- Remove bogus shebangs
+
 * Wed Mar 15 2017 Miro Hrončok <mhroncok@redhat.com> - 5.3.0-2
 - Also require traitlets
 
