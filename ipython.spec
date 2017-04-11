@@ -88,6 +88,8 @@ Requires:       python3-mistune >= 0.3.1
 Requires:       python3-path
 Requires:       python3-pexpect
 Requires:       python3-simplegeneric
+BuildRequires:  python3-jedi >= 0.10
+Requires:       python3-jedi >= 0.10
 BuildRequires:  python3-traitlets >= 4.2
 Requires:       python3-traitlets >= 4.2
 BuildRequires:  python3-prompt_toolkit
