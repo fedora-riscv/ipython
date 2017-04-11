@@ -1,16 +1,6 @@
 %bcond_without check
 %bcond_without doc
 
-# where are all the python3 dependencies
-%if 0%{?fedora}
-%global with_python3 1
-%endif
-
-# where are all the pypy dependencies
-%if 0%{?fedora}
-%global with_pypy 0
-%endif
-
 Name:           ipython
 Version:        5.3.0
 Release:        4%{?dist}
@@ -25,9 +15,7 @@ Source0:        https://files.pythonhosted.org/packages/source/i/ipython/ipython
 
 BuildArch:      noarch
 BuildRequires:  python2-devel
-%if 0%{?with_python3}
 BuildRequires:  python3-devel
-%endif
 
 %if %{with doc}
 BuildRequires:  python3-sphinx
@@ -53,7 +41,6 @@ BuildRequires:  python2-testpath
 # for frontend
 BuildRequires:  python-pygments
 
-%if 0%{?with_python3}
 BuildRequires:  python3-Cython
 BuildRequires:  python3-nose
 BuildRequires:  python3-matplotlib
@@ -68,7 +55,6 @@ BuildRequires:  python3-jupyter-client
 BuildRequires:  python3-testpath
 # for frontend
 BuildRequires:  python3-pygments
-%endif # with_python3
 
 # for running qt/matplotlib tests
 BuildRequires:  xorg-x11-server-Xvfb
@@ -193,7 +179,6 @@ This package contains the documentation of %{name}.
 %endif
 
 
-%if 0%{?with_python3}
 %package -n python3-ipython
 Summary:        An enhanced interactive Python shell
 %{?python_provide:%python_provide python3-ipython}
@@ -268,9 +253,6 @@ Summary:        Documentation for %{name}
 This package contains the documentation of %{name}.
 %endif # with doc
 
-%endif # with_python3
-
-
 
 %prep
 %setup -q
@@ -288,19 +270,15 @@ popd
 # Remove shebangs
 sed -i '1d' $(grep -lr '^#!/usr/' IPython)
 
-%if 0%{?with_python3}
 rm -rf %{py3dir}
 cp -a . %{py3dir}
 find %{py3dir} -name '*.py' -print0 | xargs -0 sed -i '1s|^#!python|#!%{__python3}|'
-%endif # with_python3
 
 
 %build
-%if 0%{?with_python3}
 pushd %{py3dir}
     %{__python3} setup.py build
 popd
-%endif # with_python3
 
 %{__python2} setup.py build
 
@@ -315,11 +293,9 @@ popd
 
 
 %install
-%if 0%{?with_python3}
 pushd %{py3dir}
     %{__python3} setup.py install -O1 --skip-build --root %{buildroot} 
 popd
-%endif # with_python3
 
 %{__python2} setup.py install -O1 --skip-build --root %{buildroot}
 
@@ -336,7 +312,6 @@ echo %{buildroot}%{_bindir}/{iptest,ipython} | xargs sed -i '1s|^#!%{__python3}|
 
 # Ensure that the user's .pythonrc.py is not invoked during any tests.
 export PYTHONSTARTUP=""
-%if 0%{?with_python3}
 pushd %{py3dir}
     mkdir -p run_tests
     pushd run_tests
@@ -347,7 +322,6 @@ pushd %{py3dir}
         %{buildroot}%{_bindir}/iptest3 %{test_groups}
     popd
 popd
-%endif
 
 mkdir -p run_tests
 pushd run_tests
@@ -399,7 +373,6 @@ popd
 %doc docs/build/html
 %endif
 
-%if 0%{?with_python3}
 %files -n python3-ipython
 %{_bindir}/ipython3
 
@@ -440,8 +413,6 @@ popd
 %doc docs/build/html
 %endif
 
-
-%endif # with_python3
 
 %changelog
 * Fri Mar 17 2017 Miro Hrončok <mhroncok@redhat.com> - 5.3.0-4
