@@ -14,7 +14,6 @@ URL:            http://ipython.org/
 Source0:        https://files.pythonhosted.org/packages/source/i/ipython/ipython-%{version}.tar.gz
 
 BuildArch:      noarch
-BuildRequires:  python2-devel
 BuildRequires:  python3-devel
 
 %if %{with doc}
@@ -22,25 +21,6 @@ BuildRequires:  python3-sphinx
 %endif
 
 %if %{with check}
-# for checking/testing
-BuildRequires:  python2-Cython
-BuildRequires:  python2-nose
-BuildRequires:  python2-matplotlib
-BuildRequires:  python2-mock
-BuildRequires:  python2-pymongo
-BuildRequires:  python2-requests
-BuildRequires:  python2-zmq
-BuildRequires:  python2-zmq-tests
-BuildRequires:  python-pathlib
-BuildRequires:  python-backports-shutil_get_terminal_size
-BuildRequires:  python2-nbformat
-BuildRequires:  python2-pytest
-BuildRequires:  python2-ipykernel
-BuildRequires:  python2-jupyter-client
-BuildRequires:  python2-testpath
-# for frontend
-BuildRequires:  python-pygments
-
 BuildRequires:  python3-Cython
 BuildRequires:  python3-nose
 BuildRequires:  python3-matplotlib
@@ -59,10 +39,6 @@ BuildRequires:  python3-pygments
 # for running qt/matplotlib tests
 BuildRequires:  xorg-x11-server-Xvfb
 %endif # with check
-
-# Require $current_python_interpreter-ipython
-Requires:       python-ipython
-
 
 %global ipython_desc_base \
 IPython provides a replacement for the interactive Python interpreter with\
@@ -86,98 +62,6 @@ Main features:\
 
 %description
 %{ipython_desc_base}
-
-%package -n python2-ipython
-Summary:        An enhanced interactive Python shell
-%{?python_provide:%python_provide python2-ipython}
-%{?python_provide:%python_provide python2-ipython-console}
-Provides:       ipython = %{version}-%{release}
-Provides:       ipython2 = %{version}-%{release}
-Obsoletes:      ipython < 0.13-1
-Provides:       python2-ipython-console = %{version}-%{release}
-Obsoletes:      python2-ipython-console < 5.3.0-1
-
-Requires:       python2-zmq
-Requires:       python-pathlib
-Requires:       python-backports-shutil_get_terminal_size
-
-# bundled python packages
-BuildRequires:  python2-decorator
-BuildRequires:  python-jsonschema
-BuildRequires:  python-path
-%if 0%{?fedora}
-BuildRequires:  python2-pexpect
-%else
-BuildRequires:  pexpect
-%endif
-BuildRequires:  python2-simplegeneric
-%if 0%{?fedora}
-Requires:       python2-pexpect
-%else
-Requires:       pexpect
-%endif
-Requires:       python2-decorator
-BuildRequires:  python-mistune >= 0.3.1
-Requires:       python-mistune >= 0.3.1
-Requires:       python-jsonschema
-Requires:       python-path
-Requires:       python2-simplegeneric
-BuildRequires:  python-traitlets >= 4.2
-Requires:       python-traitlets >= 4.2
-BuildRequires:  python2-prompt_toolkit
-Requires:       python2-prompt_toolkit
-BuildRequires:  python2-pickleshare
-Requires:       python2-pickleshare
-
-# for starting ipython from pkg_resources
-Requires:       python2-setuptools
-
-%description -n python2-ipython
-%{ipython_desc_base}
-
-This package provides IPython for in a terminal.
-
-%package -n python2-ipython-sphinx
-Summary:        Sphinx directive to support embedded IPython code
-%{?python_provide:%python_provide python2-ipython-sphinx}
-Requires:       python2-ipython = %{version}-%{release}
-BuildRequires:  python2-sphinx
-Requires:       python2-sphinx
-
-%description -n python2-ipython-sphinx
-%{ipython_desc_base}
-
-This package contains the ipython sphinx extension.
-
-
-%package -n python2-ipython-tests
-Summary:        Tests for %{name}
-%{?python_provide:%python_provide python2-ipython-tests}
-Requires:       python2-nose
-Requires:       python2-zmq-tests
-Requires:       python2-ipython = %{version}-%{release}
-Requires:       python2-nbformat
-Requires:       python2-pytest
-Requires:       python2-ipykernel
-Requires:       python2-jupyter-client
-Requires:       python2-testpath
-Provides:       ipython-tests = %{version}-%{release}
-Obsoletes:      ipython-tests < 0.13-1
-%description -n python2-ipython-tests
-This package contains the tests of %{name}.
-You can check this way, if ipython works on your platform.
-
-
-%if %{with doc}
-%package -n python2-ipython-doc
-Summary:        Documentation for %{name}
-%{?python_provide:%python_provide python2-ipython-doc}
-Provides:       ipython-doc = %{version}-%{release}
-Obsoletes:      ipython-doc < 0.13-1
-%description -n python2-ipython-doc
-This package contains the documentation of %{name}.
-%endif
-
 
 %package -n python3-ipython
 Summary:        An enhanced interactive Python shell
@@ -270,17 +154,11 @@ popd
 # Remove shebangs
 sed -i '1d' $(grep -lr '^#!/usr/' IPython)
 
-rm -rf %{py3dir}
-cp -a . %{py3dir}
-find %{py3dir} -name '*.py' -print0 | xargs -0 sed -i '1s|^#!python|#!%{__python3}|'
+find . -name '*.py' -print0 | xargs -0 sed -i '1s|^#!python|#!%{__python3}|'
 
 
 %build
-pushd %{py3dir}
-    %{__python3} setup.py build
-popd
-
-%{__python2} setup.py build
+%py3_build
 
 
 %if %{with doc}
@@ -293,15 +171,10 @@ popd
 
 
 %install
-pushd %{py3dir}
-    %{__python3} setup.py install -O1 --skip-build --root %{buildroot} 
-popd
+%py3_install
 
-%{__python2} setup.py install -O1 --skip-build --root %{buildroot}
-
-# Do we need to replace python3 with python2? Only seems to occur on rawhide, see #1123618
-echo %{buildroot}%{_bindir}/{iptest,ipython} | xargs head -n 2
-echo %{buildroot}%{_bindir}/{iptest,ipython} | xargs sed -i '1s|^#!%{__python3}|#!%{__python2}|'
+# move the manpage to ipython3
+mv %{buildroot}%{_mandir}/man1/ipython{,3}.1
 
 
 %if %{with check}
@@ -312,69 +185,21 @@ echo %{buildroot}%{_bindir}/{iptest,ipython} | xargs sed -i '1s|^#!%{__python3}|
 
 # Ensure that the user's .pythonrc.py is not invoked during any tests.
 export PYTHONSTARTUP=""
-pushd %{py3dir}
-    mkdir -p run_tests
-    pushd run_tests
-    PYTHONPATH=%{buildroot}%{python3_sitelib} \
-        PATH="%{buildroot}%{_bindir}:$PATH" \
-        LC_ALL=en_US.UTF-8 \
-        xvfb-run \
-        %{buildroot}%{_bindir}/iptest3 %{test_groups}
-    popd
-popd
-
 mkdir -p run_tests
 pushd run_tests
-    PYTHONPATH=%{buildroot}%{python2_sitelib} \
-        PATH="%{buildroot}%{_bindir}:$PATH" \
-        LC_ALL=en_US.UTF-8 \
-        xvfb-run \
-        %{buildroot}%{_bindir}/iptest2 %{test_groups}
+PYTHONPATH=%{buildroot}%{python3_sitelib} \
+    PATH="%{buildroot}%{_bindir}:$PATH" \
+    LC_ALL=en_US.UTF-8 \
+    xvfb-run \
+    %{buildroot}%{_bindir}/iptest3 %{test_groups}
 popd
-%endif
 
-%files -n python2-ipython
-%{_bindir}/ipython
-%{_bindir}/ipython2
-%{_mandir}/man*/ipython.*
-
-%dir %{python2_sitelib}/IPython
-%{python2_sitelib}/IPython/external
-%{python2_sitelib}/IPython/*.py*
-%dir %{python2_sitelib}/IPython/kernel
-%{python2_sitelib}/IPython/kernel/*.py*
-%dir %{python2_sitelib}/IPython/testing
-%{python2_sitelib}/IPython/testing/*.py*
-%{python2_sitelib}/IPython/testing/plugin
-%{python2_sitelib}/ipython-%{version}-py?.?.egg-info
-
-%{python2_sitelib}/IPython/core/
-%{python2_sitelib}/IPython/extensions/
-%{python2_sitelib}/IPython/lib/
-%{python2_sitelib}/IPython/terminal/
-%{python2_sitelib}/IPython/utils/
-
-# tests go into subpackage
-%exclude %{python2_sitelib}/IPython/*/tests/
-
-
-%files -n python2-ipython-sphinx
-%{python2_sitelib}/IPython/sphinxext/
-
-
-%files -n python2-ipython-tests
-%{_bindir}/iptest
-%{_bindir}/iptest2
-%{python2_sitelib}/IPython/*/tests
-
-
-%if %{with doc}
-%files -n python2-ipython-doc
-%doc docs/build/html
 %endif
 
 %files -n python3-ipython
 %{_bindir}/ipython3
+%exclude %{_bindir}/ipython
+%{_mandir}/man1/ipython3.*
 
 %dir %{python3_sitelib}/IPython
 %{python3_sitelib}/IPython/external
@@ -405,6 +230,7 @@ popd
 
 %files -n python3-ipython-tests
 %{_bindir}/iptest3
+%exclude %{_bindir}/iptest
 %{python3_sitelib}/IPython/*/tests
 
 
