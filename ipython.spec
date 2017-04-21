@@ -3,9 +3,7 @@
 
 Name:           ipython
 Version:        6.0.0
-%global tag     rc1
-%global realversion %{version}%{tag}
-Release:        0.1.%{tag}%{?dist}
+Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -13,7 +11,7 @@ Summary:        An enhanced interactive Python shell
 # There are some extensions released under GPLv2+
 License:        (BSD and MIT and Python) and GPLv2+
 URL:            http://ipython.org/
-Source0:        https://files.pythonhosted.org/packages/source/i/ipython/ipython-%{realversion}.tar.gz
+Source0:        https://files.pythonhosted.org/packages/source/i/ipython/ipython-%{version}.tar.gz
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
@@ -143,7 +141,7 @@ This package contains the documentation of %{name}.
 
 
 %prep
-%setup -q -n %{name}-%{realversion}
+%setup -q
 
 # delete bundling libs
 pushd IPython/external
@@ -216,7 +214,7 @@ popd
 %{python3_sitelib}/IPython/testing/__pycache__/
 %{python3_sitelib}/IPython/testing/*.py*
 %{python3_sitelib}/IPython/testing/plugin
-%{python3_sitelib}/ipython-%{realversion}-py?.?.egg-info
+%{python3_sitelib}/ipython-%{version}-py?.?.egg-info
 
 %{python3_sitelib}/IPython/core/
 %{python3_sitelib}/IPython/extensions/
@@ -245,6 +243,9 @@ popd
 
 
 %changelog
+* Fri Apr 21 2017 Miro Hrončok <mhroncok@redhat.com> - 6.0.0-1
+- Update to 6.0.0 final
+
 * Tue Apr 11 2017 Miro Hrončok <mhroncok@redhat.com> - 6.0.0-0.1.rc1
 - Update to 6.0.0rc1
 - Drop Python 2 (unsupported)
