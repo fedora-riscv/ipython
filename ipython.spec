@@ -244,7 +244,7 @@ popd
 
 %changelog
 * Thu Jun 01 2017 Miro Hrončok <mhroncok@redhat.com> - 6.1.0-1
-- Update to 6.0.0 final (#1457581)
+- Update to 6.1.0 (#1457581)
 
 * Fri Apr 21 2017 Miro Hrončok <mhroncok@redhat.com> - 6.0.0-1
 - Update to 6.0.0 final
