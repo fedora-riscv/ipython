@@ -2,8 +2,8 @@
 %bcond_without doc
 
 Name:           ipython
-Version:        6.1.0
-Release:        2%{?dist}
+Version:        6.2.0
+Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -243,6 +243,9 @@ popd
 
 
 %changelog
+* Sat Sep 16 2017 Miro Hrončok <mhroncok@redhat.com> - 6.2.0-1
+- Update to 6.2.0 (#1492256)
+
 * Wed Jul 26 2017 Fedora Release Engineering <releng@fedoraproject.org> - 6.1.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
 
