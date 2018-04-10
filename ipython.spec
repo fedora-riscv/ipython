@@ -2,8 +2,8 @@
 %bcond_without doc
 
 Name:           ipython
-Version:        6.2.1
-Release:        2%{?dist}
+Version:        6.3.0
+Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -71,32 +71,24 @@ Provides:       ipython3 = %{version}-%{release}
 Provides:       python3-ipython-console = %{version}-%{release}
 Obsoletes:      python3-ipython-console < 5.3.0-1
 
-Requires:       python3-zmq
-
-# bundled python packages
+BuildRequires:  python3-backcall
 BuildRequires:  python3-decorator
-BuildRequires:  python3-jsonschema
-BuildRequires:  python3-path
-BuildRequires:  python3-pexpect
-BuildRequires:  python3-simplegeneric
-Requires:       python3-decorator
-Requires:       python3-jsonschema
-BuildRequires:  python3-mistune >= 0.3.1
-Requires:       python3-mistune >= 0.3.1
-Requires:       python3-path
-Requires:       python3-pexpect
-Requires:       python3-simplegeneric
 BuildRequires:  python3-jedi >= 0.10
-Requires:       python3-jedi >= 0.10
-BuildRequires:  python3-traitlets >= 4.2
-Requires:       python3-traitlets >= 4.2
-BuildRequires:  python3-prompt_toolkit
-Requires:       python3-prompt_toolkit
+BuildRequires:  python3-pexpect
 BuildRequires:  python3-pickleshare
+BuildRequires:  python3-prompt_toolkit
+BuildRequires:  python3-simplegeneric
+BuildRequires:  python3-traitlets >= 4.2
+Requires:       python3-backcall
+Requires:       python3-decorator
+Requires:       python3-jedi >= 0.10
+Requires:       python3-pexpect
 Requires:       python3-pickleshare
-
-# for starting ipython from pkg_resources
+Requires:       python3-prompt_toolkit
+Requires:       python3-pygments
 Requires:       python3-setuptools
+Requires:       python3-simplegeneric
+Requires:       python3-traitlets >= 4.2
 
 %description -n python3-ipython
 %{ipython_desc_base}
@@ -119,14 +111,18 @@ This package contains the ipython sphinx extension.
 %package -n python3-ipython-tests
 Summary:        Tests for %{name}
 %{?python_provide:%python_provide python3-ipython-tests}
-Requires:       python3-nose
-Requires:       python3-zmq-tests
-Requires:       python3-ipython = %{version}-%{release}
-Requires:       python3-nbformat
-Requires:       python3-pytest
 Requires:       python3-ipykernel
+Requires:       python3-ipython = %{version}-%{release}
 Requires:       python3-jupyter-client
+Requires:       python3-nbformat
+Requires:       python3-nose
+Requires:       python3-pytest
 Requires:       python3-testpath
+Requires:       python3-zmq-tests
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=1440518
+Requires:       python3-numpy
+
 %description -n python3-ipython-tests
 This package contains the tests of %{name}.
 You can check this way, if ipython works on your platform.
@@ -243,6 +239,11 @@ popd
 
 
 %changelog
+* Wed Apr 04 2018 Miro Hrončok <mhroncok@redhat.com> - 6.3.0-1
+- Update to 6.3.0 (#1563215)
+- Require numpy at least from the tests package (#1440518)
+- Sort dependencies, remove unused
+
 * Wed Feb 07 2018 Fedora Release Engineering <releng@fedoraproject.org> - 6.2.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
 
