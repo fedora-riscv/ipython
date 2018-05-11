@@ -2,7 +2,7 @@
 %bcond_without doc
 
 Name:           ipython
-Version:        6.3.1
+Version:        6.4.0
 Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
@@ -239,6 +239,9 @@ popd
 
 
 %changelog
+* Fri May 11 2018 Miro Hrončok <mhroncok@redhat.com> - 6.4.0-1
+- Update to 6.4.0 (#1577182)
+
 * Tue Apr 10 2018 Miro Hrončok <mhroncok@redhat.com> - 6.3.1-1
 - Update to 6.3.1 (#1563215)
 
