@@ -35,9 +35,6 @@ BuildRequires:  python3-jupyter-client
 BuildRequires:  python3-testpath
 # for frontend
 BuildRequires:  python3-pygments
-
-# for running qt/matplotlib tests
-BuildRequires:  xorg-x11-server-Xvfb
 %endif # with check
 
 %global ipython_desc_base \
@@ -188,7 +185,6 @@ pushd run_tests
 PYTHONPATH=%{buildroot}%{python3_sitelib} \
     PATH="%{buildroot}%{_bindir}:$PATH" \
     LC_ALL=en_US.UTF-8 \
-    xvfb-run \
     %{buildroot}%{_bindir}/iptest3 %{test_groups}
 popd
 
@@ -241,6 +237,7 @@ popd
 %changelog
 * Fri May 11 2018 Miro Hrončok <mhroncok@redhat.com> - 6.4.0-1
 - Update to 6.4.0 (#1577182)
+- Stop running the tests in xvfb (not needed since 5.x)
 
 * Tue Apr 10 2018 Miro Hrončok <mhroncok@redhat.com> - 6.3.1-1
 - Update to 6.3.1 (#1563215)
