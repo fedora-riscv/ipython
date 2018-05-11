@@ -158,7 +158,7 @@ find . -name '*.py' -print0 | xargs -0 sed -i '1s|^#!python|#!%{__python3}|'
 
 %if %{with doc}
 pushd docs
-PYTHONPATH=.. make html SPHINXBUILD=sphinx-build-3
+PYTHONPATH=.. make html SPHINXBUILD='sphinx-build-3 -D intersphinx_timeout=1'
 mkdir -p build/html/
 rm -rf build/html/.buildinfo
 popd
