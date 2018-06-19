@@ -3,7 +3,7 @@
 
 Name:           ipython
 Version:        6.4.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -235,6 +235,9 @@ popd
 
 
 %changelog
+* Tue Jun 19 2018 Miro Hrončok <mhroncok@redhat.com> - 6.4.0-2
+- Rebuilt for Python 3.7
+
 * Fri May 11 2018 Miro Hrončok <mhroncok@redhat.com> - 6.4.0-1
 - Update to 6.4.0 (#1577182)
 - Stop running the tests in xvfb (not needed since 5.x)
