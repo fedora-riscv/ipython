@@ -1,9 +1,9 @@
-%bcond_with check
-%bcond_with doc
+%bcond_without check
+%bcond_without doc
 
 Name:           ipython
 Version:        6.4.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -236,6 +236,9 @@ popd
 
 
 %changelog
+* Wed Jun 20 2018 Miro Hrončok <mhroncok@redhat.com> - 6.4.0-3
+- Rebuilt for Python 3.7
+
 * Tue Jun 19 2018 Miro Hrončok <mhroncok@redhat.com> - 6.4.0-2
 - Bootstrap for Python 3.7
 
