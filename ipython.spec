@@ -1,5 +1,5 @@
-%bcond_without check
-%bcond_without doc
+%bcond_with check
+%bcond_with doc
 
 Name:           ipython
 Version:        6.4.0
@@ -18,6 +18,7 @@ BuildRequires:  python3-devel
 
 %if %{with doc}
 BuildRequires:  python3-sphinx
+BuildRequires:  python3-ipykernel
 %endif
 
 %if %{with check}
@@ -236,7 +237,7 @@ popd
 
 %changelog
 * Tue Jun 19 2018 Miro Hrončok <mhroncok@redhat.com> - 6.4.0-2
-- Rebuilt for Python 3.7
+- Bootstrap for Python 3.7
 
 * Fri May 11 2018 Miro Hrončok <mhroncok@redhat.com> - 6.4.0-1
 - Update to 6.4.0 (#1577182)
