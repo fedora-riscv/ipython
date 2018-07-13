@@ -3,7 +3,7 @@
 
 Name:           ipython
 Version:        6.4.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -236,6 +236,9 @@ popd
 
 
 %changelog
+* Fri Jul 13 2018 Fedora Release Engineering <releng@fedoraproject.org> - 6.4.0-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
+
 * Wed Jun 20 2018 Miro Hrončok <mhroncok@redhat.com> - 6.4.0-3
 - Rebuilt for Python 3.7
 
