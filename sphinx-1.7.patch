@@ -1,0 +1,151 @@
+diff --git a/docs/source/config/extensions/autoreload.rst b/docs/source/config/extensions/autoreload.rst
+index 3b35489..619605e 100644
+--- a/docs/source/config/extensions/autoreload.rst
++++ b/docs/source/config/extensions/autoreload.rst
+@@ -4,6 +4,4 @@
+ autoreload
+ ==========
+ 
+-.. magic:: autoreload
+-
+ .. automodule:: IPython.extensions.autoreload
+diff --git a/docs/source/interactive/autoawait.rst b/docs/source/interactive/autoawait.rst
+index 61611dc..c582590 100644
+--- a/docs/source/interactive/autoawait.rst
++++ b/docs/source/interactive/autoawait.rst
+@@ -230,7 +230,7 @@ Update ipykernel to version 5.0 or greater::
+    # or
+    conda install ipykernel ipython --upgrade
+ 
+-This should automatically enable :magic:`autoawait` integration. Unlike
++This should automatically enable :magic:`%autoawait` integration. Unlike
+ terminal IPython, all code runs on ``asyncio`` eventloop, so creating a loop by
+ hand will not work, including with magics like :magic:`%run` or other
+ frameworks that create the eventloop themselves. In cases like these you can
+diff --git a/docs/source/whatsnew/version7.rst b/docs/source/whatsnew/version7.rst
+index 1a8e1ef..4b44244 100644
+--- a/docs/source/whatsnew/version7.rst
++++ b/docs/source/whatsnew/version7.rst
+@@ -119,10 +119,10 @@ Non-Asynchronous code
+ ~~~~~~~~~~~~~~~~~~~~~
+ 
+ As the internal API of IPython are now asynchronous, IPython need to run under
+-an even loop. In order to allow many workflow, (like using the :magic:`%run`
+-magic, or copy_pasting code that explicitly starts/stop event loop), when
+-top-level code is detected as not being asynchronous, IPython code is advanced
+-via a pseudo-synchronous runner, and will not may not advance pending tasks.
++an even loop. In order to allow many workflow, (like using the ``%run`` magic,
++or copy_pasting code that explicitly starts/stop event loop), when top-level code
++is detected as not being asynchronous, IPython code is advanced via a
++pseudo-synchronous runner, and will not may not advance pending tasks.
+ 
+ Change to Nested Embed
+ ~~~~~~~~~~~~~~~~~~~~~~
+@@ -156,17 +156,11 @@ minrk, njsmith, pganssle, tacaswell, takluyver , vidartf ... And many others.
+ Autoreload Improvement
+ ----------------------
+ 
+-The magic :magic:`%autoreload 2 <autoreload>` now captures new methods added to
+-classes. Earlier, only methods existing as of the initial import were being
+-tracked and updated.  
++The magic ``%autoreload 2`` now captures new methods added to classes. Earlier, only methods existing as of the initial import were being tracked and updated.  
+ 
+-This new feature helps dual environment development - Jupyter+IDE - where the
+-code gradually moves from notebook cells to package files, as it gets
+-structured.
++This new feature helps dual environment development - Jupyter+IDE - where the code gradually moves from notebook cells to package files, as it gets structured.
+ 
+-**Example**: An instance of the class ``MyClass`` will be able to access the
+-method ``cube()`` after it is uncommented and the file ``file1.py`` saved on
+-disk.
++**Example**: An instance of the class `MyClass` will be able to access the method `cube()` after it is uncommented and the file `file1.py` saved on disk.
+ 
+ 
+ ..code::
+@@ -202,14 +196,13 @@ Misc
+ The autoindent feature that was deprecated in 5.x was re-enabled and
+ un-deprecated in :ghpull:`11257`
+ 
+-Make :magic:`%run -n -i ... <run>` work correctly. Earlier, if :magic:`%run` was
+-passed both arguments, ``-n`` would be silently ignored. See :ghpull:`10308`
++Make ``%run -n -i ...`` work correctly. Earlier, if ``%run`` was passed both arguments, ``-n`` would be silently ignored. See :ghpull:`10308`
+ 
+ 
+-The :cellmagic:`%%script`` (as well as :cellmagic:`%%bash``,
+-:cellmagic:`%%ruby``... ) cell magics now raise by default if the return code of
+-the given code is non-zero (thus halting execution of further cells in a
+-notebook). The behavior can be disable by passing the ``--no-raise-error`` flag.
++The ``%%script`` (as well as ``%%bash``, ``ruby``... ) cell magics now raise
++by default if the return code of the given code is non-zero (thus halting
++execution of further cells in a notebook). The behavior can be disable by
++passing the ``--no-raise-error`` flag.
+ 
+ 
+ Deprecations
+diff --git a/docs/sphinxext/github.py b/docs/sphinxext/github.py
+index dcc0250..8f0ffc0 100644
+--- a/docs/sphinxext/github.py
++++ b/docs/sphinxext/github.py
+@@ -19,9 +19,6 @@ Authors
+ 
+ from docutils import nodes, utils
+ from docutils.parsers.rst.roles import set_classes
+-from sphinx.util.logging import getLogger
+-
+-info = getLogger(__name__).info
+ 
+ def make_link_node(rawtext, app, type, slug, options):
+     """Create a link to a github resource.
+@@ -78,7 +75,7 @@ def ghissue_role(name, rawtext, text, lineno, inliner, options={}, content=[]):
+         prb = inliner.problematic(rawtext, rawtext, msg)
+         return [prb], [msg]
+     app = inliner.document.settings.env.app
+-    #info('issue %r' % text)
++    #app.info('issue %r' % text)
+     if 'pull' in name.lower():
+         category = 'pull'
+     elif 'issue' in name.lower():
+@@ -108,7 +105,7 @@ def ghuser_role(name, rawtext, text, lineno, inliner, options={}, content=[]):
+     :param content: The directive content for customization.
+     """
+     app = inliner.document.settings.env.app
+-    #info('user link %r' % text)
++    #app.info('user link %r' % text)
+     ref = 'https://www.github.com/' + text
+     node = nodes.reference(rawtext, text, refuri=ref, **options)
+     return [node], []
+@@ -129,7 +126,7 @@ def ghcommit_role(name, rawtext, text, lineno, inliner, options={}, content=[]):
+     :param content: The directive content for customization.
+     """
+     app = inliner.document.settings.env.app
+-    #info('user link %r' % text)
++    #app.info('user link %r' % text)
+     try:
+         base = app.config.github_project_url
+         if not base:
+@@ -149,7 +146,7 @@ def setup(app):
+ 
+     :param app: Sphinx application context.
+     """
+-    info('Initializing GitHub plugin')
++    app.info('Initializing GitHub plugin')
+     app.add_role('ghissue', ghissue_role)
+     app.add_role('ghpull', ghissue_role)
+     app.add_role('ghuser', ghuser_role)
+diff --git a/docs/sphinxext/magics.py b/docs/sphinxext/magics.py
+index d96b41c..913a0c5 100644
+--- a/docs/sphinxext/magics.py
++++ b/docs/sphinxext/magics.py
+@@ -37,10 +37,9 @@ class CellMagicRole(LineMagicRole):
+ 
+ def setup(app):
+     app.add_object_type('magic', 'magic', 'pair: %s; magic command', parse_magic)
+-    app.add_role_to_domain('std', 'magic', LineMagicRole(), override=True)
+-
++    StandardDomain.roles['magic'] = LineMagicRole()
+     app.add_object_type('cellmagic', 'cellmagic', 'pair: %s; cell magic', parse_cell_magic)
+-    app.add_role_to_domain('std', 'cellmagic', CellMagicRole(), override=True)
++    StandardDomain.roles['cellmagic'] = CellMagicRole()
+ 
+     metadata = {'parallel_read_safe': True, 'parallel_write_safe': True}
+     return metadata

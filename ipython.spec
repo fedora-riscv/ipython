@@ -2,8 +2,8 @@
 %bcond_without doc
 
 Name:           ipython
-Version:        6.4.0
-Release:        4%{?dist}
+Version:        7.0.1
+Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -11,7 +11,11 @@ Summary:        An enhanced interactive Python shell
 # There are some extensions released under GPLv2+
 License:        (BSD and MIT and Python) and GPLv2+
 URL:            http://ipython.org/
-Source0:        https://files.pythonhosted.org/packages/source/i/ipython/ipython-%{version}.tar.gz
+Source0:        %pypi_source
+
+# Build with Sphinx 1.7
+# revert https://github.com/ipython/ipython/commit/ce22f49932fd4f071804e59f3c9d3f7042b917dd
+Patch1:         sphinx-1.7.patch
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
@@ -74,7 +78,7 @@ BuildRequires:  python3-decorator
 BuildRequires:  python3-jedi >= 0.10
 BuildRequires:  python3-pexpect
 BuildRequires:  python3-pickleshare
-BuildRequires:  python3-prompt_toolkit
+BuildRequires:  python3-prompt-toolkit >= 2
 BuildRequires:  python3-simplegeneric
 BuildRequires:  python3-traitlets >= 4.2
 Requires:       python3-backcall
@@ -82,10 +86,10 @@ Requires:       python3-decorator
 Requires:       python3-jedi >= 0.10
 Requires:       python3-pexpect
 Requires:       python3-pickleshare
-Requires:       python3-prompt_toolkit
+Requires:       python3-prompt-toolkit >=2
 Requires:       python3-pygments
 Requires:       python3-setuptools
-Requires:       python3-simplegeneric
+Requires:       python3-simplegeneric > 0.8
 Requires:       python3-traitlets >= 4.2
 
 %description -n python3-ipython
@@ -135,7 +139,7 @@ This package contains the documentation of %{name}.
 
 
 %prep
-%setup -q
+%autosetup -p1
 
 # delete bundling libs
 pushd IPython/external
@@ -236,6 +240,9 @@ popd
 
 
 %changelog
+* Wed Oct 03 2018 Miro Hrončok <mhroncok@redhat.com> - 7.0.1-1
+- Update to 7.0.1 (#1610063)
+
 * Fri Jul 13 2018 Fedora Release Engineering <releng@fedoraproject.org> - 6.4.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 
