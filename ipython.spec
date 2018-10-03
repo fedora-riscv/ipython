@@ -86,7 +86,7 @@ Requires:       python3-decorator
 Requires:       python3-jedi >= 0.10
 Requires:       python3-pexpect
 Requires:       python3-pickleshare
-Requires:       python3-prompt-toolkit >=2
+Requires:       python3-prompt-toolkit >= 2
 Requires:       python3-pygments
 Requires:       python3-setuptools
 Requires:       python3-simplegeneric > 0.8
