@@ -189,7 +189,6 @@ mkdir -p run_tests
 pushd run_tests
 PYTHONPATH=%{buildroot}%{python3_sitelib} \
     PATH="%{buildroot}%{_bindir}:$PATH" \
-    LC_ALL=en_US.UTF-8 \
     %{buildroot}%{_bindir}/iptest3 %{test_groups}
 popd
 
