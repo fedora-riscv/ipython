@@ -1,7 +1,6 @@
-diff --git a/docs/source/config/extensions/autoreload.rst b/docs/source/config/extensions/autoreload.rst
-index 3b35489..619605e 100644
---- a/docs/source/config/extensions/autoreload.rst
-+++ b/docs/source/config/extensions/autoreload.rst
+diff -up ipython-7.2.0/docs/source/config/extensions/autoreload.rst.orig ipython-7.2.0/docs/source/config/extensions/autoreload.rst
+--- ipython-7.2.0/docs/source/config/extensions/autoreload.rst.orig	2018-11-29 20:17:21.000000000 -0500
++++ ipython-7.2.0/docs/source/config/extensions/autoreload.rst	2019-01-02 13:06:12.477103536 -0500
 @@ -4,6 +4,4 @@
  autoreload
  ==========
@@ -9,11 +8,10 @@ index 3b35489..619605e 100644
 -.. magic:: autoreload
 -
  .. automodule:: IPython.extensions.autoreload
-diff --git a/docs/source/interactive/autoawait.rst b/docs/source/interactive/autoawait.rst
-index 61611dc..c582590 100644
---- a/docs/source/interactive/autoawait.rst
-+++ b/docs/source/interactive/autoawait.rst
-@@ -230,7 +230,7 @@ Update ipykernel to version 5.0 or greater::
+diff -up ipython-7.2.0/docs/source/interactive/autoawait.rst.orig ipython-7.2.0/docs/source/interactive/autoawait.rst
+--- ipython-7.2.0/docs/source/interactive/autoawait.rst.orig	2018-11-29 20:17:21.000000000 -0500
++++ ipython-7.2.0/docs/source/interactive/autoawait.rst	2019-01-02 13:06:53.741935269 -0500
+@@ -230,7 +230,7 @@ Update ipykernel to version 5.0 or great
     # or
     conda install ipykernel ipython --upgrade
  
@@ -22,18 +20,17 @@ index 61611dc..c582590 100644
  terminal IPython, all code runs on ``asyncio`` eventloop, so creating a loop by
  hand will not work, including with magics like :magic:`%run` or other
  frameworks that create the eventloop themselves. In cases like these you can
-diff --git a/docs/source/whatsnew/version7.rst b/docs/source/whatsnew/version7.rst
-index 1a8e1ef..4b44244 100644
---- a/docs/source/whatsnew/version7.rst
-+++ b/docs/source/whatsnew/version7.rst
-@@ -119,10 +119,10 @@ Non-Asynchronous code
+diff -up ipython-7.2.0/docs/source/whatsnew/version7.rst.orig ipython-7.2.0/docs/source/whatsnew/version7.rst
+--- ipython-7.2.0/docs/source/whatsnew/version7.rst.orig	2018-11-29 20:17:21.000000000 -0500
++++ ipython-7.2.0/docs/source/whatsnew/version7.rst	2019-01-02 13:10:38.877021881 -0500
+@@ -296,10 +296,10 @@ Non-Asynchronous code
  ~~~~~~~~~~~~~~~~~~~~~
  
- As the internal API of IPython are now asynchronous, IPython need to run under
--an even loop. In order to allow many workflow, (like using the :magic:`%run`
--magic, or copy_pasting code that explicitly starts/stop event loop), when
+ As the internal API of IPython is now asynchronous, IPython needs to run under
+-an event loop. In order to allow many workflows, (like using the :magic:`%run`
+-magic, or copy-pasting code that explicitly starts/stop event loop), when
 -top-level code is detected as not being asynchronous, IPython code is advanced
--via a pseudo-synchronous runner, and will not may not advance pending tasks.
+-via a pseudo-synchronous runner, and may not advance pending tasks.
 +an even loop. In order to allow many workflow, (like using the ``%run`` magic,
 +or copy_pasting code that explicitly starts/stop event loop), when top-level code
 +is detected as not being asynchronous, IPython code is advanced via a
@@ -41,38 +38,40 @@ index 1a8e1ef..4b44244 100644
  
  Change to Nested Embed
  ~~~~~~~~~~~~~~~~~~~~~~
-@@ -156,17 +156,11 @@ minrk, njsmith, pganssle, tacaswell, takluyver , vidartf ... And many others.
+@@ -334,18 +334,11 @@ minrk, njsmith, pganssle, tacaswell, tak
  Autoreload Improvement
  ----------------------
  
 -The magic :magic:`%autoreload 2 <autoreload>` now captures new methods added to
 -classes. Earlier, only methods existing as of the initial import were being
 -tracked and updated.  
-+The magic ``%autoreload 2`` now captures new methods added to classes. Earlier, only methods existing as of the initial import were being tracked and updated.  
- 
+-
 -This new feature helps dual environment development - Jupyter+IDE - where the
--code gradually moves from notebook cells to package files, as it gets
+-code gradually moves from notebook cells to package files as it gets
 -structured.
-+This new feature helps dual environment development - Jupyter+IDE - where the code gradually moves from notebook cells to package files, as it gets structured.
- 
+-
 -**Example**: An instance of the class ``MyClass`` will be able to access the
--method ``cube()`` after it is uncommented and the file ``file1.py`` saved on
+-method ``cube()`` after it is uncommented and the file ``file1.py`` is saved on
 -disk.
++The magic ``%autoreload 2`` now captures new methods added to classes. Earlier, only methods existing as of the initial import were being tracked and updated.
+ 
++This new feature helps dual environment development - Jupyter+IDE - where the code gradually moves from notebook cells to package files, as it gets structured.
++
 +**Example**: An instance of the class `MyClass` will be able to access the method `cube()` after it is uncommented and the file `file1.py` saved on disk.
  
+ .. code::
  
- ..code::
-@@ -202,14 +196,13 @@ Misc
+@@ -380,14 +373,12 @@ Misc
  The autoindent feature that was deprecated in 5.x was re-enabled and
  un-deprecated in :ghpull:`11257`
  
 -Make :magic:`%run -n -i ... <run>` work correctly. Earlier, if :magic:`%run` was
 -passed both arguments, ``-n`` would be silently ignored. See :ghpull:`10308`
+-
 +Make ``%run -n -i ...`` work correctly. Earlier, if ``%run`` was passed both arguments, ``-n`` would be silently ignored. See :ghpull:`10308`
  
- 
--The :cellmagic:`%%script`` (as well as :cellmagic:`%%bash``,
--:cellmagic:`%%ruby``... ) cell magics now raise by default if the return code of
+-The :cellmagic:`%%script` (as well as :cellmagic:`%%bash`,
+-:cellmagic:`%%ruby`... ) cell magics now raise by default if the return code of
 -the given code is non-zero (thus halting execution of further cells in a
 -notebook). The behavior can be disable by passing the ``--no-raise-error`` flag.
 +The ``%%script`` (as well as ``%%bash``, ``ruby``... ) cell magics now raise
@@ -82,10 +81,9 @@ index 1a8e1ef..4b44244 100644
  
  
  Deprecations
-diff --git a/docs/sphinxext/github.py b/docs/sphinxext/github.py
-index dcc0250..8f0ffc0 100644
---- a/docs/sphinxext/github.py
-+++ b/docs/sphinxext/github.py
+diff -up ipython-7.2.0/docs/sphinxext/github.py.orig ipython-7.2.0/docs/sphinxext/github.py
+--- ipython-7.2.0/docs/sphinxext/github.py.orig	2018-11-29 20:17:21.000000000 -0500
++++ ipython-7.2.0/docs/sphinxext/github.py	2019-01-02 13:11:40.900772934 -0500
 @@ -19,9 +19,6 @@ Authors
  
  from docutils import nodes, utils
@@ -96,7 +94,7 @@ index dcc0250..8f0ffc0 100644
  
  def make_link_node(rawtext, app, type, slug, options):
      """Create a link to a github resource.
-@@ -78,7 +75,7 @@ def ghissue_role(name, rawtext, text, lineno, inliner, options={}, content=[]):
+@@ -78,7 +75,7 @@ def ghissue_role(name, rawtext, text, li
          prb = inliner.problematic(rawtext, rawtext, msg)
          return [prb], [msg]
      app = inliner.document.settings.env.app
@@ -105,7 +103,7 @@ index dcc0250..8f0ffc0 100644
      if 'pull' in name.lower():
          category = 'pull'
      elif 'issue' in name.lower():
-@@ -108,7 +105,7 @@ def ghuser_role(name, rawtext, text, lineno, inliner, options={}, content=[]):
+@@ -108,7 +105,7 @@ def ghuser_role(name, rawtext, text, lin
      :param content: The directive content for customization.
      """
      app = inliner.document.settings.env.app
@@ -114,7 +112,7 @@ index dcc0250..8f0ffc0 100644
      ref = 'https://www.github.com/' + text
      node = nodes.reference(rawtext, text, refuri=ref, **options)
      return [node], []
-@@ -129,7 +126,7 @@ def ghcommit_role(name, rawtext, text, lineno, inliner, options={}, content=[]):
+@@ -129,7 +126,7 @@ def ghcommit_role(name, rawtext, text, l
      :param content: The directive content for customization.
      """
      app = inliner.document.settings.env.app
@@ -132,10 +130,9 @@ index dcc0250..8f0ffc0 100644
      app.add_role('ghissue', ghissue_role)
      app.add_role('ghpull', ghissue_role)
      app.add_role('ghuser', ghuser_role)
-diff --git a/docs/sphinxext/magics.py b/docs/sphinxext/magics.py
-index d96b41c..913a0c5 100644
---- a/docs/sphinxext/magics.py
-+++ b/docs/sphinxext/magics.py
+diff -up ipython-7.2.0/docs/sphinxext/magics.py.orig ipython-7.2.0/docs/sphinxext/magics.py
+--- ipython-7.2.0/docs/sphinxext/magics.py.orig	2018-11-29 20:17:21.000000000 -0500
++++ ipython-7.2.0/docs/sphinxext/magics.py	2019-01-02 13:12:31.588569503 -0500
 @@ -37,10 +37,9 @@ class CellMagicRole(LineMagicRole):
  
  def setup(app):
