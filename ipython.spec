@@ -3,7 +3,7 @@
 
 Name:           ipython
 Version:        7.2.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -239,6 +239,9 @@ popd
 
 
 %changelog
+* Fri Feb 01 2019 Fedora Release Engineering <releng@fedoraproject.org> - 7.2.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
+
 * Wed Jan 02 2019 David Cantrell <dcantrell@redhat.com> - 7.2.0-1
 - Upgrade to 7.2.0 (#1662990)
 
