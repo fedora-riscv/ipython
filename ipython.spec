@@ -2,8 +2,8 @@
 %bcond_without doc
 
 Name:           ipython
-Version:        7.2.0
-Release:        2%{?dist}
+Version:        7.4.0
+Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -13,15 +13,12 @@ License:        (BSD and MIT and Python) and GPLv2+
 URL:            http://ipython.org/
 Source0:        %pypi_source
 
-# Build with Sphinx 1.7
-# revert https://github.com/ipython/ipython/commit/ce22f49932fd4f071804e59f3c9d3f7042b917dd
-Patch1:         sphinx-1.7.patch
-
 BuildArch:      noarch
 BuildRequires:  python3-devel
 
 %if %{with doc}
 BuildRequires:  python3-sphinx
+BuildRequires:  python3-sphinx_rtd_theme
 BuildRequires:  python3-ipykernel
 %endif
 
@@ -239,6 +236,9 @@ popd
 
 
 %changelog
+* Tue Apr 09 2019 Miro Hrončok <mhroncok@redhat.com> - 7.4.0-1
+- Update to 7.4.0 (#1678562)
+
 * Fri Feb 01 2019 Fedora Release Engineering <releng@fedoraproject.org> - 7.2.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
 
