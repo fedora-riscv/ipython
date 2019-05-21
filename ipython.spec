@@ -2,7 +2,7 @@
 %bcond_without doc
 
 Name:           ipython
-Version:        7.4.0
+Version:        7.5.0
 Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
@@ -176,17 +176,13 @@ mv %{buildroot}%{_mandir}/man1/ipython{,3}.1
 
 %if %{with check}
 %check
-%global test_groups extensions lib testing terminal utils nbformat core autoreload
-# the following group seems to block on python3.4
-#kernel kernel.inprocess
-
 # Ensure that the user's .pythonrc.py is not invoked during any tests.
 export PYTHONSTARTUP=""
 mkdir -p run_tests
 pushd run_tests
 PYTHONPATH=%{buildroot}%{python3_sitelib} \
     PATH="%{buildroot}%{_bindir}:$PATH" \
-    %{buildroot}%{_bindir}/iptest3 %{test_groups}
+    %{buildroot}%{_bindir}/iptest3
 popd
 
 %endif
@@ -236,6 +232,9 @@ popd
 
 
 %changelog
+* Tue May 21 2019 Miro Hrončok <mhroncok@redhat.com> - 7.5.0-1
+- Update to 7.5.0 (#1678562)
+
 * Tue Apr 09 2019 Miro Hrončok <mhroncok@redhat.com> - 7.4.0-1
 - Update to 7.4.0 (#1678562)
 
