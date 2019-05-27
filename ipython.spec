@@ -13,6 +13,9 @@ License:        (BSD and MIT and Python) and GPLv2+
 URL:            http://ipython.org/
 Source0:        %pypi_source
 
+# Python 3.8: PEP 570 positional only arguments
+Patch1:         https://github.com/ipython/ipython/pull/11720.patch
+
 BuildArch:      noarch
 BuildRequires:  python3-devel
 
