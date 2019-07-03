@@ -2,7 +2,7 @@
 %bcond_without doc
 
 Name:           ipython
-Version:        7.5.0
+Version:        7.6.1
 Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
@@ -12,9 +12,6 @@ Summary:        An enhanced interactive Python shell
 License:        (BSD and MIT and Python) and GPLv2+
 URL:            http://ipython.org/
 Source0:        %pypi_source
-
-# Python 3.8: PEP 570 positional only arguments
-Patch1:         https://github.com/ipython/ipython/pull/11720.patch
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
@@ -122,9 +119,6 @@ Requires:       python3-pytest
 Requires:       python3-testpath
 Requires:       python3-zmq-tests
 
-# https://bugzilla.redhat.com/show_bug.cgi?id=1440518
-Requires:       python3-numpy
-
 %description -n python3-ipython-tests
 This package contains the tests of %{name}.
 You can check this way, if ipython works on your platform.
@@ -145,9 +139,6 @@ This package contains the documentation of %{name}.
 pushd IPython/external
 ls -l
 ls -l *
-
-# use decorators of numpy
-rm decorators/_decorators.py
 
 popd
 
@@ -181,6 +172,8 @@ mv %{buildroot}%{_mandir}/man1/ipython{,3}.1
 %check
 # Ensure that the user's .pythonrc.py is not invoked during any tests.
 export PYTHONSTARTUP=""
+# Koji builders can be slow, especially on arms, we scale timeouts 4 times
+export IPYTHON_TESTING_TIMEOUT_SCALE=4
 mkdir -p run_tests
 pushd run_tests
 PYTHONPATH=%{buildroot}%{python3_sitelib} \
@@ -235,6 +228,9 @@ popd
 
 
 %changelog
+* Wed Jul 03 2019 Miro Hrončok <mhroncok@redhat.com> - 7.6.1-1
+- Update to 7.6.1 (#1725333)
+
 * Tue May 21 2019 Miro Hrončok <mhroncok@redhat.com> - 7.5.0-1
 - Update to 7.5.0 (#1678562)
 
