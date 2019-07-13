@@ -67,8 +67,10 @@ Summary:        An enhanced interactive Python shell
 %{?python_provide:%python_provide python3-ipython}
 %{?python_provide:%python_provide python3-ipython-console}
 Provides:       ipython3 = %{version}-%{release}
+Provides:       ipython = %{version}-%{release}
 Provides:       python3-ipython-console = %{version}-%{release}
 Obsoletes:      python3-ipython-console < 5.3.0-1
+Conflicts:      python2-ipython < 7
 
 BuildRequires:  python3-backcall
 BuildRequires:  python3-decorator
@@ -164,8 +166,9 @@ popd
 %install
 %py3_install
 
-# move the manpage to ipython3
+# link the manpage to ipython3
 mv %{buildroot}%{_mandir}/man1/ipython{,3}.1
+ln -s ./ipython3.1 %{buildroot}%{_mandir}/man1/ipython.1
 
 
 %if %{with check}
@@ -185,7 +188,8 @@ popd
 
 %files -n python3-ipython
 %{_bindir}/ipython3
-%exclude %{_bindir}/ipython
+%{_bindir}/ipython
+%{_mandir}/man1/ipython.*
 %{_mandir}/man1/ipython3.*
 
 %dir %{python3_sitelib}/IPython
