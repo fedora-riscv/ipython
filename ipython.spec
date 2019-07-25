@@ -3,7 +3,7 @@
 
 Name:           ipython
 Version:        7.6.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -232,6 +232,9 @@ popd
 
 
 %changelog
+* Thu Jul 25 2019 Fedora Release Engineering <releng@fedoraproject.org> - 7.6.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
+
 * Wed Jul 03 2019 Miro Hrončok <mhroncok@redhat.com> - 7.6.1-1
 - Update to 7.6.1 (#1725333)
 
