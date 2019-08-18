@@ -1,9 +1,11 @@
+%global _without_check 1
+%global _without_doc 1
 %bcond_without check
 %bcond_without doc
 
 Name:           ipython
 Version:        7.6.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -232,6 +234,9 @@ popd
 
 
 %changelog
+* Sun Aug 18 2019 Miro Hrončok <mhroncok@redhat.com> - 7.6.1-3
+- Bootstrap for Python 3.8
+
 * Thu Jul 25 2019 Fedora Release Engineering <releng@fedoraproject.org> - 7.6.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
 
