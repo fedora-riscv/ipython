@@ -1,11 +1,9 @@
-%global _without_check 1
-%global _without_doc 1
 %bcond_without check
 %bcond_without doc
 
 Name:           ipython
 Version:        7.6.1
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -234,6 +232,9 @@ popd
 
 
 %changelog
+* Sun Aug 18 2019 Miro Hrončok <mhroncok@redhat.com> - 7.6.1-4
+- Rebuilt for Python 3.8
+
 * Sun Aug 18 2019 Miro Hrončok <mhroncok@redhat.com> - 7.6.1-3
 - Bootstrap for Python 3.8
 
