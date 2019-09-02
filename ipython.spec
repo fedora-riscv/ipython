@@ -2,8 +2,8 @@
 %bcond_without doc
 
 Name:           ipython
-Version:        7.6.1
-Release:        4%{?dist}
+Version:        7.8.0
+Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -232,6 +232,9 @@ popd
 
 
 %changelog
+* Mon Sep 02 2019 Lumír Balhar <lbalhar@redhat.com> - 7.8.0-1
+- Update to 7.8.0 (#1742354)
+
 * Sun Aug 18 2019 Miro Hrončok <mhroncok@redhat.com> - 7.6.1-4
 - Rebuilt for Python 3.8
 
