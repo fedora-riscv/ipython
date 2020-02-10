@@ -2,8 +2,8 @@
 %bcond_without doc
 
 Name:           ipython
-Version:        7.11.1
-Release:        2%{?dist}
+Version:        7.12.0
+Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -232,6 +232,9 @@ popd
 
 
 %changelog
+* Mon Feb 10 2020 Lumír Balhar <lbalhar@redhat.com> - 7.12.0-1
+- Update to 7.12.0 (#1797183)
+
 * Wed Jan 29 2020 Fedora Release Engineering <releng@fedoraproject.org> - 7.11.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
 
