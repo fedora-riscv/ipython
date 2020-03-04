@@ -2,7 +2,7 @@
 %bcond_without doc
 
 Name:           ipython
-Version:        7.12.0
+Version:        7.13.0
 Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
@@ -232,6 +232,9 @@ popd
 
 
 %changelog
+* Wed Mar 04 2020 Lumír Balhar <lbalhar@redhat.com> - 7.13.0-1
+- Update to 7.13.0 (#1808624)
+
 * Mon Feb 10 2020 Lumír Balhar <lbalhar@redhat.com> - 7.12.0-1
 - Update to 7.12.0 (#1797183)
 
