@@ -3,7 +3,7 @@
 
 Name:           ipython
 Version:        7.13.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -149,6 +149,10 @@ sed -i '1d' $(grep -lr '^#!/usr/' IPython)
 
 find . -name '*.py' -print0 | xargs -0 sed -i '1s|^#!python|#!%{__python3}|'
 
+# `l_` is deprecated in Sphinx and replaced by `_` in version 3.0.0
+# but the import seems to be completely useless there so it's commented out
+# Upstream PR: https://github.com/ipython/ipython/pull/12235
+sed -i "s/from sphinx.locale import l_/#from sphinx.locale import _/" docs/sphinxext/configtraits.py
 
 %build
 %py3_build
@@ -232,6 +236,9 @@ popd
 
 
 %changelog
+* Tue Apr 14 2020 Lumír Balhar <lbalhar@redhat.com> - 7.13.0-2
+- Fix compatibility with Sphinx 3.0.0
+
 * Wed Mar 04 2020 Lumír Balhar <lbalhar@redhat.com> - 7.13.0-1
 - Update to 7.13.0 (#1808624)
 
