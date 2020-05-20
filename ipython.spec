@@ -3,7 +3,7 @@
 
 Name:           ipython
 Version:        7.14.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -18,6 +18,9 @@ Source0:        %pypi_source
 Patch0:         remove-a-part-of-a-test-which-needs-internet.patch
 # Temporarily remove tests not compatible with the latest Python 3.9.0a6
 Patch1:         remove-tests-not-compatible-with-Python-3.9.0a6.patch
+# Temporarily remove tests not compatible with the latest Python 3.9.0b1
+# Already fixed upstream: https://github.com/ipython/ipython/commit/7432f3c8d7179034975725d95879bb00e17defeb#diff-bbf32c098874ada0fe3a6e139fc35e34
+Patch2:         remove-tests-not-compatible-with-Python-3.9.0b1.patch
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
@@ -237,6 +240,9 @@ popd
 
 
 %changelog
+* Wed May 20 2020 Lumír Balhar <lbalhar@redhat.com> - 7.14.0-3
+- Remove tests not compatible with Python 3.9.0b1 (#1837372)
+
 * Tue May 05 2020 Lumír Balhar <lbalhar@redhat.com> - 7.14.0-2
 - Remove tests not compatible with Python 3.9.0a6 (#1831182)
 
