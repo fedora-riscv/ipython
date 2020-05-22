@@ -3,7 +3,7 @@
 
 Name:           ipython
 Version:        7.14.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -46,6 +46,12 @@ BuildRequires:  python3-jupyter-client
 BuildRequires:  python3-testpath
 # for frontend
 BuildRequires:  python3-pygments
+# for latex
+BuildRequires: /usr/bin/dvipng
+BuildRequires: tex(amsmath.sty)
+BuildRequires: tex(amssymb.sty)
+BuildRequires: tex(amsthm.sty)
+BuildRequires: tex(bm.sty)
 %endif # with check
 
 %global ipython_desc_base \
@@ -99,6 +105,10 @@ Requires:       python3-pygments
 Requires:       python3-setuptools
 Requires:       python3-simplegeneric > 0.8
 Requires:       python3-traitlets >= 4.2
+Requires:       (tex(amsmath.sty) if /usr/bin/dvipng)
+Requires:       (tex(amssymb.sty) if /usr/bin/dvipng)
+Requires:       (tex(amsthm.sty)  if /usr/bin/dvipng)
+Requires:       (tex(bm.sty)      if /usr/bin/dvipng)
 
 %description -n python3-ipython
 %{ipython_desc_base}
@@ -129,6 +139,12 @@ Requires:       python3-nose
 Requires:       python3-pytest
 Requires:       python3-testpath
 Requires:       python3-zmq-tests
+# For latex
+Requires:       /usr/bin/dvipng
+Requires:       tex(amsmath.sty)
+Requires:       tex(amssymb.sty)
+Requires:       tex(amsthm.sty)
+Requires:       tex(bm.sty)
 
 %description -n python3-ipython-tests
 This package contains the tests of %{name}.
@@ -240,6 +256,9 @@ popd
 
 
 %changelog
+* Thu May 21 2020 Lumír Balhar <lbalhar@redhat.com> - 7.14.0-4
+- Explicit tex dependencies for latextools (#1838474)
+
 * Wed May 20 2020 Lumír Balhar <lbalhar@redhat.com> - 7.14.0-3
 - Remove tests not compatible with Python 3.9.0b1 (#1837372)
 
