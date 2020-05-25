@@ -1,11 +1,9 @@
-%global _without_check 1
-%global _without_doc 1
 %bcond_without check
 %bcond_without doc
 
 Name:           ipython
 Version:        7.14.0
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -258,6 +256,9 @@ popd
 
 
 %changelog
+* Mon May 25 2020 Miro Hrončok <mhroncok@redhat.com> - 7.14.0-6
+- Rebuilt for Python 3.9
+
 * Sun May 24 2020 Miro Hrončok <mhroncok@redhat.com> - 7.14.0-5
 - Bootstrap for Python 3.9
 
