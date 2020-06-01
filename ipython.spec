@@ -2,8 +2,8 @@
 %bcond_without doc
 
 Name:           ipython
-Version:        7.14.0
-Release:        6%{?dist}
+Version:        7.15.0
+Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -12,15 +12,6 @@ Summary:        An enhanced interactive Python shell
 License:        (BSD and MIT and Python) and GPLv2+
 URL:            http://ipython.org/
 Source0:        %pypi_source
-
-# test_embed_svg_url needs internet connection
-# https://github.com/ipython/ipython/issues/12281
-Patch0:         remove-a-part-of-a-test-which-needs-internet.patch
-# Temporarily remove tests not compatible with the latest Python 3.9.0a6
-Patch1:         remove-tests-not-compatible-with-Python-3.9.0a6.patch
-# Temporarily remove tests not compatible with the latest Python 3.9.0b1
-# Already fixed upstream: https://github.com/ipython/ipython/commit/7432f3c8d7179034975725d95879bb00e17defeb#diff-bbf32c098874ada0fe3a6e139fc35e34
-Patch2:         remove-tests-not-compatible-with-Python-3.9.0b1.patch
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
@@ -256,6 +247,9 @@ popd
 
 
 %changelog
+* Mon Jun 01 2020 Lumír Balhar <lbalhar@redhat.com> - 7.15.0-1
+- Update to 7.15.0 (#1841983)
+
 * Mon May 25 2020 Miro Hrončok <mhroncok@redhat.com> - 7.14.0-6
 - Rebuilt for Python 3.9
 
