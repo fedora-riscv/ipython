@@ -3,7 +3,7 @@
 
 Name:           ipython
 Version:        7.15.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -15,6 +15,7 @@ Source0:        %pypi_source
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
+BuildRequires:  python3-setuptools
 
 %if %{with doc}
 BuildRequires:  python3-sphinx
@@ -84,18 +85,7 @@ BuildRequires:  python3-jedi >= 0.10
 BuildRequires:  python3-pexpect
 BuildRequires:  python3-pickleshare
 BuildRequires:  python3-prompt-toolkit >= 2
-BuildRequires:  python3-simplegeneric
 BuildRequires:  python3-traitlets >= 4.2
-Requires:       python3-backcall
-Requires:       python3-decorator
-Requires:       python3-jedi >= 0.10
-Requires:       python3-pexpect
-Requires:       python3-pickleshare
-Requires:       python3-prompt-toolkit >= 2
-Requires:       python3-pygments
-Requires:       python3-setuptools
-Requires:       python3-simplegeneric > 0.8
-Requires:       python3-traitlets >= 4.2
 Requires:       (tex(amsmath.sty) if /usr/bin/dvipng)
 Requires:       (tex(amssymb.sty) if /usr/bin/dvipng)
 Requires:       (tex(amsthm.sty)  if /usr/bin/dvipng)
@@ -152,6 +142,9 @@ This package contains the documentation of %{name}.
 
 %prep
 %autosetup -p1
+
+# use setuptools to have RPM generated requires
+sed -i 's/from distutils.core import setup/from setuptools import setup/' setup.py
 
 # delete bundling libs
 pushd IPython/external
@@ -218,7 +211,7 @@ popd
 %{python3_sitelib}/IPython/testing/__pycache__/
 %{python3_sitelib}/IPython/testing/*.py*
 %{python3_sitelib}/IPython/testing/plugin
-%{python3_sitelib}/ipython-%{version}-py?.?.egg-info
+%{python3_sitelib}/ipython-%{version}-py%{python3_version}.egg-info/
 
 %{python3_sitelib}/IPython/core/
 %{python3_sitelib}/IPython/extensions/
@@ -247,6 +240,10 @@ popd
 
 
 %changelog
+* Wed Jun 03 2020 Miro Hrončok <mhroncok@redhat.com> - 7.15.0-2
+- Switch to runtime requires generated from upstream metadata
+- Drop unused (Build)Requires
+
 * Mon Jun 01 2020 Lumír Balhar <lbalhar@redhat.com> - 7.15.0-1
 - Update to 7.15.0 (#1841983)
 
