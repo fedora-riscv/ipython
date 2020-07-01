@@ -21,6 +21,8 @@ BuildRequires:  python3-setuptools
 BuildRequires:  python3-sphinx
 BuildRequires:  python3-sphinx_rtd_theme
 BuildRequires:  python3-ipykernel
+BuildRequires:  python3-matplotlib
+BuildRequires:  python3-numpy
 %endif
 
 %if %{with check}
