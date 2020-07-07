@@ -1,5 +1,16 @@
+%if 0%{?epel}
+# disable build of docs and tests for epel because of missing dependencies:
+# - python3-ipykernel
+# - python3-jupyter-client
+# - python3-nbformat
+# - python3-testpath
+# tests and docs subpackages are also disabled
+%bcond_with check
+%bcond_with doc
+%else
 %bcond_without check
 %bcond_without doc
+%endif
 
 Name:           ipython
 Version:        7.16.1
@@ -110,7 +121,7 @@ Requires:       python3-sphinx
 
 This package contains the ipython sphinx extension.
 
-
+%if %{with check}
 %package -n python3-ipython-tests
 Summary:        Tests for %{name}
 %{?python_provide:%python_provide python3-ipython-tests}
@@ -132,6 +143,7 @@ Requires:       tex(bm.sty)
 %description -n python3-ipython-tests
 This package contains the tests of %{name}.
 You can check this way, if ipython works on your platform.
+%endif
 
 %if %{with doc}
 %package -n python3-ipython-doc
@@ -193,7 +205,9 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} \
     PATH="%{buildroot}%{_bindir}:$PATH" \
     %{buildroot}%{_bindir}/iptest3
 popd
-
+%else
+rm -f %{buildroot}%{_bindir}/iptest*
+rm -r %{buildroot}%{python3_sitelib}/IPython/*/tests
 %endif
 
 %files -n python3-ipython
@@ -228,12 +242,12 @@ popd
 %files -n python3-ipython-sphinx
 %{python3_sitelib}/IPython/sphinxext/
 
-
+%if %{with check}
 %files -n python3-ipython-tests
 %{_bindir}/iptest3
 %exclude %{_bindir}/iptest
 %{python3_sitelib}/IPython/*/tests
-
+%endif
 
 %if %{with doc}
 %files -n python3-ipython-doc
