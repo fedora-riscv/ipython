@@ -2,8 +2,8 @@
 %bcond_without doc
 
 Name:           ipython
-Version:        7.15.0
-Release:        2%{?dist}
+Version:        7.16.1
+Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -242,6 +242,9 @@ popd
 
 
 %changelog
+* Tue Jul 07 2020 Lumír Balhar <lbalhar@redhat.com> - 7.16.1-1
+- Update to 7.16.1 (#1851577)
+
 * Wed Jun 03 2020 Miro Hrončok <mhroncok@redhat.com> - 7.15.0-2
 - Switch to runtime requires generated from upstream metadata
 - Drop unused (Build)Requires
