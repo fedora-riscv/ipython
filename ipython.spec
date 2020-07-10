@@ -14,7 +14,7 @@
 
 Name:           ipython
 Version:        7.16.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -108,6 +108,8 @@ Requires:       (tex(bm.sty)      if /usr/bin/dvipng)
 %{ipython_desc_base}
 
 This package provides IPython for in a terminal.
+
+%{?python_extras_subpkg:%python_extras_subpkg -n python3-ipython -i %{python3_sitelib}/*.egg-info notebook}
 
 %package -n python3-ipython-sphinx
 Summary:        Sphinx directive to support embedded IPython code
@@ -256,6 +258,9 @@ rm -r %{buildroot}%{python3_sitelib}/IPython/*/tests
 
 
 %changelog
+* Fri Jul 10 2020 Miro Hrončok <mhroncok@redhat.com> - 7.16.1-2
+- Add ipython[notebook] subpackage
+
 * Tue Jul 07 2020 Lumír Balhar <lbalhar@redhat.com> - 7.16.1-1
 - Update to 7.16.1 (#1851577)
 
