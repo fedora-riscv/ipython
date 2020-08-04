@@ -13,8 +13,8 @@
 %endif
 
 Name:           ipython
-Version:        7.16.1
-Release:        3%{?dist}
+Version:        7.17.0
+Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -258,6 +258,9 @@ rm -r %{buildroot}%{python3_sitelib}/IPython/*/tests
 
 
 %changelog
+* Tue Aug 04 2020 Lumír Balhar <lbalhar@redhat.com> - 7.17.0-1
+- Update to 7.17.0 (#1862672)
+
 * Tue Jul 28 2020 Fedora Release Engineering <releng@fedoraproject.org> - 7.16.1-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
 
