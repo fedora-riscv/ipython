@@ -13,7 +13,7 @@
 %endif
 
 Name:           ipython
-Version:        7.18.0
+Version:        7.18.1
 Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
@@ -258,6 +258,9 @@ rm -r %{buildroot}%{python3_sitelib}/IPython/*/tests
 
 
 %changelog
+* Tue Sep 08 2020 Lumír Balhar <lbalhar@redhat.com> - 7.18.1-1
+- Update to 7.18.1 (#1873693)
+
 * Mon Aug 31 2020 Lumír Balhar <lbalhar@redhat.com> - 7.18.0-1
 - Update to 7.18.0 (#1873693)
 
