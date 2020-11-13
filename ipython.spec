@@ -13,7 +13,7 @@
 %endif
 
 Name:           ipython
-Version:        7.18.1
+Version:        7.19.0
 Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
@@ -207,6 +207,11 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} \
     PATH="%{buildroot}%{_bindir}:$PATH" \
     %{buildroot}%{_bindir}/iptest3
 popd
+# There is an ongoing migration from iptest/nose to pytest
+# so we use both at the same time and we'll be eventually
+# prepared to remove the older way.
+# See the last paragraph in https://ipython.readthedocs.io/en/stable/whatsnew/version7.html#ipython-7-19
+%pytest
 %else
 rm -f %{buildroot}%{_bindir}/iptest*
 rm -r %{buildroot}%{python3_sitelib}/IPython/*/tests
@@ -258,6 +263,9 @@ rm -r %{buildroot}%{python3_sitelib}/IPython/*/tests
 
 
 %changelog
+* Fri Nov 13 2020 Lumír Balhar <lbalhar@redhat.com> - 7.19.0-1
+- Update to 7.19.0 (#1893413)
+
 * Tue Sep 08 2020 Lumír Balhar <lbalhar@redhat.com> - 7.18.1-1
 - Update to 7.18.1 (#1873693)
 
