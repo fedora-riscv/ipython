@@ -13,8 +13,8 @@
 %endif
 
 Name:           ipython
-Version:        7.19.0
-Release:        2%{?dist}
+Version:        7.20.0
+Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -23,6 +23,10 @@ Summary:        An enhanced interactive Python shell
 License:        (BSD and MIT and Python) and GPLv2+
 URL:            http://ipython.org/
 Source0:        %pypi_source
+
+# Fix tests for Python 3.10
+# Proposed upstream: https://github.com/ipython/ipython/pull/12759
+Patch0:         py310.patch
 
 BuildArch:      noarch
 BuildRequires: make
@@ -264,6 +268,12 @@ rm -r %{buildroot}%{python3_sitelib}/IPython/*/tests
 
 
 %changelog
+* Tue Feb 02 2021 Lumír Balhar <lbalhar@redhat.com> - 7.20.0-1
+- Fix tests with Python 3.10.0a4
+Resolves: rhbz#1901141
+- Update to 7.20.0
+Resolves: rhbz#1923782
+
 * Tue Jan 26 2021 Fedora Release Engineering <releng@fedoraproject.org> - 7.19.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
 
