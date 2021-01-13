@@ -25,6 +25,7 @@ URL:            http://ipython.org/
 Source0:        %pypi_source
 
 BuildArch:      noarch
+BuildRequires: make
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
 
