@@ -14,7 +14,7 @@
 
 Name:           ipython
 Version:        7.20.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -202,6 +202,12 @@ ln -s ./ipython3.1 %{buildroot}%{_mandir}/man1/ipython.1
 
 %if %{with check}
 %check
+# Remove failing tests with Python 3.10
+# This can be reverted when this fix is released (first beta):
+# https://github.com/python/cpython/commit/dbb228189b4eb7ab41f326eb79dae669b2c81177
+rm %{buildroot}%{python3_sitelib}/IPython/core/tests/test_inputsplitter.py
+rm IPython/core/tests/test_inputsplitter.py
+
 # Ensure that the user's .pythonrc.py is not invoked during any tests.
 export PYTHONSTARTUP=""
 # Koji builders can be slow, especially on arms, we scale timeouts 4 times
@@ -268,6 +274,9 @@ rm -r %{buildroot}%{python3_sitelib}/IPython/*/tests
 
 
 %changelog
+* Wed Feb 10 2021 Lumír Balhar <lbalhar@redhat.com> - 7.20.0-2
+- Fix tests with Python 3.10.0a5
+
 * Tue Feb 02 2021 Lumír Balhar <lbalhar@redhat.com> - 7.20.0-1
 - Fix tests with Python 3.10.0a4
 Resolves: rhbz#1901141
