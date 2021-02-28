@@ -13,8 +13,8 @@
 %endif
 
 Name:           ipython
-Version:        7.20.0
-Release:        2%{?dist}
+Version:        7.21.0
+Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -274,6 +274,10 @@ rm -r %{buildroot}%{python3_sitelib}/IPython/*/tests
 
 
 %changelog
+* Sun Feb 28 2021 Lumír Balhar <lbalhar@redhat.com> - 7.21.0-1
+- Update to 7.21.0
+Resolves: rhbz#1933409
+
 * Wed Feb 10 2021 Lumír Balhar <lbalhar@redhat.com> - 7.20.0-2
 - Fix tests with Python 3.10.0a5
 
