@@ -13,7 +13,7 @@
 %endif
 
 Name:           ipython
-Version:        7.21.0
+Version:        7.22.0
 Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
@@ -29,7 +29,7 @@ Source0:        %pypi_source
 Patch0:         py310.patch
 
 BuildArch:      noarch
-BuildRequires: make
+BuildRequires:  make
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
 
@@ -62,7 +62,7 @@ BuildRequires: tex(amsmath.sty)
 BuildRequires: tex(amssymb.sty)
 BuildRequires: tex(amsthm.sty)
 BuildRequires: tex(bm.sty)
-%endif # with check
+%endif
 
 %global ipython_desc_base \
 IPython provides a replacement for the interactive Python interpreter with\
@@ -158,7 +158,7 @@ Summary:        Documentation for %{name}
 %{?python_provide:%python_provide python3-ipython-doc}
 %description -n python3-ipython-doc
 This package contains the documentation of %{name}.
-%endif # with doc
+%endif
 
 
 %prep
@@ -202,12 +202,6 @@ ln -s ./ipython3.1 %{buildroot}%{_mandir}/man1/ipython.1
 
 %if %{with check}
 %check
-# Remove failing tests with Python 3.10
-# This can be reverted when this fix is released (first beta):
-# https://github.com/python/cpython/commit/dbb228189b4eb7ab41f326eb79dae669b2c81177
-rm %{buildroot}%{python3_sitelib}/IPython/core/tests/test_inputsplitter.py
-rm IPython/core/tests/test_inputsplitter.py
-
 # Ensure that the user's .pythonrc.py is not invoked during any tests.
 export PYTHONSTARTUP=""
 # Koji builders can be slow, especially on arms, we scale timeouts 4 times
@@ -274,6 +268,10 @@ rm -r %{buildroot}%{python3_sitelib}/IPython/*/tests
 
 
 %changelog
+* Mon Mar 29 2021 Karolina Surma <ksurma@redhat.com> - 7.22.0-1
+- Update to 7.22.0
+Resolves: rhbz#1943788
+
 * Sun Feb 28 2021 Lumír Balhar <lbalhar@redhat.com> - 7.21.0-1
 - Update to 7.21.0
 Resolves: rhbz#1933409
