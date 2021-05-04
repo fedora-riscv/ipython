@@ -13,7 +13,7 @@
 %endif
 
 Name:           ipython
-Version:        7.22.0
+Version:        7.23.1
 Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
@@ -45,6 +45,7 @@ BuildRequires:  python3-numpy
 BuildRequires:  python3-Cython
 BuildRequires:  python3-nose
 BuildRequires:  python3-matplotlib
+BuildRequires:  python3-matplotlib-inline
 BuildRequires:  python3-pymongo
 BuildRequires:  python3-tornado >= 4.0
 BuildRequires:  python3-zmq
@@ -268,6 +269,10 @@ rm -r %{buildroot}%{python3_sitelib}/IPython/*/tests
 
 
 %changelog
+* Tue May 04 2021 Lumír Balhar <lbalhar@redhat.com> - 7.23.1-1
+- Update to 7.23.1
+Resolves: rhbz#1955903
+
 * Mon Mar 29 2021 Karolina Surma <ksurma@redhat.com> - 7.22.0-1
 - Update to 7.22.0
 Resolves: rhbz#1943788
