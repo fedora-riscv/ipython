@@ -13,7 +13,7 @@
 %endif
 
 Name:           ipython
-Version:        7.24.1
+Version:        7.25.0
 Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
@@ -269,6 +269,10 @@ rm -r %{buildroot}%{python3_sitelib}/IPython/*/tests
 
 
 %changelog
+* Mon Jun 28 2021 Lumír Balhar <lbalhar@redhat.com> - 7.25.0-1
+- Update to 7.25.0
+Resolves: rhbz#1976438
+
 * Fri Jun 11 2021 Lumír Balhar <lbalhar@redhat.com> - 7.24.1-1
 - Update to 7.24.1
 Resolves: rhbz#1967545
