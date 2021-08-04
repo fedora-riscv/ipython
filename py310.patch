@@ -1,37 +1,31 @@
-From 3987f6d04b6eb737d03ba4b05ef6638fea3d7e00 Mon Sep 17 00:00:00 2001
+From e112b0035cd98f690ea81cac84e021615beaeddf Mon Sep 17 00:00:00 2001
 From: Lumir Balhar <lbalhar@redhat.com>
-Date: Thu, 7 Jan 2021 14:41:11 +0100
-Subject: [PATCH 1/3] Update test_oinspect for postponed evaulation of
- annotations
+Date: Wed, 4 Aug 2021 13:38:28 +0200
+Subject: [PATCH 1/3] Inspect module now returns OSError for objects without
+ source files
 
-Newer Pythons stores annotations as strings and evaluate them later.
+Fixes https://github.com/ipython/ipython/issues/13079
 ---
- IPython/core/tests/test_oinspect.py | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ IPython/core/oinspect.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/IPython/core/tests/test_oinspect.py b/IPython/core/tests/test_oinspect.py
-index 19c6db7c4..edb3a7aac 100644
---- a/IPython/core/tests/test_oinspect.py
-+++ b/IPython/core/tests/test_oinspect.py
-@@ -421,6 +421,14 @@ def long_function(
-         long_function.__name__,
-     )
-     nt.assert_in(sig, [
-+        # Python >=3.10 with delayed annotations evaulation
-+        '''\
-+long_function(
-+    a_really_long_parameter: 'int',
-+    and_another_long_one: 'bool' = False,
-+    let_us_make_sure_this_is_looong: 'Optional[str]' = None,
-+) -> 'bool'\
-+''',
-         # Python >=3.9
-         '''\
- long_function(
+diff --git a/IPython/core/oinspect.py b/IPython/core/oinspect.py
+index ab25eeeff..93e91cdfa 100644
+--- a/IPython/core/oinspect.py
++++ b/IPython/core/oinspect.py
+@@ -311,7 +311,7 @@ def find_file(obj) -> str:
+         if hasattr(obj, '__class__'):
+             try:
+                 fname = inspect.getabsfile(obj.__class__)
+-            except TypeError:
++            except (TypeError, OSError):
+                 # Can happen for builtins
+                 pass
+     except:
 -- 
-2.29.2
+2.31.1
 
-From d0934ea03e8bf47de4614ddb214b55e3b397b970 Mon Sep 17 00:00:00 2001
+From 021c89d63e9445d0f5cc0392aeeb10e02a941008 Mon Sep 17 00:00:00 2001
 From: Lumir Balhar <lbalhar@redhat.com>
 Date: Thu, 7 Jan 2021 14:42:34 +0100
 Subject: [PATCH 2/3] Update test_magic_arguments for new argparse module
@@ -105,19 +99,19 @@ index 5dea32dd8..ae3fa26a6 100644
      assert_equal(real_name(foo), 'foo')
      assert_equal(foo(None, ''), argparse.Namespace(foo=None))
 -- 
-2.29.2
+2.31.1
 
-From 098823bbf70c55d2de1e05811307a92da1142f8c Mon Sep 17 00:00:00 2001
+From 99ffda8be9ef1f59fc6d7c9248077f77fa8b97e9 Mon Sep 17 00:00:00 2001
 From: Lumir Balhar <lbalhar@redhat.com>
 Date: Thu, 7 Jan 2021 14:43:46 +0100
 Subject: [PATCH 3/3] xxlimited module is xxlimited_35 in Python 3.10
 
 ---
- IPython/lib/tests/test_pretty.py | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ IPython/lib/tests/test_pretty.py | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
 diff --git a/IPython/lib/tests/test_pretty.py b/IPython/lib/tests/test_pretty.py
-index ba4c32966..9cba39adf 100644
+index ba4c32966..79c203b5b 100644
 --- a/IPython/lib/tests/test_pretty.py
 +++ b/IPython/lib/tests/test_pretty.py
 @@ -6,15 +6,16 @@
@@ -138,7 +132,7 @@ index ba4c32966..9cba39adf 100644
  
  from io import StringIO
  
-@@ -118,13 +119,17 @@ def test_sets():
+@@ -118,13 +119,18 @@ def test_sets():
          yield nt.assert_equal, got_output, expected_output
  
  
@@ -156,9 +150,10 @@ index ba4c32966..9cba39adf 100644
 +        pytest.skip(f"Module {module_name} is not available.")
 +
 +    output = pretty.pretty(getattr(module, "Null"))
++
      nt.assert_equal(output, 'xxlimited.Null')
  
  def test_pprint_nomod():
 -- 
-2.29.2
+2.31.1
 
