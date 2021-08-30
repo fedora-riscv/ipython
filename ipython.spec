@@ -13,8 +13,8 @@
 %endif
 
 Name:           ipython
-Version:        7.26.0
-Release:        2%{?dist}
+Version:        7.27.0
+Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -269,6 +269,10 @@ rm -r %{buildroot}%{python3_sitelib}/IPython/*/tests
 
 
 %changelog
+* Mon Aug 30 2021 Lumír Balhar <lbalhar@redhat.com> - 7.27.0-1
+- Update to 7.27.0
+Resolves: rhbz#1998766
+
 * Wed Aug 04 2021 Lumír Balhar <lbalhar@redhat.com> - 7.26.0-2
 - Fix compatibility with Python 3.10rc1
 
