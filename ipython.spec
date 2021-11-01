@@ -13,7 +13,7 @@
 %endif
 
 Name:           ipython
-Version:        7.28.0
+Version:        7.29.0
 Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
@@ -269,6 +269,10 @@ rm -r %{buildroot}%{python3_sitelib}/IPython/*/tests
 
 
 %changelog
+* Mon Nov 01 2021 Lumír Balhar <lbalhar@redhat.com> - 7.29.0-1
+- Update to 7.29.0
+Resolves: rhbz#2018636
+
 * Tue Oct 05 2021 Lumír Balhar <lbalhar@redhat.com> - 7.28.0-1
 - Update to 7.28.0
 Resolves: rhbz#2007824
