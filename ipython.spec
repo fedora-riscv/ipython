@@ -13,8 +13,8 @@
 %endif
 
 Name:           ipython
-Version:        7.30.1
-Release:        2%{?dist}
+Version:        8.0.1
+Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -24,14 +24,11 @@ License:        (BSD and MIT and Python) and GPLv2+
 URL:            http://ipython.org/
 Source0:        %pypi_source
 
-# Fix tests for Python 3.10
-# Proposed upstream: https://github.com/ipython/ipython/pull/12759
-Patch0:         py310.patch
-
 BuildArch:      noarch
 BuildRequires:  make
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
+BuildRequires:  python3-stack-data
 
 %if %{with doc}
 BuildRequires:  python3-sphinx
@@ -42,8 +39,8 @@ BuildRequires:  python3-numpy
 %endif
 
 %if %{with check}
+BuildRequires:  black
 BuildRequires:  python3-Cython
-BuildRequires:  python3-nose
 BuildRequires:  python3-matplotlib
 BuildRequires:  python3-matplotlib-inline
 BuildRequires:  python3-pymongo
@@ -52,6 +49,7 @@ BuildRequires:  python3-zmq
 BuildRequires:  python3-zmq-tests
 BuildRequires:  python3-nbformat
 BuildRequires:  python3-pytest
+BuildRequires:  python3-pytest-asyncio
 BuildRequires:  python3-ipykernel
 BuildRequires:  python3-jupyter-client
 BuildRequires:  python3-testpath
@@ -137,8 +135,8 @@ Requires:       python3-ipykernel
 Requires:       python3-ipython = %{version}-%{release}
 Requires:       python3-jupyter-client
 Requires:       python3-nbformat
-Requires:       python3-nose
 Requires:       python3-pytest
+Requires:       python3-pytest-asyncio
 Requires:       python3-testpath
 Requires:       python3-zmq-tests
 # For latex
@@ -207,19 +205,13 @@ ln -s ./ipython3.1 %{buildroot}%{_mandir}/man1/ipython.1
 export PYTHONSTARTUP=""
 # Koji builders can be slow, especially on arms, we scale timeouts 4 times
 export IPYTHON_TESTING_TIMEOUT_SCALE=4
-mkdir -p run_tests
-pushd run_tests
-PYTHONPATH=%{buildroot}%{python3_sitelib} \
-    PATH="%{buildroot}%{_bindir}:$PATH" \
-    %{buildroot}%{_bindir}/iptest3
-popd
-# There is an ongoing migration from iptest/nose to pytest
-# so we use both at the same time and we'll be eventually
-# prepared to remove the older way.
-# See the last paragraph in https://ipython.readthedocs.io/en/stable/whatsnew/version7.html#ipython-7-19
+# To prevent _pytest.pathlib.ImportPathMismatchError, we are
+# testing directly in buildroot
+pushd %{buildroot}%{python3_sitelib}/IPython
 %pytest
+rm -rf .pytest_cache
+popd
 %else
-rm -f %{buildroot}%{_bindir}/iptest*
 rm -r %{buildroot}%{python3_sitelib}/IPython/*/tests
 %endif
 
@@ -233,9 +225,6 @@ rm -r %{buildroot}%{python3_sitelib}/IPython/*/tests
 %{python3_sitelib}/IPython/external
 %{python3_sitelib}/IPython/__pycache__/
 %{python3_sitelib}/IPython/*.py*
-%dir %{python3_sitelib}/IPython/kernel
-%{python3_sitelib}/IPython/kernel/__pycache__/
-%{python3_sitelib}/IPython/kernel/*.py*
 %dir %{python3_sitelib}/IPython/testing
 %{python3_sitelib}/IPython/testing/__pycache__/
 %{python3_sitelib}/IPython/testing/*.py*
@@ -257,8 +246,6 @@ rm -r %{buildroot}%{python3_sitelib}/IPython/*/tests
 
 %if %{with check}
 %files -n python3-ipython-tests
-%{_bindir}/iptest3
-%exclude %{_bindir}/iptest
 %{python3_sitelib}/IPython/*/tests
 %endif
 
@@ -269,6 +256,10 @@ rm -r %{buildroot}%{python3_sitelib}/IPython/*/tests
 
 
 %changelog
+* Mon Jan 24 2022 Lumír Balhar <lbalhar@redhat.com> - 8.0.1-1
+- Update to 8.0.1
+Resolves: rhbz#2042793
+
 * Thu Jan 20 2022 Fedora Release Engineering <releng@fedoraproject.org> - 7.30.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
 
