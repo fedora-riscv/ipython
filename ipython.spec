@@ -14,7 +14,7 @@
 
 Name:           ipython
 Version:        7.20.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -27,6 +27,10 @@ Source0:        %pypi_source
 # Fix tests for Python 3.10
 # Proposed upstream: https://github.com/ipython/ipython/pull/12759
 Patch0:         py310.patch
+# Fix for CVE-2022-21699
+# https://github.com/ipython/ipython/security/advisories/GHSA-pq7m-3gw7-gq5x
+# https://github.com/ipython/ipython/commit/1ec91ebf328bdf3450130de4b4604c79dc1e19d9
+Patch1:         CVE-2022-21699.patch
 
 BuildArch:      noarch
 BuildRequires: make
@@ -268,6 +272,10 @@ rm -r %{buildroot}%{python3_sitelib}/IPython/*/tests
 
 
 %changelog
+* Tue Feb 01 2022 Lumír Balhar <lbalhar@redhat.com> - 7.20.0-2
+- Fix CVE-2022-21699
+Resolves: rhbz#2047814
+
 * Tue Feb 02 2021 Lumír Balhar <lbalhar@redhat.com> - 7.20.0-1
 - Fix tests with Python 3.10.0a4
 Resolves: rhbz#1901141
