@@ -1,3 +1,5 @@
+%global _without_check 1
+%global _without_doc 1
 %if 0%{?epel}
 # disable build of docs and tests for epel because of missing dependencies:
 # - python3-ipykernel
@@ -14,7 +16,7 @@
 
 Name:           ipython
 Version:        8.4.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -255,6 +257,9 @@ rm -r %{buildroot}%{python3_sitelib}/IPython/*/tests
 
 
 %changelog
+* Mon Jun 13 2022 Python Maint <python-maint@redhat.com> - 8.4.0-2
+- Bootstrap for Python 3.11
+
 * Tue May 31 2022 Lumír Balhar <lbalhar@redhat.com> - 8.4.0-1
 - Update to 8.4.0
 Resolves: rhbz#2091308
