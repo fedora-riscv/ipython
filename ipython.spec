@@ -14,7 +14,7 @@
 
 Name:           ipython
 Version:        8.4.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -255,6 +255,9 @@ rm -r %{buildroot}%{python3_sitelib}/IPython/*/tests
 
 
 %changelog
+* Thu Jul 21 2022 Fedora Release Engineering <releng@fedoraproject.org> - 8.4.0-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
+
 * Wed Jun 15 2022 Python Maint <python-maint@redhat.com> - 8.4.0-3
 - Rebuilt for Python 3.11
 
