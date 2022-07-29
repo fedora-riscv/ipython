@@ -14,7 +14,7 @@
 
 Name:           ipython
 Version:        8.4.0
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -23,6 +23,8 @@ Summary:        An enhanced interactive Python shell
 License:        (BSD and MIT and Python) and GPLv2+
 URL:            http://ipython.org/
 Source0:        %pypi_source
+# Fix for Python 3.11b4
+Patch:          https://github.com/ipython/ipython/pull/13714.patch
 
 BuildArch:      noarch
 BuildRequires:  make
@@ -255,6 +257,9 @@ rm -r %{buildroot}%{python3_sitelib}/IPython/*/tests
 
 
 %changelog
+* Fri Jul 29 2022 Lumír Balhar <lbalhar@redhat.com> - 8.4.0-5
+- Fix FTBFS with Python 3.11b4
+
 * Thu Jul 21 2022 Fedora Release Engineering <releng@fedoraproject.org> - 8.4.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
 
