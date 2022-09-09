@@ -1,0 +1,20 @@
+root cause from lbalhar: setuptools/distutils use ConfigParser for parsing
+setup.cfg and because the keys should be case-insensitive (INI file
+specification, they say) RawConfigParser (superclass of ConfigParser) makes
+them lowercase in `optionxform` method:
+https://docs.python.org/3/library/configparser.html#mapping-protocol-access
+
+But setuptools changes that behavior since version 53.1.0, see this commit:
+https://github.com/pypa/setuptools/commit/21b122e06969a9d85c65ce8276519d34da7dc747
+--- a/setupbase.py
++++ b/setupbase.py
+@@ -114,6 +114,9 @@ def check_package_data(package_data):
+     print("checking package data")
+     for pkg, data in package_data.items():
+         pkg_root = pjoin(*pkg.split('.'))
++        # on EL9's setuptools 53.0.0 the 'IPython' in setup.cfg
++        # gets lowercased
++        pkg_root = pkg_root.replace('ipython', 'IPython')
+         for d in data:
+             path = pjoin(pkg_root, d)
+             if '*' in path:

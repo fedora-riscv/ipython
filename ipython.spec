@@ -14,7 +14,7 @@
 
 Name:           ipython
 Version:        8.4.0
-Release:        5%{?dist}
+Release:        5%{?dist}.1
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -25,6 +25,8 @@ URL:            http://ipython.org/
 Source0:        %pypi_source
 # Fix for Python 3.11b4
 Patch:          https://github.com/ipython/ipython/pull/13714.patch
+# Fix for EL9's setuptools 53.0.0 always returning lowercase package names
+Patch:          fix-setupbase-check-package-data.diff
 
 BuildArch:      noarch
 BuildRequires:  make
@@ -114,7 +116,12 @@ Requires:       (tex(bm.sty)      if /usr/bin/dvipng)
 
 This package provides IPython for in a terminal.
 
+# Disable notebook in EPEL 9 for now
+# - python3.9dist(ipywidgets)
+# - python3.9dist(notebook)
+%if 0%{?fedora}
 %{?python_extras_subpkg:%python_extras_subpkg -n python3-ipython -i %{python3_sitelib}/*.egg-info notebook}
+%endif
 
 %package -n python3-ipython-sphinx
 Summary:        Sphinx directive to support embedded IPython code
@@ -257,6 +264,10 @@ rm -r %{buildroot}%{python3_sitelib}/IPython/*/tests
 
 
 %changelog
+* Thu Sep 08 2022 Michel Alexandre Salim <salimma@fedoraproject.org> - 8.4.0-5.1
+- Fix build with EL9's setuptools 53.0.0
+- Temporarily disable notebook subpackage due to missing deps
+
 * Fri Jul 29 2022 Lumír Balhar <lbalhar@redhat.com> - 8.4.0-5
 - Fix FTBFS with Python 3.11b4
 
