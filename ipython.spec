@@ -14,7 +14,7 @@
 
 Name:           ipython
 Version:        8.5.0
-Release:        1%{?dist}
+Release:        1%{?dist}.1
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -23,8 +23,6 @@ Summary:        An enhanced interactive Python shell
 License:        (BSD and MIT and Python) and GPLv2+
 URL:            http://ipython.org/
 Source0:        %pypi_source
-# Fix for EL9's setuptools 53.0.0 always returning lowercase package names
-Patch:          fix-setupbase-check-package-data.diff
 
 BuildArch:      noarch
 BuildRequires:  make
@@ -168,6 +166,19 @@ This package contains the documentation of %{name}.
 
 %prep
 %autosetup -p1
+# workaround for files in options.package_data not getting installed
+#
+# root cause from lbalhar: setuptools/distutils use ConfigParser for parsing
+# setup.cfg and because the keys should be case-insensitive (INI file
+# specification, they say) RawConfigParser (superclass of ConfigParser) makes
+# them lowercase in `optionxform` method:
+# https://docs.python.org/3/library/configparser.html#mapping-protocol-access
+#
+# But setuptools changes that behavior since version 53.1.0, see this commit:
+# https://github.com/pypa/setuptools/commit/21b122e06969a9d85c65ce8276519d34da7dc747
+#
+# continued in install section
+ln -s IPython ipython
 
 # use setuptools to have RPM generated requires
 sed -i 's/from distutils.core import setup/from setuptools import setup/' setup.py
@@ -199,6 +210,27 @@ popd
 
 %install
 %py3_install
+
+# clean up the duplicate modules
+# verified that these contain the same files but ipython/ has the package_data files too
+#
+# <mock-chroot> sh-5.1# comm -3 <(find IPython | sed -e 's/^IPython/ipython/g' | sort) <(find ipython | sort)
+#         ipython/core/profile
+#         ipython/core/profile/README_STARTUP
+#         ipython/core/tests/2x2.jpg
+#         ipython/core/tests/2x2.png
+#         ipython/core/tests/daft_extension
+#         ipython/core/tests/daft_extension/__pycache__
+#         ipython/core/tests/daft_extension/__pycache__/daft_extension.cpython-39.opt-1.pyc
+#         ipython/core/tests/daft_extension/__pycache__/daft_extension.cpython-39.pyc
+#         ipython/core/tests/daft_extension/daft_extension.py
+#         ipython/lib/tests/test.wav
+#         ipython/testing/plugin/README.txt
+#         ipython/testing/plugin/test_combo.txt
+#         ipython/testing/plugin/test_example.txt
+#         ipython/testing/plugin/test_exampleip.txt
+rm -rf %{buildroot}%{python3_sitelib}/IPython
+mv %{buildroot}%{python3_sitelib}/{ipython,IPython}
 
 # link the manpage to ipython3
 mv %{buildroot}%{_mandir}/man1/ipython{,3}.1
@@ -262,6 +294,9 @@ rm -r %{buildroot}%{python3_sitelib}/IPython/*/tests
 
 
 %changelog
+* Mon Sep 12 2022 Michel Alexandre Salim <salimma@fedoraproject.org> - 8.5.0-1.1
+- Properly fix issue with old setuptools lowercasing module names, resulting in missing package_data files
+
 * Thu Sep 08 2022 Lumír Balhar <lbalhar@redhat.com> - 8.5.0-1
 - Update to 8.5.0
 Resolves: rhbz#2124923
