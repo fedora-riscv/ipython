@@ -13,7 +13,7 @@
 %endif
 
 Name:           ipython
-Version:        7.16.1
+Version:        7.16.3
 Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
@@ -256,6 +256,12 @@ rm -r %{buildroot}%{python3_sitelib}/IPython/*/tests
 
 
 %changelog
+* Sun Oct 16 2022 Maxwell G <gotmax@e.email> - 7.16.3-1
+- Update to 7.16.3.
+- Mitigates CVE-2022-21699
+- Resolves: rhbz#2047815
+- Relates: rhbz#2047813
+
 * Tue Jul 07 2020 Lumír Balhar <lbalhar@redhat.com> - 7.16.1-1
 - Update to 7.16.1 (#1851577)
 
