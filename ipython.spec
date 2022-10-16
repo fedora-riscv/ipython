@@ -3,7 +3,6 @@
 # - python3-ipykernel
 # - python3-jupyter-client
 # - python3-nbformat
-# - python3-testpath
 # tests and docs subpackages are also disabled
 %bcond_with check
 %bcond_with doc
