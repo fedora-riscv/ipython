@@ -13,7 +13,7 @@
 %endif
 
 Name:           ipython
-Version:        3.2.1
+Version:        3.2.3
 Release:        1%{?dist}
 Summary:        An enhanced interactive Python shell
 
@@ -22,7 +22,7 @@ Summary:        An enhanced interactive Python shell
 # There are some extensions released under GPLv2+
 License:        (BSD and MIT and Python) and GPLv2+
 URL:            http://ipython.org/
-Source0:        https://pypi.python.org/packages/source/i/ipython/ipython-%{version}.tar.gz
+Source0:        %pypi_source ipython
 # Add _jsdir to default search path
 Patch0:         ipython-2.1.0-_jsdir-search-path.patch
 
@@ -722,6 +722,9 @@ popd
 %endif # with_python3
 
 %changelog
+* Sun Oct 23 2022 Carl George <carl@george.computer> - 3.2.3-1
+- Update to 3.2.3
+
 * Mon Jul 13 2015 Orion Poplawski <orion@cora.nwra.com> - 3.2.1-1
 - Update to 3.2.1
 
