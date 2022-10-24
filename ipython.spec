@@ -25,6 +25,9 @@ URL:            http://ipython.org/
 Source0:        %pypi_source ipython
 # Add _jsdir to default search path
 Patch0:         ipython-2.1.0-_jsdir-search-path.patch
+# Fix CVE-2022-21699, backported from 5.x branch upstream
+# https://github.com/ipython/ipython/commit/c306d208946604b1cfc7bcfdc5fb51daf7b8ceae
+Patch1:         0001-FIX-CVE-2022-21699.patch
 
 BuildArch:      noarch
 BuildRequires:  python-devel
@@ -393,6 +396,7 @@ This package contains the gui of %{name}, which requires PyQt.
 %patch0 -p1 -b .jsdir
 sed -i "s;_jsdir;%{_jsdir};g" \
     IPython/html/notebookapp.py
+%patch1 -p 1
 
 # delete bundling libs
 pushd IPython/external
@@ -724,6 +728,7 @@ popd
 %changelog
 * Sun Oct 23 2022 Carl George <carl@george.computer> - 3.2.3-1
 - Update to 3.2.3
+- Fix CVE-2022-21699, resolves rhbz#2135164
 
 * Mon Jul 13 2015 Orion Poplawski <orion@cora.nwra.com> - 3.2.1-1
 - Update to 3.2.1
