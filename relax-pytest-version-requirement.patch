@@ -1,0 +1,13 @@
+diff --git a/setup.cfg b/setup.cfg
+index 0e3718368..a7ac1fc56 100644
+--- a/setup.cfg
++++ b/setup.cfg
+@@ -63,7 +63,7 @@ qtconsole =
+ 	qtconsole
+ terminal = 
+ test = 
+-	pytest<7.1
++	pytest
+ 	pytest-asyncio
+ 	testpath
+ test_extra = 
