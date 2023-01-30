@@ -13,7 +13,7 @@
 
 Name:           ipython
 Version:        7.16.3
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        An enhanced interactive Python shell
 
 # See bug #603178 for a quick overview for the choice of licenses
@@ -255,6 +255,9 @@ rm -r %{buildroot}%{python3_sitelib}/IPython/*/tests
 
 
 %changelog
+* Mon Jan 30 2023 Miro Hrončok <mhroncok@redhat.com> - 7.16.3-2
+- Rebuilt to change Python shebangs to /usr/bin/python3.6 on EPEL 8
+
 * Sun Oct 16 2022 Maxwell G <gotmax@e.email> - 7.16.3-1
 - Update to 7.16.3.
 - Mitigates CVE-2022-21699
