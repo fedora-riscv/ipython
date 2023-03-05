@@ -1,3 +1,10 @@
+%bcond_without bootstrap
+
+%if %{with bootstrap}
+%global _without_check 1
+%global _without_doc 1
+%endif
+
 %if 0%{?epel}
 # disable build of docs and tests for epel because of missing dependencies:
 # - python3-ipykernel
@@ -255,6 +262,9 @@ rm -r %{buildroot}%{python3_sitelib}/IPython/*/tests
 
 
 %changelog
+* Thu Sep 08 2022 Lumír Balhar <lbalhar@redhat.com> - 8.5.0-1~bootstrap
+- Bootstrap for riscv64.
+
 * Thu Sep 08 2022 Lumír Balhar <lbalhar@redhat.com> - 8.5.0-1
 - Update to 8.5.0
 Resolves: rhbz#2124923
